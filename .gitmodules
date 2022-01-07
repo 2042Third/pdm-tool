@@ -2,3 +2,6 @@
 [submodule "src/app/pdm-crypt-module"]
 	path = src/app/pdm-crypt-module
 	url = https://github.com/2042third/pdm-crypt-module
+[submodule "pdm-crypt-module"]
+	path = src/app/pdm-crypt-module
+	url = https://github.com/2042third/pdm-crypt-module
