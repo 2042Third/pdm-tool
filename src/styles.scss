@@ -1,0 +1,78 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$pdm-notes-primary: mat.define-palette(mat.$indigo-palette);
+$pdm-notes-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$pdm-notes-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$pdm-notes-theme: mat.define-light-theme((
+  color: (
+    primary: $pdm-notes-primary,
+    accent: $pdm-notes-accent,
+    warn: $pdm-notes-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($pdm-notes-theme);
+
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css?family=PT+Sans:400,700");
+@import url("https://fonts.googleapis.com/css?family=Inconsolata:400,700");
+
+:root {
+  /* Colors */
+  --foreground-default: #dfdfdf;
+  --foreground-secondary: #c3c2c2;
+  --foreground-tertiary: #9c9b9b;
+  --foreground-quaternary: #f4faff;
+  --foreground-light: rgb(255, 255, 255);
+
+  --background-default: #2f3136;
+  --background-secondary: #36393e;
+  --background-tertiary: #42464D;
+  --background-light: #8e95a1;
+
+  --primary-default: #5dfdcb;
+  --primary-dark: #24b286;
+  --primary-light: #b2ffe7;
+
+  --error-default: #ef3e36;
+  --error-dark: #800600;
+  --error-light: #ffcecc;
+
+  /* Shadows */
+  --background-tertiary-shadow: 0 1px 3px 0 rgba(8, 9, 10, 0.5);
+  // --background-tertiary-shadow: 0 1px 3px 0 rgba(92, 125, 153, 0.5);
+}
+
+body {
+  background: var(--background-default);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inconsolata", monospace;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

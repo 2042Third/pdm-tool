@@ -1,0 +1,40 @@
+nav {
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background-color: var(--background-tertiary);
+  color: var(--foreground-quaternary);
+  font-size: 1rem;
+}
+
+nav .title {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+mat-drawer-container {
+  height: 97%;
+  background-color: var(--background-tertiary);
+  color: var(--foreground-quaternary);
+}
+mat-drawer{
+  padding: 1em;
+  padding-top: 3em;
+
+  border-right: 1px dotted black;
+  background-color: var(--background-tertiary);
+  color: var(--foreground-quaternary);
+}
+
+p .sidetitle {
+  color: #0d6d3b;
+}
+mat-drawer-content {
+  padding: 1em;
+  background-color: var(--background-tertiary);
+  color: var(--foreground-quaternary);
+}

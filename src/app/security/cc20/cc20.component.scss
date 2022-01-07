@@ -1,0 +1,28 @@
+.terminal {
+	max-height: 100vh;
+  background-color: var(--background-secondary);
+	// background:#2f3136;
+  color: var(--foreground-quaternary);
+	height: 400px;
+  white-space: pre-wrap;
+	border-radius: 4px;
+	overflow-y: scroll;
+  word-wrap: break-word;
+	padding: 15px;
+}
+
+.inputClass2 {
+  width: 96%;
+  border: none;
+  max-height: 7vh;
+  padding: 15px;
+  border-radius: 5px;
+  resize: none;
+  word-wrap: break-word;
+  background-color: var(--background-secondary);
+  color: var(--foreground-quaternary);
+}
+
+.inputClass2:focus {
+  outline: none;
+}

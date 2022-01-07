@@ -1,0 +1,9 @@
+<div chat>
+  <p class="terminal" id="output">
+    {{term}}
+  </p>
+  <form (ngSubmit)="handleSubmit($event)">
+    <textarea class="inputClass2" name="msg" [(ngModel)]="msg" (keyup)="handleKeyUp($event)"></textarea>
+    <button type="submit">send</button>
+  </form>
+</div>
