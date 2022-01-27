@@ -1,0 +1,66 @@
+
+input[type="file"] {
+	padding: 7px 20px;
+}
+
+input[type="text"] {
+	color: #bfbfbf;
+	text-transform: none;
+	width: 10em;
+}
+
+input[type="text"]:hover {
+	cursor: text;
+}
+
+input, button {
+	padding: 10px 20px !important;
+	border: none !important;
+	border-radius: 4px !important;
+	background: #2f3136 !important;
+	letter-spacing: .1rem !important;
+	text-transform: uppercase !important;
+	margin: 2px 0 !important;
+}
+
+
+.setting {
+	width: 100% !important;
+	max-width: 284px !important;
+}
+
+/* GRID SYSTEM */
+.row {
+	position: relative;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.row [class^="col"] {
+	float: left;
+}
+
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+  width: 96%;
+}
+
+.row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.hidden-sm {
+  display: none;
+}
