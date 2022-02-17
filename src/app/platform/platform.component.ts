@@ -7,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlatformComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    console.log("platform success");
+   }
 
   ngOnInit() {
   }

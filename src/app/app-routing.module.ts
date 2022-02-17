@@ -1,19 +1,23 @@
 import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { Cc20Component } from './security/cc20/cc20.component';
+import { RouterModule, Routes , ActivatedRoute, ParamMap } from "@angular/router";
+import { NavComponent } from "./platform/nav/nav.component";
 
 
 const routes: Routes = [
-  {
-    path: "cc20",
-    component: Cc20Component,
-    data: { demo: false, name: "cc20 crypt module" },
-  }
+  { path: 'signin', redirectTo: './signin' , pathMatch: 'full'},
+  { path: 'notes', redirectTo: './notes' , pathMatch: 'full'},
+  { path: '**', redirectTo: './chat' , pathMatch: 'full'},
+  { path: '', redirectTo: './chat' , pathMatch: 'full'},
+
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
-  exports: [RouterModule],
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports: [
+    RouterModule
+  ],
    declarations: [
   ],
 })

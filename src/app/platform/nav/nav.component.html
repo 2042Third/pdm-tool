@@ -11,9 +11,9 @@
       <font color="#0d6d3b" bold="true">PDM Notes</font>
       <p color="secondary" >---</p>
       <br>
-      <button mat-icon-button color="secondary" (click)="toNotes()" class="icons">Notes</button><br>
-      <button mat-icon-button color="secondary" (click)="toChat()" class="icons">Chat</button><br>
-      <button mat-icon-button color="secondary" (click)="toSignin()" class="icons">{{signin_stat}}</button>
+      <button routerLink="./notes" routerLinkActive="active" mat-icon-button color="secondary" (click)="toNotes()" class="icons">Notes</button><br>
+      <button routerLink="./chat" routerLinkActive="active" mat-icon-button color="secondary" (click)="toChat()" class="icons">Chat</button><br>
+      <button routerLink="./signin" routerLinkActive="active" mat-icon-button color="secondary" (click)="toSignin()" class="icons">{{signin_stat}}</button>
   </mat-drawer>
   <!-- </mat-drawer> -->
   <mat-drawer-content>
@@ -25,10 +25,6 @@
       <fa-icon class="icons" [icon]="faLightbulb"  (click)="toggleTheme()"></fa-icon>
 
     </nav>
-    <div [ngSwitch]="this.feature">
-      <security-cc20 *ngSwitchCase="'chat'"></security-cc20>
-      <security-notes *ngSwitchCase="'notes'"></security-notes>
-      <security-signin *ngSwitchCase="'signin'"></security-signin>
-    </div>
+    <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>

@@ -15,11 +15,11 @@ import { SecurityModule } from './security/security.module';
    ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     FontAwesomeModule,
     PlatformModule,
     HttpClientModule,
-    SecurityModule
+    SecurityModule,
+    AppRoutingModule,
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/web_notes'}],
   bootstrap: [AppComponent]

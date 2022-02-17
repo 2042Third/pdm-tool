@@ -31,32 +31,33 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
 
   ) {
     super("Cc20Module", "notes.js");
+    if(this.sock.connected){
+      this.sock.socket.onmessage = function (incoming) {
+        var a:string = incoming.data;
+        console.log(a);
+        var request = JSON.parse(a);
+        switch(request["type"]){
+          // case "regi_ack":
+          //   this.append_terminal_gr("服务器已连接！");
 
-    this.sock.socket.onmessage = function (incoming) {
-      var a:string = incoming.data;
-      console.log(a);
-      var request = JSON.parse(a);
-      switch(request["type"]){
-        // case "regi_ack":
-        //   this.append_terminal_gr("服务器已连接！");
+          // break;
+          // case "msg":
+          //   this.append_terminal_gr("服务器已连接！");
 
-        // break;
-        // case "msg":
-        //   this.append_terminal_gr("服务器已连接！");
-
-        // break;
-        case "hello":
-          $("#output").append("<font color=\"green\">"
-            +"服务器已连接!"
-            +"</font></br>");
-          var objDiv = document.getElementById("output");
-          objDiv.scrollTop = objDiv.scrollHeight;
-        break;
-        default:
-          console.log('unknown type message received');
-        break;
-      }
-    };
+          // break;
+          case "hello":
+            $("#output").append("<font color=\"green\">"
+              +"服务器已连接!"
+              +"</font></br>");
+            var objDiv = document.getElementById("output");
+            objDiv.scrollTop = objDiv.scrollHeight;
+          break;
+          default:
+            console.log('unknown type message received');
+          break;
+        }
+      };
+    }
   }
   encry(inp: string):string {
     return this.module.loader_check(this.a,inp);

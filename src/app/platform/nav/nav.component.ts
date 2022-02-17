@@ -1,5 +1,11 @@
-// import { NotesComponent } from './../../security/notes/notes.component';
+/**
+ * By Yang Yi
+ *  2/2022
+ *
+*/
 import { Component, OnInit } from '@angular/core';
+import {UserinfoService} from '../../_services/Userinfo.service';
+import { Subscription,Observable } from 'rxjs';
 import {
   faLightbulb as faSolidLightbulb,
   faListAlt,
@@ -7,10 +13,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faLightbulb as faRegularLightbulb } from "@fortawesome/free-regular-svg-icons";
 import { ThemeService } from "src/app/theme/theme.service";
-// import { Cc20Component } from 'src/app/security/cc20/cc20.component';
-// import { SigninComponent } from 'src/app/security/signin/signin.component';
-// import { MainViewComponent } from '../main_view/main_view.component';
 
+import { switchMap } from 'rxjs/operators';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: "app-nav",
@@ -21,17 +26,28 @@ export class NavComponent implements OnInit {
   faLightbulb!: IconDefinition;
   faDollarSign =   faListAlt;
   feature:string="chat";
+  private feature_sub:Subscription;
   signin_stat:string="Sign In";
-  // main!:MainViewComponent;
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private userinfo: UserinfoService,
     private themeService: ThemeService,
   ) {
-    // main = MainViewComponent;
-
+    // Make sure the page changes when the feature is changed in userinfo
+    // this.feature_sub = userinfo.feature.subscribe(data=>{
+    //   this.feature=data
+    // });
   }
 
   ngOnInit() {
     this.setLightbulb();
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap)=>
+        this.feature = params.get('feature')
+      )
+    );
+
   }
 
 
@@ -61,5 +77,8 @@ export class NavComponent implements OnInit {
     }
 
     this.setLightbulb();
+  }
+  ngOnDestroy() {
+    this.feature_sub.unsubscribe();
   }
 }

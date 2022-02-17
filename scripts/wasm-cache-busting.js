@@ -13,7 +13,7 @@ const generateChecksum = (str, algorithm, encoding) =>
     .createHash(algorithm || "md5")
     .update(str, "utf8")
     .digest(encoding || "hex");
-
+ 
 const result = {};
 
 const wasmDir = path.resolve(rootDir, "src/assets/wasm");

@@ -1,7 +1,32 @@
-<form action="https://pdm.pw/auth/signin" method="POST">
-  <input type="text" placeholder="邮箱 " id="input4" class="inputClass3" name="umail">
-  <br>
-  <input type="password" placeholder="密码 " id="input1" class="inputClass1" name="upw">
-  <br>
-  <button type="submit" class="warn" id="button1">确定</button>
-</form>
+<div class="col-md-6 offset-md-3 mt-5">
+
+  <div class="card">
+    <h4 class="card-header">Sign In</h4>
+    <div class="card-body">
+      <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="umail">Email</label>
+          <input type="text" formControlName="umail" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.umail.errors }" />
+          <div *ngIf="submitted && f.umail.errors" class="invalid-feedback">
+            <div *ngIf="f.umail.errors.required">Email is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="upw">Password</label>
+          <input type="password" formControlName="upw" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.upw.errors }" />
+          <div *ngIf="submitted && f.upw.errors" class="invalid-feedback">
+            <div *ngIf="f.upw.errors.required">Password is required</div>
+          </div>
+        </div>
+        <button [disabled]="loading" class="btn btn-primary">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Login
+        </button>
+        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+      </form>
+    </div>
+  </div>
+
+</div>

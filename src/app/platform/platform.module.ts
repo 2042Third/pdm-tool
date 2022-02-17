@@ -9,12 +9,14 @@ import {MaterialExampleModule} from './material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';
-// import { MainViewComponent } from './main_view/main_view.component';
-// import { UserioComponent } from './userio/userio.component';
+import {PlatformRoutingModule} from './platform-routing.module';
 
 import {SecurityModule} from '../security/security.module';
 @NgModule({
-  exports:[NavComponent, PlatformComponent],
+  exports:[
+    NavComponent,
+    PlatformComponent
+  ],
   imports: [
     CommonModule,
     FontAwesomeModule,
@@ -25,6 +27,7 @@ import {SecurityModule} from '../security/security.module';
     MaterialExampleModule,
     ReactiveFormsModule,
     SecurityModule,
+    PlatformRoutingModule,
   ],
   declarations: [
     PlatformComponent,

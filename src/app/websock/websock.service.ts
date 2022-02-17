@@ -10,9 +10,11 @@ export const WS_ENDPOINT = environment.WB_SOCKS;
 })
 export class WebsockService {
   socket: WebSocket;
+  connected:boolean=false;
 
   public connect(): void {
     this.connectas(WS_ENDPOINT);
+    this.connected=false;
   }
 
   public connectas(host:string | URL){
@@ -26,7 +28,7 @@ export class WebsockService {
     }
 
     this.socket.onopen = function () {
-        console.log('服务器接口打开。');
+        console.log('服务器接口打开inject。');
         // send_regi();
     };
 
