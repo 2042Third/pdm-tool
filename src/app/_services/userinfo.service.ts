@@ -31,6 +31,7 @@ export class UserinfoService {
     }
     public set_signin_status(a:ServerMsg){
       this.signin_status_value.next(a);
+      console
     }
 
     public get signinValue(): ServerMsg {

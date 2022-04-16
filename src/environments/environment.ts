@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  wasmAssetsPath: "/assets/wasm",
+  wasmAssetsPath: "assets/wasm",
   WB_SOCKS: 'wss://pdm.pw/chat/chat',
 };
 

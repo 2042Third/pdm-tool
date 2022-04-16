@@ -27,17 +27,17 @@ export class NavComponent implements OnInit {
   faDollarSign =   faListAlt;
   feature:string="chat";
   private feature_sub:Subscription;
-  signin_stat:string="Sign In";
+  signin_stat_str:string="Sign In";
+  signin_stat:boolean=false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userinfo: UserinfoService,
     private themeService: ThemeService,
   ) {
-    // Make sure the page changes when the feature is changed in userinfo
-    // this.feature_sub = userinfo.feature.subscribe(data=>{
-    //   this.feature=data
-    // });
+    this.feature_sub = this.userinfo.signin_status.subscribe(
+      data=>{this.signin_stat_str = data.receiver;});
+    this.signin_stat = true;
   }
 
   ngOnInit() {
