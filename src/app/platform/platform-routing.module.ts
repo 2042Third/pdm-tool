@@ -10,7 +10,7 @@ import { UserprofileComponent } from '../security/userprofile/userprofile.compon
 const pdmRoutes: Routes = [
   {path:'./notes', component: NotesComponent},
   {path:'./chat', component: Cc20Component},
-  {path:'./signin', component: UserareaModule  },
+  {path:'./signin', component: SigninComponent  },
   {path: '', redirectTo: './chat', pathMatch: 'full'}
 ];
 
