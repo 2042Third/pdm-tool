@@ -10,6 +10,7 @@ import { FormsModule,
 import { HumanizeTimePipe } from "./humanize-time-pipe";
 import { NotesComponent } from './notes/notes.component';
 import { UserprofileComponent } from './userprofile/userprofile.component';
+import { SafeHtmlPipe } from './safe-html.pipe';
 @NgModule({
   exports:[Cc20Component,
      NotesComponent,
@@ -29,6 +30,7 @@ import { UserprofileComponent } from './userprofile/userprofile.component';
     NotesComponent,
     SigninComponent,
     UserprofileComponent,
+    SafeHtmlPipe,
     ]
 })
 export class SecurityModule { }

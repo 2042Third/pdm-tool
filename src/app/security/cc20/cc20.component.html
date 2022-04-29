@@ -1,8 +1,12 @@
 <div chat>
-  <p class="terminal" id="output">
-    {{term}}
+  <p class="terminal" id="output" [innerHTML]="_term | safeHtml">
+    <!-- {{term}} -->
+
   </p>
-  <form (ngSubmit)="handleSubmit($event)">
+<!-- <p class="terminal" id="output" >
+  <span [style.color]=" 'green' ">New at Proof?</span>
+</p> -->
+    <form (ngSubmit)="handleSubmit($event)">
     <textarea class="inputClass2" name="msg" [(ngModel)]="msg" (keyup)="handleKeyUp($event)"></textarea>
     <button type="submit">send</button>
   </form>

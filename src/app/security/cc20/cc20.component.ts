@@ -1,10 +1,12 @@
-import { Component } from "@angular/core";
+import { Component, SecurityContext } from "@angular/core";
 import { EmscriptenWasmComponent } from "../emscripten-wasm.component";
 import { WebsockService } from "src/app/websock/websock.service";
 import { catchError, map, Observable, tap } from "rxjs";
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 interface MyEmscriptenModule extends EmscriptenModule {
   loader_check(a:string,inp: string): string;
+  loader_out(a:string,inp: string): string;
 }
 
 type none_init_msg = {
@@ -25,10 +27,10 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
   val:string;
 
   msg='';
-  term='';
+  _term='';
   constructor(
     private sock: WebsockService,
-
+    private sr: DomSanitizer
   ) {
     super("Cc20Module", "notes.js");
     if(this.sock.connected){
@@ -104,6 +106,12 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
     }
     return this.module.loader_check(this.a,inp);
   }
+  public dec (inp:string){
+    if(this.module==null){
+      return "unable to decrypt!"
+    }
+    return this.module.loader_out(this.a,inp);
+  }
 
 
   private msg_send(){
@@ -114,38 +122,53 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
         u2:  "user2" ,
         a: "1234"
       };
-    this.term+=(this.msg_init(mp));
+    // this._term+=(this.msg_init(mp));
+    this.msg_init(mp);
   }
 
   private msg_init<String>(msg:none_init_msg ){
     var a = "";
+    var b =this.enc(msg.msg);
     a = JSON.stringify(
       {
         type:    "msg",
-        msg:    this.enc(msg.msg)
+        msg:    b
       }
     );
+    this.append_terminal_wh(b);
+    this.append_terminal_gr(this.dec(b));
     return a;
   }
 
+  public get term() : SafeHtml{
+
+    return this.sr.bypassSecurityTrustHtml(this._term);
+  }
+
   public append_terminal_wh (a:String) {
-    $("#output").append("<font color=\"white\">"
-        +a
-        +"</font></br>");
+    a=this.sr.sanitize(SecurityContext.HTML,a);
+    this._term +=
+      "<font color=\"white\">"
+      +a
+      +"</font></br>";
     var objDiv = document.getElementById("output");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
   public append_terminal_rd (a:String) {
-    $("#output").append("<font color=\"red\">"
-        +a
-        +"</font></br>");
+    a=this.sr.sanitize(SecurityContext.HTML,a);
+    this._term +=
+      "<font color=\"red\">"
+      +a
+      +"</font></br>";
     var objDiv = document.getElementById("output");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
-  public append_terminal_gr (a:String) {
-    $("#output").append("<font color=\"green\">"
+  public append_terminal_gr (a:string) {
+    a=this.sr.sanitize(SecurityContext.HTML,a);
+    this._term +=
+      "<font color=\"green\">"
       +a
-      +"</font></br>");
+      +"</font></br>";
     var objDiv = document.getElementById("output");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
