@@ -63,7 +63,6 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
       };
     }
     this.formControl = new FormControl({value: '', disabled: this.no_submit});
-    // this.formControl.control.disabled = true;
   }
   encry(inp: string):string {
     return this.module.loader_check(this.a,inp);
