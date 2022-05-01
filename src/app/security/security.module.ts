@@ -11,6 +11,7 @@ import { HumanizeTimePipe } from "./humanize-time-pipe";
 import { NotesComponent } from './notes/notes.component';
 import { UserprofileComponent } from './userprofile/userprofile.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
+import { DisableControlDirective } from './disableControl.directive';
 @NgModule({
   exports:[Cc20Component,
      NotesComponent,
@@ -24,13 +25,14 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     FormsModule,
     ReactiveFormsModule,
   ],
-  declarations: [
+  declarations: [	
     Cc20Component,
     HumanizeTimePipe,
     NotesComponent,
     SigninComponent,
     UserprofileComponent,
     SafeHtmlPipe,
-    ]
+      DisableControlDirective
+   ]
 })
 export class SecurityModule { }

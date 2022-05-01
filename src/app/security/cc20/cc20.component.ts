@@ -3,7 +3,8 @@ import { EmscriptenWasmComponent } from "../emscripten-wasm.component";
 import { WebsockService } from "src/app/websock/websock.service";
 import { catchError, map, Observable, tap } from "rxjs";
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
+import { FormControl } from "@angular/forms";
+import { DisableControlDirective } from '../disableControl.directive';
 interface MyEmscriptenModule extends EmscriptenModule {
   loader_check(a:string,inp: string): string;
   loader_out(a:string,inp: string): string;
@@ -25,12 +26,15 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
   a:string="1234";
   loaded:boolean=false;
   val:string;
-
+  submitting:boolean=true;
+  no_submit:boolean=false;
   msg='';
   _term='';
+  formControl;
   constructor(
     private sock: WebsockService,
-    private sr: DomSanitizer
+    private sr: DomSanitizer,
+
   ) {
     super("Cc20Module", "notes.js");
     if(this.sock.connected){
@@ -51,8 +55,6 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
             $("#output").append("<font color=\"green\">"
               +"服务器已连接!"
               +"</font></br>");
-            var objDiv = document.getElementById("output");
-            objDiv.scrollTop = objDiv.scrollHeight;
           break;
           default:
             console.log('unknown type message received');
@@ -60,6 +62,8 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
         }
       };
     }
+    this.formControl = new FormControl({value: '', disabled: this.no_submit});
+    // this.formControl.control.disabled = true;
   }
   encry(inp: string):string {
     return this.module.loader_check(this.a,inp);
@@ -70,13 +74,21 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
   handleSubmit(e){
     this.msg_send();
     this.msg='';
+    this.scroll_to_new();
   }
 
-  handleKeyUp(e){
-    if(e.keyCode === 13){
-      this.msg_send();
-      this.msg='';
+  handleKeyDown(e){
+    if(e.keyCode === 13 && !this.no_submit){
+      if(this.msg != ""){
+        this.msg_send();
+        this.msg='';
+        this.scroll_to_new();
+      }
+      this.no_submit=true;
     }
+  }
+  handleKeyUp(e){
+    this.no_submit=false;
   }
 
   parse_new (a:string){
@@ -124,6 +136,7 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
       };
     // this._term+=(this.msg_init(mp));
     this.msg_init(mp);
+    // this.scroll_to_new();
   }
 
   private msg_init<String>(msg:none_init_msg ){
@@ -140,19 +153,21 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
     return a;
   }
 
-  public get term() : SafeHtml{
+  // public get term() : SafeHtml{
 
-    return this.sr.bypassSecurityTrustHtml(this._term);
+  //   return this.sr.bypassSecurityTrustHtml(this._term);
+  // }
+
+  public scroll_to_new() {
+    var objDiv = document.getElementById("output");
+    objDiv.scrollTop = objDiv.scrollHeight;
   }
-
   public append_terminal_wh (a:String) {
     a=this.sr.sanitize(SecurityContext.HTML,a);
     this._term +=
       "<font color=\"white\">"
       +a
       +"</font></br>";
-    var objDiv = document.getElementById("output");
-    objDiv.scrollTop = objDiv.scrollHeight;
   }
   public append_terminal_rd (a:String) {
     a=this.sr.sanitize(SecurityContext.HTML,a);
@@ -160,8 +175,6 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
       "<font color=\"red\">"
       +a
       +"</font></br>";
-    var objDiv = document.getElementById("output");
-    objDiv.scrollTop = objDiv.scrollHeight;
   }
   public append_terminal_gr (a:string) {
     a=this.sr.sanitize(SecurityContext.HTML,a);
@@ -169,8 +182,6 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
       "<font color=\"green\">"
       +a
       +"</font></br>";
-    var objDiv = document.getElementById("output");
-    objDiv.scrollTop = objDiv.scrollHeight;
   }
 
 

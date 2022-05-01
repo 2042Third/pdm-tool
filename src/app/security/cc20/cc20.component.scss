@@ -1,9 +1,19 @@
+.plat {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height :100%;
+}
+
 .terminal {
-	max-height: 100vh;
+  height :70%;
+  align-items: stretch;
+  // display: flex;
+  // flex-direction: column;
+	// min-height: 80%;
   background-color: var(--background-secondary);
 	// background:#2f3136;
   color: var(--foreground-quaternary);
-	height: 400px;
   white-space: pre-wrap;
 	border-radius: 4px;
 	overflow-y: scroll;
@@ -12,13 +22,17 @@
 }
 
 .inputClass2 {
+  // flex: 1 1 auto;
   width: 96%;
   border: none;
-  max-height: 7vh;
+  height :30%;
+  align-items: stretch;
+  // max-height: 7vh;
   padding: 15px;
   border-radius: 5px;
   resize: none;
   word-wrap: break-word;
+  overflow: auto;
   background-color: var(--background-secondary);
   color: var(--foreground-quaternary);
 }

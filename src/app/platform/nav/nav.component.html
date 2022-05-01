@@ -14,17 +14,14 @@
       <button routerLink="./notes" routerLinkActive="active" mat-icon-button color="secondary" (click)="toNotes()" class="icons">Notes</button><br>
       <button routerLink="./chat" routerLinkActive="active" mat-icon-button color="secondary" (click)="toChat()" class="icons">Chat</button><br>
       <button routerLink="./signin" routerLinkActive="active" mat-icon-button color="secondary" (click)="toSignin()" class="icons">User</button>
-      <!-- <button *ngIf="signin_stat" routerLink="./user" routerLinkActive="active" mat-icon-button color="secondary" (click)="toSignin()" class="icons">{{signin_stat_str}}</button> -->
   </mat-drawer>
-  <!-- </mat-drawer> -->
-  <mat-drawer-content>
+  <mat-drawer-content class="platf">
     <nav fxLayout fxLayout.md="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.md="1">
       <button mat-icon-button color="secondary" (click)="drawer.toggle()" class="icons">
         <mat-icon>menu</mat-icon>
       </button>
-      <h5 class="title secondary-font"> </h5>
+      <h5 class="title secondary-font"></h5>
       <fa-icon class="icons" [icon]="faLightbulb"  (click)="toggleTheme()"></fa-icon>
-
     </nav>
     <router-outlet></router-outlet>
   </mat-drawer-content>
