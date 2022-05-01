@@ -1,13 +1,5 @@
-
-<mat-drawer-container
-  fxLayout
-  fxLayout.md="column"
-  fxLayoutAlign="center"
-  fxLayoutGap="10px"
-  fxLayoutGap.md="1">
-  <mat-drawer  #drawer mode="side" hasBackDrop="false"
-  fxLayout fxLayout.md="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.md="1"
-  >
+<mat-drawer-container>
+  <mat-drawer  #drawer mode="side" hasBackDrop="false">
       <font color="#0d6d3b" bold="true">PDM Notes</font>
       <p color="secondary" >---</p>
       <br>
@@ -16,13 +8,13 @@
       <button routerLink="./signin" routerLinkActive="active" mat-icon-button color="secondary" (click)="toSignin()" class="icons">User</button>
   </mat-drawer>
   <mat-drawer-content class="platf">
-    <nav fxLayout fxLayout.md="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.md="1">
+    <nav >
       <button mat-icon-button color="secondary" (click)="drawer.toggle()" class="icons">
         <mat-icon>menu</mat-icon>
       </button>
       <h5 class="title secondary-font"></h5>
       <fa-icon class="icons" [icon]="faLightbulb"  (click)="toggleTheme()"></fa-icon>
     </nav>
-    <router-outlet></router-outlet>
+    <router-outlet ></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>

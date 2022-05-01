@@ -81,13 +81,13 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
       if(this.msg != ""){
         this.msg_send();
         this.msg='';
-        this.scroll_to_new();
       }
       this.no_submit=true;
     }
   }
   handleKeyUp(e){
     this.no_submit=false;
+        this.scroll_to_new();
   }
 
   parse_new (a:string){
@@ -133,9 +133,7 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
         u2:  "user2" ,
         a: "1234"
       };
-    // this._term+=(this.msg_init(mp));
     this.msg_init(mp);
-    // this.scroll_to_new();
   }
 
   private msg_init<String>(msg:none_init_msg ){
@@ -159,7 +157,8 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
 
   public scroll_to_new() {
     var objDiv = document.getElementById("output");
-    objDiv.scrollTop = objDiv.scrollHeight;
+    objDiv.scrollTop = objDiv.scrollHeight +(objDiv.scrollHeight);
+    // objDiv.
   }
   public append_terminal_wh (a:String) {
     a=this.sr.sanitize(SecurityContext.HTML,a);
