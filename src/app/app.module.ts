@@ -7,6 +7,7 @@ import {APP_BASE_HREF} from '@angular/common';
 import { AppComponent } from './app.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SecurityModule } from './security/security.module';
+import { ChatService } from './_services/chat.service';
 
 
 @NgModule({
@@ -21,7 +22,10 @@ import { SecurityModule } from './security/security.module';
     SecurityModule,
     AppRoutingModule,
   ],
-  providers: [{provide: APP_BASE_HREF, useValue: '/web_notes'}],
+  providers: [
+    {provide: APP_BASE_HREF, useValue: '/web_notes'},
+    ChatService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

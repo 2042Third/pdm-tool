@@ -5,9 +5,14 @@ import { catchError, map, Observable, tap } from "rxjs";
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { FormControl } from "@angular/forms";
 import { DisableControlDirective } from '../disableControl.directive';
+import { NamedServerMsg, NamedServerMsgA } from '../../_types/ServerMsg';
+
+import { ChatService } from 'src/app/_services/chat.service';
+
 interface MyEmscriptenModule extends EmscriptenModule {
   loader_check(a:string,inp: string): string;
   loader_out(a:string,inp: string): string;
+  get_hash(inp: string): string;
 }
 
 type none_init_msg = {
@@ -31,10 +36,11 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
   msg='';
   _term='';
   formControl;
+  remake=0;
   constructor(
     private sock: WebsockService,
     private sr: DomSanitizer,
-
+    private chatservice: ChatService
   ) {
     super("Cc20Module", "notes.js");
     if(this.sock.connected){
@@ -64,12 +70,28 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
     }
     this.formControl = new FormControl({value: '', disabled: this.no_submit});
   }
-  encry(inp: string):string {
-    return this.module.loader_check(this.a,inp);
-  }
 
   ngOnInit() {
   }
+
+  ngAfterContentChecked(){
+    if(this.remake === 0){
+      if(this.module!=null){
+        this.load_hist();
+        this.remake=1;
+      }
+    }
+
+  }
+  ngAfterViewChecked(){
+    if (this.remake === 1){
+      if(document.getElementById("output")!=null){
+        this.scroll_to_new();
+        this.remake = 2;
+      }
+    }
+  }
+
   handleSubmit(e){
     this.msg_send();
     this.msg='';
@@ -87,7 +109,7 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
   }
   handleKeyUp(e){
     this.no_submit=false;
-        this.scroll_to_new();
+    this.scroll_to_new();
   }
 
   parse_new (a:string){
@@ -96,11 +118,9 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
     switch(request["type"]){
       case "regi_ack":
         this.append_terminal_gr("服务器已连接！");
-
       break;
       case "msg":
         this.append_terminal_gr("服务器已连接！");
-
       break;
       case "hello":
         this.append_terminal_gr("服务器已连接！");
@@ -123,42 +143,45 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
     }
     return this.module.loader_out(this.a,inp);
   }
+  public msg_hash(inp:string){
+    if(this.module==null){
+      return "unable to get hash of \""+inp+"\"!"
+    }
+    return this.module.get_hash(inp);
+  }
 
-
+  private load_hist(){
+    var chat_hist:NamedServerMsgA[] = this.chatservice.get_saved_msg();
+    for (let i = 0; i < chat_hist.length; i++) {
+      this.append_terminal_wh("encrypted data: \n"+JSON.stringify(chat_hist[i]));
+      this.append_terminal_gr("decrypted: \n"+this.dec(chat_hist[i].msg));
+    }
+  }
   private msg_send(){
-
-    const mp : none_init_msg = {
-        msg: this.msg,
-        u1:  "user1" ,
-        u2:  "user2" ,
-        a: "1234"
-      };
-    this.msg_init(mp);
+    /**
+     * Only save or send encrypted data
+    */
+    var b =this.enc(this.msg); // encryption
+    const mp : NamedServerMsgA = {
+      msg: b,
+      msgh: this.msg_hash(this.msg),
+      type: "msg",
+      time: (new Date().getTime().toString()),
+      sender: "testing user",
+      receiver: "testing recv",
+      val: "TESTING ONLY, USERNAME NOT ENCRYPTED!",
+    };
+    this.chatservice.save_msg(mp);
+    this.append_terminal_wh("encrypted data: \n"+JSON.stringify(mp));
+    this.append_terminal_gr("decrypted: \n"+this.dec(b));
   }
-
-  private msg_init<String>(msg:none_init_msg ){
-    var a = "";
-    var b =this.enc(msg.msg);
-    a = JSON.stringify(
-      {
-        type:    "msg",
-        msg:    b
-      }
-    );
-    this.append_terminal_wh(b);
-    this.append_terminal_gr(this.dec(b));
-    return a;
-  }
-
-  // public get term() : SafeHtml{
-
-  //   return this.sr.bypassSecurityTrustHtml(this._term);
-  // }
 
   public scroll_to_new() {
     var objDiv = document.getElementById("output");
+    // if(objDiv!=null){
+    console.log(objDiv.scrollHeight);
     objDiv.scrollTop = objDiv.scrollHeight +(objDiv.scrollHeight);
-    // objDiv.
+    // }
   }
   public append_terminal_wh (a:String) {
     a=this.sr.sanitize(SecurityContext.HTML,a);

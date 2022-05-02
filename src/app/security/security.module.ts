@@ -12,6 +12,7 @@ import { NotesComponent } from './notes/notes.component';
 import { UserprofileComponent } from './userprofile/userprofile.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { DisableControlDirective } from './disableControl.directive';
+import { ChatService } from '../_services/chat.service';
 @NgModule({
   exports:[Cc20Component,
      NotesComponent,
@@ -25,14 +26,17 @@ import { DisableControlDirective } from './disableControl.directive';
     FormsModule,
     ReactiveFormsModule,
   ],
-  declarations: [	
+  declarations: [
     Cc20Component,
     HumanizeTimePipe,
     NotesComponent,
     SigninComponent,
     UserprofileComponent,
     SafeHtmlPipe,
-      DisableControlDirective
-   ]
+    DisableControlDirective
+   ],
+  providers: [
+    ChatService
+  ]
 })
 export class SecurityModule { }
