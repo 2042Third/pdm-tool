@@ -21,45 +21,22 @@ input, button {
 	letter-spacing: .1rem !important;
 	margin: 2px 0 !important;
 }
-
-
-.setting {
-	width: 100% !important;
-	max-width: 284px !important;
+.card{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.form-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+}
+.form-group, .card-header , .form-warn{
+  display: flex;
+  // align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  width:100%
 }
 
-/* GRID SYSTEM */
-.row {
-	position: relative;
-	width: 100%;
-	margin-top: 10px;
-}
-
-.row [class^="col"] {
-	float: left;
-}
-
-.col-1,
-.col-2,
-.col-3,
-.col-4,
-.col-5,
-.col-6,
-.col-7,
-.col-8,
-.col-9,
-.col-10,
-.col-11,
-.col-12 {
-  width: 96%;
-}
-
-.row::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.hidden-sm {
-  display: none;
-}

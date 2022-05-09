@@ -150,6 +150,17 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
     return this.module.get_hash(inp);
   }
 
+  /**
+   * Feature first written in 5/1/2022 by Yi Yang
+   *
+   * Loads the chat history of the current session (a page refresh is a different session).
+   * Meant to be used to have the look and feel of a multi-page application,
+   * but in fact when users go to different feature (e.x. go from chat to notes and back to chat)
+   * the app needs to reload everything from chatService.
+   *
+   * Could have problem when the chat history is very large, which suggests loading only
+   * the latest few chats first and reload more when needed.
+  */
   private load_hist(){
     var chat_hist:NamedServerMsgA[] = this.chatservice.get_saved_msg();
     for (let i = 0; i < chat_hist.length; i++) {

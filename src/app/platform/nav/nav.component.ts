@@ -3,7 +3,7 @@
  *  2/2022
  *
 */
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {UserinfoService} from '../../_services/Userinfo.service';
 import { Subscription,Observable } from 'rxjs';
 import {
@@ -16,19 +16,24 @@ import { ThemeService } from "src/app/theme/theme.service";
 
 import { switchMap } from 'rxjs/operators';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { MatDrawerContainer } from '@angular/material/sidenav';
 
 @Component({
   selector: "app-nav",
   templateUrl: "./nav.component.html",
   styleUrls: ["./nav.component.scss"]
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements AfterViewInit {
   faLightbulb!: IconDefinition;
   faDollarSign =   faListAlt;
   feature:string="chat";
   private feature_sub:Subscription;
   signin_stat_str:string="Sign In";
   signin_stat:boolean=false;
+
+  // elements
+  @ViewChild(MatDrawerContainer) matDrawerContainer: MatDrawerContainer;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -38,6 +43,10 @@ export class NavComponent implements OnInit {
     this.feature_sub = this.userinfo.signin_status.subscribe(
       data=>{this.signin_stat_str = data.receiver;});
     this.signin_stat = true;
+  }
+  ngAfterViewInit(): void {
+    // throw new Error('Method not implemented.');
+    // this.matDrawerContainer.open();
   }
 
   ngOnInit() {

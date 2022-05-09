@@ -3,11 +3,14 @@
   <div class="card">
     <h4 class="card-header">Sign In</h4>
     <div class="card-body">
-      <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="form-body">
         <div class="form-group">
           <label for="umail">Email</label>
           <input type="text" formControlName="umail" class="form-control"
             [ngClass]="{ 'is-invalid': submitted && f.umail.errors }" />
+
+        </div>
+        <div class="form-warn">
           <div *ngIf="submitted && f.umail.errors" class="invalid-feedback">
             <div *ngIf="f.umail.errors.required">Email is required</div>
           </div>
@@ -16,9 +19,14 @@
           <label for="upw">Password</label>
           <input type="password" formControlName="upw" class="form-control"
             [ngClass]="{ 'is-invalid': submitted && f.upw.errors }" />
+          <!-- <div  class="invalid-feedback"> -->
+
+        </div>
+        <div class="form-warn">
           <div *ngIf="submitted && f.upw.errors" class="invalid-feedback">
             <div *ngIf="f.upw.errors.required">Password is required</div>
           </div>
+
         </div>
         <button [disabled]="loading" class="btn btn-primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
@@ -26,6 +34,7 @@
         </button>
         <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
       </form>
+      <a class="form-group" href="https://pdm.pw/web_notes/static/signup.html" target="_blank">Sign Up</a>
     </div>
   </div>
 
