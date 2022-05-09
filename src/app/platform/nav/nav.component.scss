@@ -14,17 +14,21 @@ mat-drawer-container {
 }
 .drawer-styles{
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
+  justify-content: right;
+  height: 90%;
 
   padding: 1em;
   padding-top: 2em;
 
-  border-right: 1px dotted black;
+  // border-right: 1px dotted black;
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }
-
+.signin_container {
+  // align-self: flex-end
+}
 p .sidetitle {
   color: #0d6d3b;
 }
