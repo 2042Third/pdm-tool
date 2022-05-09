@@ -11,7 +11,7 @@ import {
   faListAlt,
   IconDefinition
 } from "@fortawesome/free-solid-svg-icons";
-import { faLightbulb as faRegularLightbulb } from "@fortawesome/free-regular-svg-icons";
+import { faLightbulb as faRegularLightbulb, faPlusSquare } from "@fortawesome/free-regular-svg-icons";
 import { ThemeService } from "src/app/theme/theme.service";
 
 import { switchMap } from 'rxjs/operators';
@@ -25,10 +25,11 @@ import { MatDrawerContainer } from '@angular/material/sidenav';
 })
 export class NavComponent implements AfterViewInit {
   faLightbulb!: IconDefinition;
+  faPlusSquare!: IconDefinition;
   faDollarSign =   faListAlt;
   feature:string="chat";
   private feature_sub:Subscription;
-  signin_stat_str:string="Sign In";
+  signin_stat_str:string="Not Signed In";
   signin_stat:boolean=false;
 
   // elements
@@ -41,7 +42,8 @@ export class NavComponent implements AfterViewInit {
     private themeService: ThemeService,
   ) {
     this.feature_sub = this.userinfo.signin_status.subscribe(
-      data=>{this.signin_stat_str = data.receiver;});
+      data=>{this.signin_stat_str="Signed in as: \n\t"; this.signin_stat_str += data.receiver;});
+
     this.signin_stat = true;
   }
   ngAfterViewInit(): void {

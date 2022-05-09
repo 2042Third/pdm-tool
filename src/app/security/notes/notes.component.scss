@@ -1,12 +1,14 @@
 .terminal {
-	max-height: 100vh;
-  background-color: var(--background-secondary);
-	// background:#2f3136;
-  color: var(--foreground-quaternary);
-	height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height :80%;
+
   white-space: pre-wrap;
 	border-radius: 4px;
 	overflow-y: scroll;
   word-wrap: break-word;
 	padding: 15px;
+  background-color: var(--background-secondary);
+  color: var(--foreground-quaternary);
 }
