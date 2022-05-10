@@ -3,11 +3,13 @@
   <mat-drawer  class="drawer-styles" #drawer mode="side" hasBackDrop="false" opened="true">
     <div class="drawer-styles">
       <font class="title-font" bold="true">PDM Notes</font>
-      <p color="secondary" class="title-break"> </p>
+      <mat-divider></mat-divider>
       <button routerLink="./notes" routerLinkActive="active" mat-icon-button color="secondary" (click)="toNotes()" class="icons">Notes</button>
       <button routerLink="./chat" routerLinkActive="active" mat-icon-button color="secondary" (click)="toChat()" class="icons">Chat</button>
       <button routerLink="./signin" routerLinkActive="active" mat-icon-button color="secondary" (click)="toSignin()" class="icons">User</button>
+      <mat-divider></mat-divider>
       <div class="signin_container">
+        <mat-icon class="signin-icon" [ngStyle]="{ color: signin_stat ? 'green' : 'red' }">account_box</mat-icon>
         <p class="signin_status">
           {{signin_stat_str}}
         </p>
@@ -20,6 +22,9 @@
         <mat-icon>menu</mat-icon>
       </button>
       <h5 class="title secondary-font"></h5>
+      <button mat-icon-button color="secondary" (click)="drawer.toggle()" class="icons">
+        <mat-icon >account_box</mat-icon>
+      </button>
       <!-- <fa-icon class="icons" [icon]="faLightbulb"  (click)="toggleTheme()"></fa-icon> -->
     </nav>
     <router-outlet ></router-outlet>

@@ -4,7 +4,10 @@
   color:#32d498;
 }
 .title-break{
-  flex-grow: 5;
+  flex-grow: 1;
+}
+.signin-icon{
+  color: #2e9a62;
 }
 mat-drawer-container {
 
@@ -12,12 +15,17 @@ mat-drawer-container {
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }
+mat-divider{
+  width: 100%;
+  margin:2em;
+  border-top-color: rgba(182, 189, 183, 0.285);
+}
 .drawer-styles{
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
   justify-content: right;
-  height: 90%;
+  height: 95%;
 
   padding: 1em;
   padding-top: 2em;
@@ -27,7 +35,13 @@ mat-drawer-container {
   color: var(--foreground-quaternary);
 }
 .signin_container {
-  // align-self: flex-end
+  // align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--background-tertiary);
+  color: gray;
+  font-size: smaller;
 }
 p .sidetitle {
   color: #0d6d3b;
