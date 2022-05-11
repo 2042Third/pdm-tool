@@ -12,13 +12,20 @@ import { UserinfoService } from './userinfo.service';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     private userSubject: BehaviorSubject<User>;
-    public user: Observable<User>;
+    public signupSubject: BehaviorSubject<ServerMsg>;
 
+    private signup_obj:ServerMsg=new ServerMsg;
+    public user: Observable<User>;
     constructor(
         private router: Router,
         private userinfo: UserinfoService,
         private http: HttpClient
     ) {
+      this.signup_obj.v1='';
+      this.signup_obj.v2='';
+      this.signup_obj.v3='';
+      this.signup_obj.v4='';
+      this.signupSubject =new BehaviorSubject<ServerMsg>(this.signup_obj);
       this.userinfo.set_signin_status( JSON.parse(localStorage.getItem('user')));
       this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
       this.user = this.userSubject.asObservable();
@@ -26,6 +33,17 @@ export class AuthService {
 
     public get userValue(): User {
         return this.userSubject.value;
+    }
+
+
+    signup(uname:string ,umail: string, upw: string) {
+      console.log("making request for signup");
+        return this.http.post<ServerMsg>(
+      'https://pdm.pw/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" })
+            .pipe(map(upData => {
+              this.signupSubject.next(upData);
+              return upData;
+            }));
     }
 
     login(umail: string, upw: string) {

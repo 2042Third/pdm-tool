@@ -33,7 +33,7 @@ export const light: Theme = {
 export const dark: Theme = {
   name: "dark",
   properties: {
-    "--foreground-default": "#dfdfdf",
+    "--foreground-default": "#bfbfbf",
     "--foreground-secondary": "#c3c2c2",
     "--foreground-tertiary": "#9c9b9b",
     "--foreground-quaternary": "#f4faff",
@@ -42,7 +42,7 @@ export const dark: Theme = {
     "--background-default": "#2f3136",
     "--background-secondary": "#36393e",
     "--background-tertiary": "#42464D",
-    "--background-light": "#8e95a1",
+    "--background-light": "#3a3b3a",
 
     "--primary-default": "#5dfdcb",
     "--primary-dark": "#24b286",

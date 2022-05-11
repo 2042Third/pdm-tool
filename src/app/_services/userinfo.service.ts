@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-
-import {ServerMsg} from '../_types/ServerMsg';
+import{User} from '../_types/User'
+import {ServerMsg, } from '../_types/ServerMsg';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 

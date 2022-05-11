@@ -1,12 +1,9 @@
 import { Component, SecurityContext } from "@angular/core";
 import { EmscriptenWasmComponent } from "../emscripten-wasm.component";
 import { WebsockService } from "src/app/websock/websock.service";
-import { catchError, map, Observable, tap } from "rxjs";
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { FormControl } from "@angular/forms";
-import { DisableControlDirective } from '../disableControl.directive';
 import { NamedServerMsg, NamedServerMsgA } from '../../_types/ServerMsg';
-
 import { ChatService } from 'src/app/_services/chat.service';
 
 interface MyEmscriptenModule extends EmscriptenModule {
@@ -15,28 +12,18 @@ interface MyEmscriptenModule extends EmscriptenModule {
   get_hash(inp: string): string;
 }
 
-type none_init_msg = {
-  msg: string;
-  u1: string;
-  u2: string;
-  a:string;
-};
-
 @Component({
   selector: 'security-cc20',
   templateUrl: './cc20.component.html',
   styleUrls: ['./cc20.component.scss']
 })
 export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
-  a:string="1234";
-  loaded:boolean=false;
-  val:string;
-  submitting:boolean=true;
+  a:string="1234"; // development password
   no_submit:boolean=false;
   msg='';
   _term='';
   formControl;
-  remake=0;
+  remake = 0 ; // control
   constructor(
     private sock: WebsockService,
     private sr: DomSanitizer,
@@ -47,25 +34,7 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
       this.sock.socket.onmessage = function (incoming) {
         var a:string = incoming.data;
         console.log(a);
-        var request = JSON.parse(a);
-        switch(request["type"]){
-          // case "regi_ack":
-          //   this.append_terminal_gr("服务器已连接！");
-
-          // break;
-          // case "msg":
-          //   this.append_terminal_gr("服务器已连接！");
-
-          // break;
-          case "hello":
-            $("#output").append("<font color=\"green\">"
-              +"服务器已连接!"
-              +"</font></br>");
-          break;
-          default:
-            console.log('unknown type message received');
-          break;
-        }
+        var request = JSON.parse(a); // initial network
       };
     }
     this.formControl = new FormControl({value: '', disabled: this.no_submit});

@@ -10,9 +10,8 @@
 (ngSubmit)="handleSubmit($event)"
 (keydown.enter)="handleKeyDown($event)"
 (keyup.enter)="handleKeyUp($event)"
+class="chat-box"
 >
-<!-- <textarea class="inputClass2" name="msg" [(ngModel)]="msg" [formControl]="formControl"
-  [attr.disabled]="formControl.disabled? '' : null"></textarea> -->
   <textarea class="inputClass2" name="msg" [(ngModel)]="msg"
   [readonly]="no_submit"></textarea>
   <button type="submit" class="btn btn-primary">send</button>

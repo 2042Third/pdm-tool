@@ -4,15 +4,16 @@
   align-items: stretch;
   height :90%;
 }
+.chat-box{
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width:100%;
 
+}
 .terminal {
   height :70%;
-  // align-items: stretch;
-  // display: flex;
-  // flex-direction: column;
-	// min-height: 70%;
   background-color: var(--background-secondary);
-	// background:#2f3136;
   color: var(--foreground-quaternary);
   white-space: pre-wrap;
 	border-radius: 4px;
@@ -20,16 +21,16 @@
   word-wrap: break-word;
 	padding: 15px;
 }
-
+button{
+  background-color: var(--background-secondary);
+  margin: 1px;
+}
 .inputClass2 {
-  // flex: 1 1 auto;
-  width: 96%;
+  width: 90%;
   border: none;
-  height :30%;
-  align-items: stretch;
-  // max-height: 7vh;
   padding: 15px;
   border-radius: 5px;
+  margin: 3px;
   resize: none;
   word-wrap: break-word;
   overflow: auto;
@@ -39,4 +40,34 @@
 
 .inputClass2:focus {
   outline: none;
+}
+input[type="file"] {
+  padding: 7px 20px;
+}
+
+input[type="text"] {
+  color: var(--foreground-primary);
+  text-transform: none;
+  width: 10em;
+}
+
+input[type="text"]:hover {
+  cursor: text;
+}
+
+input:hover,
+button:hover {
+  // background: var(--background-light) !important;
+  // background:#3a3b3a  !important;
+  cursor: pointer !important;
+}
+
+input,
+button {
+  color: var(--foreground-primary);
+  border: none !important;
+  border-radius: 5px !important;
+  background: var(--background-secondary) !important;
+  letter-spacing: .1rem !important;
+  margin: 2px 0 !important;
 }

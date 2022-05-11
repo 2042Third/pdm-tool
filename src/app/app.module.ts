@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SecurityModule } from './security/security.module';
 import { ChatService } from './_services/chat.service';
+import { NotesService } from './_services/notes.service';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ChatService } from './_services/chat.service';
   ],
   providers: [
     {provide: APP_BASE_HREF, useValue: '/web_notes'},
-    ChatService
+    ChatService,
+    NotesService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NotesService } from 'src/app/_services/notes.service';
+import { MatDrawer, MatDrawerContainer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'security-notes',
@@ -7,8 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotesComponent implements OnInit {
   content="";
-  constructor() { }
+  constructor(
+    private notes_nav:NotesService
+    ) {
 
+  }
+  toggleRightSidenav() {
+    this.notes_nav.toggle();
+  }
   ngOnInit() {
   }
 

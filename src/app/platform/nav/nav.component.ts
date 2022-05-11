@@ -4,18 +4,15 @@
  *
 */
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import {UserinfoService} from '../../_services/Userinfo.service';
-import { Subscription,Observable } from 'rxjs';
-import {
-  faLightbulb as faSolidLightbulb,
-  IconDefinition
-} from "@fortawesome/free-solid-svg-icons";
-import { faLightbulb as faRegularLightbulb,  } from "@fortawesome/free-regular-svg-icons";
+import { UserinfoService } from '../../_services/Userinfo.service';
+import { Subscription, Observable } from 'rxjs';
+import { faLightbulb as faSolidLightbulb, IconDefinition} from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb as faRegularLightbulb } from "@fortawesome/free-regular-svg-icons";
 import { ThemeService } from "src/app/theme/theme.service";
-
 import { switchMap } from 'rxjs/operators';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { MatDrawerContainer } from '@angular/material/sidenav';
+import { ActivatedRoute, ParamMap,Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
+import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
+import { NotesService } from 'src/app/_services/notes.service';
 
 @Component({
   selector: "app-nav",
@@ -28,22 +25,30 @@ export class NavComponent implements AfterViewInit {
   private feature_sub:Subscription;
   signin_stat_str:string="Not Signed In";
   signin_stat:boolean=false;
-
+  currentRoute="";
   // elements
-  @ViewChild(MatDrawerContainer) matDrawerContainer: MatDrawerContainer;
+  @ViewChild('drawer') maindrawer: MatDrawer;
+  @ViewChild('rightDrawer') public notesnav: MatSidenav;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userinfo: UserinfoService,
     private themeService: ThemeService,
+    private notes_serv:NotesService,
   ) {
-    this.feature_sub = this.userinfo.signin_status.subscribe(
 
+    this.router.events.subscribe((event: Event) => {
+        if (event instanceof NavigationEnd) {
+            this.currentRoute = event.url;
+              console.log(event);
+        }
+    });
+    this.feature_sub = this.userinfo.signin_status.subscribe(
       data=>{
         // this.signin_stat_str=" \n\t";
         this.signin_stat_str = data.receiver;
-        if(this.signin_stat_str != null){
+        if(this.signin_stat_str != null && this.signin_stat_str.length >0){
           this.signin_stat = true;
         }
         else {
@@ -51,11 +56,11 @@ export class NavComponent implements AfterViewInit {
           this.signin_stat = false;
         }
       });
+    this.themeService.setDarkTheme();
 
   }
   ngAfterViewInit(): void {
-    // throw new Error('Method not implemented.');
-    // this.matDrawerContainer.open();
+    this.notes_serv.setSidenav(this.notesnav);
   }
 
   ngOnInit() {

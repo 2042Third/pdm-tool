@@ -1,13 +1,13 @@
 
 
 .title-font{
-  color:#32d498;
+  color:#0aac42;
 }
 .title-break{
   flex-grow: 1;
 }
 .signin-icon{
-  color: #2e9a62;
+  color: #0aac42;
 }
 mat-drawer-container {
 
@@ -25,7 +25,7 @@ mat-divider{
   flex-direction: column-reverse;
   align-items: center;
   justify-content: right;
-  height: 95%;
+  height: 92%;
 
   padding: 1em;
   padding-top: 2em;
@@ -40,10 +40,11 @@ mat-divider{
   flex-direction: column;
   align-items: center;
   background-color: var(--background-tertiary);
-  color: gray;
+  color: rgb(136, 136, 136);
   font-size: smaller;
 }
 p .sidetitle {
+  color:#919191;
   color: #0d6d3b;
 }
 mat-drawer-content {

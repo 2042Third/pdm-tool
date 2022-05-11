@@ -1,14 +1,14 @@
 <div class="col-md-6 offset-md-3 mt-5">
 
   <div class="card">
-    <h4 class="card-header">Sign In</h4>
-    <div class="card-body">
-      <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="form-body">
+    <h4 class="card-header">{{cur_function}}</h4>
+<!-- sign in form  -->
+    <div [hidden]="signup"  class="card-body">
+      <div *ngIf="signup" class="form-group">{{signup_msg}}</div>
+      <form [formGroup]="signinForm"  (ngSubmit)="onSubmit()" class="form-body">
         <div class="form-group">
-          <label for="umail">Email</label>
-          <input type="text" formControlName="umail" class="form-control"
+          <input placeholder="Email" type="text" formControlName="umail" class="form-control"
             [ngClass]="{ 'is-invalid': submitted && f.umail.errors }" />
-
         </div>
         <div class="form-warn">
           <div *ngIf="submitted && f.umail.errors" class="invalid-feedback">
@@ -16,26 +16,70 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="upw">Password</label>
-          <input type="password" formControlName="upw" class="form-control"
+          <input placeholder="Password" type="password" formControlName="upw" class="form-control"
             [ngClass]="{ 'is-invalid': submitted && f.upw.errors }" />
-          <!-- <div  class="invalid-feedback"> -->
-
         </div>
         <div class="form-warn">
           <div *ngIf="submitted && f.upw.errors" class="invalid-feedback">
             <div *ngIf="f.upw.errors.required">Password is required</div>
           </div>
-
         </div>
+        <mat-divider></mat-divider>
         <button [disabled]="loading" class="btn btn-primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          Login
+          Sign In
         </button>
         <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
       </form>
-      <a class="form-group" href="https://pdm.pw/web_notes/static/signup.html" target="_blank">Sign Up</a>
+      <a [hidden]="!signup" class="form-group" (click)="sign_up()" target="_blank">Sign Up</a>
+      <a class="form-group" *ngIf="signup" (click)="back_to_sign_in()" target="_blank">Back to Sign In</a>
     </div>
-  </div>
+<!-- sign up form  -->
+    <div [hidden]="!signup"  class="card-body">
+      <div  *ngIf="signup" class="form-group">{{signup_msg}}</div>
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="form-body">
+        <div class="form-group">
+          <input placeholder="Username" type="text" formControlName="uname" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f2.uname.errors }" />
+        </div>
+        <div class="form-group">
+          <input placeholder="Email" type="text" formControlName="umail" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f2.umail.errors }" />
+        </div>
+        <div class="form-warn">
+          <div *ngIf="submitted && f2.umail.errors" class="invalid-feedback">
+            <div *ngIf="f2.umail.errors.required">Email is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input placeholder="Password" type="password" formControlName="upw" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f2.upw.errors }" />
+        </div>
+        <div class="form-warn">
+          <div *ngIf="submitted && f2.upw.errors" class="invalid-feedback">
+            <div *ngIf="f2.upw.errors.required">Password is required</div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <button  class="btn btn-primary">
+          <span class="spinner-border spinner-border-sm mr-1"></span>
+          Sign Up
+        </button>
+        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+      </form>
+      <a class="form-group" *ngIf="signup" (click)="back_to_sign_in()" target="_blank">Back to Sign In</a>
+    </div>
 
-</div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+

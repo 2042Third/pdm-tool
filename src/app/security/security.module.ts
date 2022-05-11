@@ -5,8 +5,9 @@ import { SigninComponent } from './signin/signin.component';
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpClient,HttpClientModule } from "@angular/common/http";
 // import {Http, Response, RequestOptions, Headers} from '@angular/http';
-import { FormsModule,
-  ReactiveFormsModule, } from "@angular/forms";
+
+import {MatDividerModule} from '@angular/material/divider';
+import { FormsModule,ReactiveFormsModule, } from "@angular/forms";
 import { HumanizeTimePipe } from "./humanize-time-pipe";
 import { NotesComponent } from './notes/notes.component';
 import { UserprofileComponent } from './userprofile/userprofile.component';
@@ -25,6 +26,7 @@ import { ChatService } from '../_services/chat.service';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDividerModule
   ],
   declarations: [
     Cc20Component,
