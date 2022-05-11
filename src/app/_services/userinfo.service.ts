@@ -18,6 +18,7 @@ export class UserinfoService {
     constructor(
     ) {
       // Sign In status init
+      this.signin_status_obj.receiver='';
       this.signin_status_obj.v1='';
       this.signin_status_obj.v2='';
       this.signin_status_obj.v3='';

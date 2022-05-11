@@ -47,12 +47,14 @@ export class AuthService {
     }
 
     login(umail: string, upw: string) {
-        return this.http.post<ServerMsg>(
+      var authd;
+        return this.http.post<User>(
       'https://pdm.pw/auth/signin', { "umail":umail, "upw":upw })
             .pipe(map(authData => {
                 // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
-                authData.authdata = window.btoa(umail + ':' + upw);
-                localStorage.setItem('user', JSON.stringify(authData));
+                // authd = window.btoa(umail + ':' + upw);
+                // authData.authdata = window.btoa(umail + ':' + upw);
+                localStorage.setItem('user', JSON.stringify(window.btoa(umail + ':' + upw)));
                 this.userSubject.next(authData);
                 return authData;
             }));
