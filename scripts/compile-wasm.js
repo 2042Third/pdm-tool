@@ -21,7 +21,7 @@ const ensureWasmOutputDirExists = () => {
 
 const compileWasmSources = () => {
   console.log("Compiling wasm sources...");
-  const pdm_crypt_dir='security';
+  const pdm_crypt_dir='security/emscripten';
   const wasmDir = path.resolve(rootDir, "src/app/"+pdm_crypt_dir);
   // for (let item of fs.readdirSync(wasmDir)) {
     const itemPath = wasmDir;

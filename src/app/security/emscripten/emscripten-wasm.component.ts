@@ -1,7 +1,7 @@
-import { AfterViewInit, Directive } from "@angular/core";
+import { AfterViewInit, OnInit, Directive } from "@angular/core";
 import { loadScript } from "./tools";
-import { environment } from "../../environments/environment";
-import wasmCacheBusting from "../../wasm-cache-busting.json";
+import { environment } from "../../../environments/environment";
+import wasmCacheBusting from "../../../wasm-cache-busting.json";
 
 type EmscriptenModuleDecorator<M extends EmscriptenModule> = (module: M) => void;
 

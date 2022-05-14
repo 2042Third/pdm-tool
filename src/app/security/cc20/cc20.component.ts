@@ -1,33 +1,34 @@
 import { Component, SecurityContext } from "@angular/core";
-import { EmscriptenWasmComponent } from "../emscripten-wasm.component";
-import { WebsockService } from "src/app/websock/websock.service";
+import { WebsockService } from "src/app/_services/websock.service";
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormControl } from "@angular/forms";
 import { NamedServerMsg, NamedServerMsgA } from '../../_types/ServerMsg';
 import { ChatService } from 'src/app/_services/chat.service';
+// import { EncryptService } from 'src/app/_services/encrypt.service';
+import { UserinfoService } from '../../_services/userinfo.service';
+// import { EncryptComponent } from '../encrypt/encrypt.component';
+import { c20 } from "../emscripten/c20wasm";
+import { EmscriptenWasmComponent } from "../emscripten/emscripten-wasm.component";
 
-interface MyEmscriptenModule extends EmscriptenModule {
-  loader_check(a:string,inp: string): string;
-  loader_out(a:string,inp: string): string;
-  get_hash(inp: string): string;
-}
 
 @Component({
   selector: 'security-cc20',
   templateUrl: './cc20.component.html',
   styleUrls: ['./cc20.component.scss']
 })
-export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
+export class Cc20Component extends EmscriptenWasmComponent<c20>  {
   a:string="1234"; // development password
   no_submit:boolean=false;
   msg='';
   _term='';
   formControl;
   remake = 0 ; // control
+  // private encry: EncryptComponent
   constructor(
     private sock: WebsockService,
     private sr: DomSanitizer,
-    private chatservice: ChatService
+    private chatservice: ChatService,
+    private user:UserinfoService,
   ) {
     super("Cc20Module", "notes.js");
     if(this.sock.connected){
@@ -100,24 +101,7 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
     }
   }
 
-  public enc (inp:string){
-    if(this.module==null){
-      return "unable to encrypt!"
-    }
-    return this.module.loader_check(this.a,inp);
-  }
-  public dec (inp:string){
-    if(this.module==null){
-      return "unable to decrypt!"
-    }
-    return this.module.loader_out(this.a,inp);
-  }
-  public msg_hash(inp:string){
-    if(this.module==null){
-      return "unable to get hash of \""+inp+"\"!"
-    }
-    return this.module.get_hash(inp);
-  }
+
 
   /**
    * Feature first written in 5/1/2022 by Yi Yang
@@ -155,7 +139,24 @@ export class Cc20Component extends EmscriptenWasmComponent<MyEmscriptenModule> {
     this.append_terminal_wh("encrypted data: \n"+JSON.stringify(mp));
     this.append_terminal_gr("decrypted: \n"+this.dec(b));
   }
-
+  public enc (inp:string){
+    if(this.module==null){
+      return "unable to encrypt!"
+    }
+    return this.module.loader_check(this.a,inp);
+  }
+  public dec (inp:string){
+    if(this.module==null){
+      return "unable to decrypt!"
+    }
+    return this.module.loader_out(this.a,inp);
+  }
+  public msg_hash(inp:string){
+    if(this.module==null){
+      return "unable to get hash of \""+inp+"\"!"
+    }
+    return this.module.get_hash(inp);
+  }
   public scroll_to_new() {
     var objDiv = document.getElementById("output");
     // if(objDiv!=null){

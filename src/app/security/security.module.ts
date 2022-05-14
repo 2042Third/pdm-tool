@@ -14,6 +14,7 @@ import { UserprofileComponent } from './userprofile/userprofile.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { DisableControlDirective } from './disableControl.directive';
 import { ChatService } from '../_services/chat.service';
+// import { EncryptComponent } from './encrypt/encrypt.component';
 @NgModule({
   exports:[Cc20Component,
      NotesComponent,
@@ -35,7 +36,8 @@ import { ChatService } from '../_services/chat.service';
     SigninComponent,
     UserprofileComponent,
     SafeHtmlPipe,
-    DisableControlDirective
+    DisableControlDirective,
+    // EncryptComponent
    ],
   providers: [
     ChatService

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from './_services/auth.service';
 import { UserinfoService } from './_services/userinfo.service';
-import { WebsockService } from "src/app/websock/websock.service";
+import { WebsockService } from "src/app/_services/websock.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

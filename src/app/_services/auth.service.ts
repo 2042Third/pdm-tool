@@ -37,8 +37,7 @@ export class AuthService {
 
 
     signup(uname:string ,umail: string, upw: string) {
-      console.log("making request for signup");
-        return this.http.post<ServerMsg>(
+      return this.http.post<ServerMsg>(
       'https://pdm.pw/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" })
             .pipe(map(upData => {
               this.signupSubject.next(upData);
@@ -47,9 +46,10 @@ export class AuthService {
     }
 
     login(umail: string, upw: string) {
-      var authd;
-        return this.http.post<User>(
-      'https://pdm.pw/auth/signin', { "umail":umail, "upw":upw })
+      let temp = { "umail":umail, "upw":upw };
+      // this.userinfo.set_pswd(temp.upw);
+      return this.http.post<User>(
+      'https://pdm.pw/auth/signin',temp)
             .pipe(map(authData => {
                 // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
                 // authd = window.btoa(umail + ':' + upw);

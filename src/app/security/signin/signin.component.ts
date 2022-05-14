@@ -6,6 +6,8 @@ import { Subscription, Observable } from 'rxjs';
 import {AuthService} from '../../_services/auth.service';
 import {UserinfoService} from '../../_services/Userinfo.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
+import { EmscriptenWasmComponent } from '../emscripten/emscripten-wasm.component';
+import { c20 } from '../emscripten/c20wasm';
 
 @Component({
   selector: 'security-signin',
@@ -13,7 +15,7 @@ import { ServerMsg } from 'src/app/_types/ServerMsg';
   styleUrls: ['./signin.component.scss']
 })
 
-export class SigninComponent implements OnInit {
+export class SigninComponent extends EmscriptenWasmComponent<c20>   implements OnInit {
   content="";
   upw="";
   umail="";
@@ -41,6 +43,7 @@ export class SigninComponent implements OnInit {
     private userinfo: UserinfoService,
     private http: HttpClient
   ) {
+    super("Cc20Module", "notes.js");
     this.signup_async= this.auth.signupSubject.asObservable();
     this.signup_sub = this.signup_async.subscribe(
     data=>{
@@ -86,13 +89,6 @@ export class SigninComponent implements OnInit {
       console.log("top call request for signup");
       this.auth.signup(this.f2.uname.value, this.f2.umail.value, this.f2.upw.value)
       .pipe().subscribe(data =>this.set_server_msg(data));
-      // .subscribe({
-      //   next: data =>this.set_server_msg(data),
-      //   error: error => {
-      //       this.errorMessage = error.message;
-      //       console.error('There was an error!', error);
-      //   }
-      // });
       return ;
     }
     // signin form submission
@@ -102,6 +98,11 @@ export class SigninComponent implements OnInit {
           return;
       }
       this.loading = true;
+      // var temp1 = this.f.umail.value;
+      // var temp2 = this.f.upw.value;
+      // console.log("entering password: "+ temp2);
+      this.userinfo.set_pswd(this.f.upw.value);
+      console.log(this.module.loader_check('1234',this.f.upw.value));
       this.auth.login(this.f.umail.value, this.f.upw.value)
         .subscribe({
           next: data => {
@@ -117,7 +118,6 @@ export class SigninComponent implements OnInit {
 
   set_server_msg(a:ServerMsg){
     this.server_back = a;
-
   }
 
   sign_up(){
