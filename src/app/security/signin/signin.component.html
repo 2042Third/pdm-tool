@@ -3,8 +3,8 @@
   <div class="card">
     <h4 class="card-header">{{cur_function}}</h4>
 <!-- sign in form  -->
-    <div [hidden]="signup"  class="card-body">
-      <div *ngIf="signup" class="form-group">{{signup_msg}}</div>
+    <div [hidden]="signup!=allAc.SignIn"  class="card-body">
+      <div *ngIf="signup!=allAc.SignIn" class="form-group">{{signup_msg}}</div>
       <form [formGroup]="signinForm"  (ngSubmit)="onSubmit()" class="form-body">
         <div class="form-group">
           <input placeholder="Email" type="text" formControlName="umail" class="form-control"
@@ -31,12 +31,12 @@
         </button>
         <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
       </form>
-      <a [hidden]="!signup" class="form-group" (click)="sign_up()" target="_blank">Sign Up</a>
-      <a class="form-group" *ngIf="signup" (click)="back_to_sign_in()" target="_blank">Back to Sign In</a>
+      <a [hidden]="signup!=allAc.SignIn" class="form-group" (click)="sign_up()" target="_blank">Sign Up</a>
+      <!-- <a class="form-group" *ngIf="signup==allAc.SignIn" (click)="back_to_sign_in()" target="_blank">Back to Sign In</a> -->
     </div>
 <!-- sign up form  -->
-    <div [hidden]="!signup"  class="card-body">
-      <div  *ngIf="signup" class="form-group">{{signup_msg}}</div>
+    <div [hidden]="signup!=allAc.SignUp"  class="card-body">
+      <div *ngIf="signup!=allAc.SignUp" class="form-group">{{signup_msg}}</div>
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="form-body">
         <div class="form-group">
           <input placeholder="Username" type="text" formControlName="uname" class="form-control"
@@ -67,7 +67,7 @@
         </button>
         <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
       </form>
-      <a class="form-group" *ngIf="signup" (click)="back_to_sign_in()" target="_blank">Back to Sign In</a>
+      <a class="form-group" *ngIf="signup==allAc.SignUp" (click)="back_to_sign_in()" target="_blank">Back to Sign In</a>
     </div>
 
 

@@ -15,7 +15,7 @@ export class UserinfoService {
 
   public feature_route:BehaviorSubject<string>;
   public feature: Observable<string>;
-  public pswd:string="";
+  private pswd:string="";
   public b:string = "1234"; // development password
 
   constructor(
@@ -43,7 +43,7 @@ export class UserinfoService {
 
   public set_pswd(a:string){
     this.pswd = a;
-    console.log("making password: "+ this.pswd);
+    // console.log("making password: "+ this.pswd);
   }
 
   public get signinValue(): ServerMsg {

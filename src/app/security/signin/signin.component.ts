@@ -8,6 +8,13 @@ import {UserinfoService} from '../../_services/Userinfo.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
 import { EmscriptenWasmComponent } from '../emscripten/emscripten-wasm.component';
 import { c20 } from '../emscripten/c20wasm';
+// User action
+enum UserAc {
+SignIn,
+SignUp,
+ChangePassword,
+SuccessSignIn,
+};
 
 @Component({
   selector: 'security-signin',
@@ -28,12 +35,12 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   loading = false;
   submitted = false;
   returnUrl: string;
-  signup=false;
+  allAc = UserAc;
+  signup:UserAc=this.allAc.SignIn;
   error = '';
   cur_function="Sign In";
   signup_msg="wait...";
   signup_email="";
-  signup_status=false;
   server_back:ServerMsg;
   public signup_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
@@ -49,11 +56,9 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
     data=>{
       this.signup_email=data.v2;
       if(this.signup_email == "" || this.signup_email.length < 1){
-        this.signup_status = false;
         this.signup_msg="This email was already signed up for another account. Use a different email.";
       }
       else {
-        this.signup_status = true;
         this.signup_msg="Account registered! Click the link in the email sent to "
                         +this.signup_email
                         +" to activate.";
@@ -81,13 +86,15 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   onSubmit(){
     this.submitted = true;
     // signup form submission
-    if(this.signup){
+    if(this.signup===this.allAc.SignUp){
       // stop here if form is invalid
       if (this.signupForm.invalid) {
           return;
       }
       console.log("top call request for signup");
-      this.auth.signup(this.f2.uname.value, this.f2.umail.value, this.f2.upw.value)
+      this.auth.signup(this.f2.uname.value
+        , this.f2.umail.value
+        , this.module.get_hash(this.f.upw.value+this.f.upw.value)) // server only knows the hash of the pass+pass
       .pipe().subscribe(data =>this.set_server_msg(data));
       return ;
     }
@@ -98,13 +105,12 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
           return;
       }
       this.loading = true;
-      // var temp1 = this.f.umail.value;
-      // var temp2 = this.f.upw.value;
-      // console.log("entering password: "+ temp2);
       this.userinfo.set_pswd(this.f.upw.value);
-      console.log(this.module.loader_check('1234',this.f.upw.value));
-      this.auth.login(this.f.umail.value, this.f.upw.value)
-        .subscribe({
+      console.log(this.module.get_hash(this.f.upw.value+this.f.upw.value));
+      this.auth.login(
+        this.f.umail.value
+        , this.module.get_hash(this.f.upw.value+this.f.upw.value) // server only knows the hash of the pass+pass
+      ).subscribe({
           next: data => {
             this.userinfo.set_signin_status(data);
           },
@@ -122,10 +128,10 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
 
   sign_up(){
     this.cur_function = "Sign Up";
-    this.signup = true;
+    this.signup = UserAc.SignUp;
   }
   back_to_sign_in(){
     this.cur_function = "Sign In";
-    this.signup = false;
+    this.signup = UserAc.SignIn;
   }
 }
