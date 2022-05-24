@@ -46,6 +46,10 @@ export class UserinfoService {
     // console.log("making password: "+ this.pswd);
   }
 
+  public pw(){
+    return this.pswd;
+  }
+
   public get signinValue(): ServerMsg {
     return this.signin_status_value.value;
   }

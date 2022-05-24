@@ -80,8 +80,8 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.signinForm.controls; }
-  get f2() { return this.signupForm.controls; }
+  get f() { return this.signinForm.controls; } // Sign In
+  get f2() { return this.signupForm.controls; } // Sign Up
 
   onSubmit(){
     this.submitted = true;
@@ -94,7 +94,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
       console.log("top call request for signup");
       this.auth.signup(this.f2.uname.value
         , this.f2.umail.value
-        , this.module.get_hash(this.f.upw.value+this.f.upw.value)) // server only knows the hash of the pass+pass
+        , this.module.get_hash(this.f2.upw.value+this.f2.upw.value)) // server only knows the hash of the pass+pass
       .pipe().subscribe(data =>this.set_server_msg(data));
       return ;
     }
