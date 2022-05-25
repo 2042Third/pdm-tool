@@ -14,12 +14,14 @@ import { UserprofileComponent } from './userprofile/userprofile.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { DisableControlDirective } from './disableControl.directive';
 import { ChatService } from '../_services/chat.service';
+import { NotesEditDirective } from '../_directives/notes-edit.directive';
 // import { EncryptComponent } from './encrypt/encrypt.component';
 @NgModule({
   exports:[Cc20Component,
      NotesComponent,
      SigninComponent,
-     UserprofileComponent
+     UserprofileComponent,
+    // NotesEditDirective,
     ],
   imports: [
     CommonModule,
@@ -27,7 +29,7 @@ import { ChatService } from '../_services/chat.service';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDividerModule
+    MatDividerModule,
   ],
   declarations: [
     Cc20Component,
@@ -37,10 +39,11 @@ import { ChatService } from '../_services/chat.service';
     UserprofileComponent,
     SafeHtmlPipe,
     DisableControlDirective,
+    NotesEditDirective,
     // EncryptComponent
    ],
   providers: [
-    ChatService
+    ChatService,
   ]
 })
 export class SecurityModule { }

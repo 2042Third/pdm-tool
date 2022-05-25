@@ -16,8 +16,11 @@ import { NotesEditDirective } from './_directives/notes-edit.directive';
 @NgModule({
   declarations: [
     AppComponent,
-    NotesEditDirective,
    ],
+   exports:[
+
+   ],
+
   imports: [
     BrowserModule,
     FontAwesomeModule,

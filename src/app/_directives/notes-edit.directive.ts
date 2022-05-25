@@ -1,26 +1,34 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive,HostListener,Input } from '@angular/core';
 
 @Directive({
-  selector: '[appNotesEdit]'
+  selector: '[appNotesEdit]',
+  host: {
+    '(input)': 'onChange($event)'
+  },
+  // inputs:['vals'],
 })
+
 export class NotesEditDirective {
-
-  constructor(
-    private el: ElementRef
-  ) {
-
-    this.el.nativeElement.bind('keydown', function (event) {
-      console.log(this.el.nativeElement.val());
-      if (event.which == 9) {
-        event.preventDefault();
-        var start = this.selectionStart;
-        var end = this.selectionEnd;
-        el.nativeElement.val(el.nativeElement.val().substring(0, start)
-          + '\t' + el.nativeElement.val().substring(end));
-        this.selectionStart = this.selectionEnd = start + 1;
-        el.nativeElement.triggerHandler('change');
-      }
-    });
+  @Input('appNotesEdit') vals:String;
+  @HostListener('window:keydown.tab', ['$event'])
+  handleKeyDown($evt) {
+    $evt.preventDefault();
+    /**
+     * Tab indent
+    */
+    const start = $evt.target.selectionStart;
+    const end = $evt.target.selectionEnd;
+    $evt.preventDefault();
+    $evt.target.value = $evt.target.value.substring(0,start)
+                        +"\t"
+                        +$evt.target.value.substring(end,$evt.target.value.length);
+    $evt.target.focus();
+    $evt.target.setSelectionRange(start+1,start+1);
   }
 
+  constructor(
+  ) {
+  }
+  onChange($event) {
+  }
 }

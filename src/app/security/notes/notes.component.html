@@ -1,11 +1,7 @@
-<div class="note-box" >
-  <textarea class="inputClass2"
-  (keydown.tab)="handleKeyDown($event)"
-  ng-trim="false"
-  id="notes-editor"
-  [(ngModel)]="content"
-  appNotesEdit></textarea>
+<!-- <div class="note-box">
+  <textarea class="inputClass2" (keydown.tab)="handleKeyDown($event)" ng-trim="false" id="notes-editor"
+    [(ngModel)]="content" [appNotesEdit]="content"></textarea>
+</div> -->
+<div class="note-box">
+  <textarea class="inputClass2" [(appNotesEdit)]="content" ></textarea>
 </div>
-<!-- <textarea id="input" rows=10 cols=50>function custom(data){
-	return data;
-}</textarea> -->
