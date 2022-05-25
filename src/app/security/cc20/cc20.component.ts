@@ -77,6 +77,7 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
       this.no_submit=true;
     }
   }
+  
   handleKeyUp(e){
     this.no_submit=false;
     this.scroll_to_new();
@@ -139,12 +140,14 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
     this.append_terminal_wh("encrypted data: \n"+JSON.stringify(mp));
     this.append_terminal_gr("decrypted: \n"+this.dec(b));
   }
+
   public enc (inp:string){
     if(this.module==null){
       return "unable to encrypt!"
     }
     return this.module.loader_check(this.a,inp);
   }
+
   public dec (inp:string){
     if(this.module==null){
       return "unable to decrypt!"

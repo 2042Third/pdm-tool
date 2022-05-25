@@ -10,11 +10,13 @@ import { SecurityModule } from './security/security.module';
 import { ChatService } from './_services/chat.service';
 import { NotesService } from './_services/notes.service';
 import { AuthService } from './_services/auth.service';
+import { NotesEditDirective } from './_directives/notes-edit.directive';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    NotesEditDirective,
    ],
   imports: [
     BrowserModule,
