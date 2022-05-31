@@ -11,6 +11,7 @@ import { ChatService } from './_services/chat.service';
 import { NotesService } from './_services/notes.service';
 import { AuthService } from './_services/auth.service';
 import { NotesEditDirective } from './_directives/notes-edit.directive';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { NotesEditDirective } from './_directives/notes-edit.directive';
     AppRoutingModule,
   ],
   providers: [
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: APP_BASE_HREF, useValue: '/web_notes'},
     ChatService,
     NotesService,

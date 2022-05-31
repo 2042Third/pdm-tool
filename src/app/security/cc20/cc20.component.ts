@@ -138,6 +138,8 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
       email: "none",
       status: "none",
       val: "TESTING ONLY, USERNAME NOT ENCRYPTED!",
+      username: "",
+      sess: ""
     };
     this.chatservice.save_msg(mp);
     this.append_terminal_wh("encrypted data: \n"+JSON.stringify(mp));

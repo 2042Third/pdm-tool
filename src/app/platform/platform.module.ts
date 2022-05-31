@@ -10,12 +10,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';
 import {PlatformRoutingModule} from './platform-routing.module';
-
 import {SecurityModule} from '../security/security.module';
 @NgModule({
   exports:[
     NavComponent,
-    PlatformComponent
+    PlatformComponent,
+    // DialogNotificationsComponent,
   ],
   imports: [
     CommonModule,

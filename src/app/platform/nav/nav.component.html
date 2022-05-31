@@ -7,6 +7,7 @@
     <div class="drawer-styles">
       <button mat-icon-button color="secondary" (click)="newNote()"
         class="icons">New Note</button>
+        <button mat-button (click)="notes_serv.openDialog()">Launch dialog</button>
       <mat-divider></mat-divider>
       <p class="signin_status">
         {{note_status}}

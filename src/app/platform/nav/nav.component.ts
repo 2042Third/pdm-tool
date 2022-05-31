@@ -40,7 +40,7 @@ export class NavComponent implements AfterViewInit {
     private router: Router,
     private userinfo: UserinfoService,
     private themeService: ThemeService,
-    private notes_serv:NotesService,
+    public notes_serv:NotesService,
   ) {
     this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {

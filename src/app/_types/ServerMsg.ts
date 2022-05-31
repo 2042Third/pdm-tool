@@ -18,12 +18,14 @@
 
 export class ServerMsg {
   msg:string="";
+  username:String="";
   msgh:string="";
   time:string="";
   email:String="";
   val:string="";
   type: string="";
   sender: string="";
+  sess:String = '';
   status:String = "fail";
   receiver: string="";
   authdata?:string="";
