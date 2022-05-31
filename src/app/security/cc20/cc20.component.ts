@@ -2,13 +2,14 @@ import { Component, SecurityContext } from "@angular/core";
 import { WebsockService } from "src/app/_services/websock.service";
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormControl } from "@angular/forms";
-import { NamedServerMsg, NamedServerMsgA } from '../../_types/ServerMsg';
+// import { NamedServerMsg, NamedServerMsgA } from '../../_types/ServerMsg';
 import { ChatService } from 'src/app/_services/chat.service';
 // import { EncryptService } from 'src/app/_services/encrypt.service';
 import { UserinfoService } from '../../_services/userinfo.service';
 // import { EncryptComponent } from '../encrypt/encrypt.component';
 import { c20 } from "../emscripten/c20wasm";
 import { EmscriptenWasmComponent } from "../emscripten/emscripten-wasm.component";
+import { ServerMsg } from "src/app/_types/ServerMsg";
 
 
 @Component({
@@ -77,7 +78,7 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
       this.no_submit=true;
     }
   }
-  
+
   handleKeyUp(e){
     this.no_submit=false;
     this.scroll_to_new();
@@ -116,7 +117,7 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
    * the latest few chats first and reload more when needed.
   */
   private load_hist(){
-    var chat_hist:NamedServerMsgA[] = this.chatservice.get_saved_msg();
+    var chat_hist:ServerMsg[] = this.chatservice.get_saved_msg();
     for (let i = 0; i < chat_hist.length; i++) {
       this.append_terminal_wh("encrypted data: \n"+JSON.stringify(chat_hist[i]));
       this.append_terminal_gr("decrypted: \n"+this.dec(chat_hist[i].msg));
@@ -127,13 +128,15 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
      * Only save or send encrypted data
     */
     var b =this.enc(this.msg); // encryption
-    const mp : NamedServerMsgA = {
+    const mp : ServerMsg = {
       msg: b,
       msgh: this.msg_hash(this.msg),
       type: "msg",
       time: (new Date().getTime().toString()),
       sender: "testing user",
       receiver: "testing recv",
+      email: "none",
+      status: "none",
       val: "TESTING ONLY, USERNAME NOT ENCRYPTED!",
     };
     this.chatservice.save_msg(mp);

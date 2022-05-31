@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import{User} from '../_types/User'
 import {ServerMsg, } from '../_types/ServerMsg';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 // import { EncryptComponent } from '../security/encrypt/encrypt.component';
 
@@ -17,21 +17,19 @@ export class UserinfoService {
   public feature: Observable<string>;
   private pswd:string="";
   public b:string = "1234"; // development password
-
+  // signin_stat_str:string="Not Signed In";
+  // signin_stat:boolean=false;
+  // private feature_sub:Subscription;
   constructor(
   ) {
     // Sign In status init
-    this.signin_status_obj.receiver='';
-    this.signin_status_obj.v1='';
-    this.signin_status_obj.v2='';
-    this.signin_status_obj.v3='';
-    this.signin_status_obj.v4='';
     this.signin_status_value = new BehaviorSubject<ServerMsg>(this.signin_status_obj);
     this.signin_status = this.signin_status_value.asObservable();
 
     // Nav status init
     this.feature_route = new BehaviorSubject<string>("chat");
     this.feature = this.feature_route.asObservable();
+
   }
 
 
@@ -54,5 +52,8 @@ export class UserinfoService {
     return this.signin_status_value.value;
   }
 
+  ngOnDestroy() {
+    // this.feature_sub.unsubscribe();
+  }
 
 }

@@ -16,12 +16,8 @@ export class UserprofileComponent implements OnInit {
   private userinfo: UserinfoService,
   ) {
     this.userstatus_sub = userinfo.signin_status.subscribe(data=>{
-      this.userstatus.receiver=data.receiver,
-      this.userstatus.v1=data.v1,
-      this.userstatus.v2=data.v2,
-      this.userstatus.v3=data.v3,
-      this.userstatus.v4=data.v4,
-      this.usercreation=this.convertTimestamp(this.userstatus.v1)
+      this.userstatus = data
+      this.usercreation=this.convertTimestamp(this.userstatus.time)
     });
   }
 

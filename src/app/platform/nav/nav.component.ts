@@ -13,6 +13,7 @@ import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap,Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
 import { NotesService } from 'src/app/_services/notes.service';
+import { ServerMsg } from 'src/app/_types/ServerMsg';
 
 @Component({
   selector: "app-nav",
@@ -22,15 +23,17 @@ import { NotesService } from 'src/app/_services/notes.service';
 export class NavComponent implements AfterViewInit {
   faLightbulb!: IconDefinition;
   feature:string="chat";
-  private feature_sub:Subscription;
-  signin_stat_str:string="Not Signed In";
-  signin_stat:boolean=false;
+
   currentRoute="";
   note_status:String="no id";
   // elements
   @ViewChild('drawer') maindrawer: MatDrawer;
   @ViewChild('rightDrawer') public notesnav: MatSidenav;
   errorMessage: any;
+  feature_sub: Subscription;
+  signin_obj: ServerMsg;
+  signin_stat_str: String = "Not Signed In";
+  signin_stat: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,8 +51,9 @@ export class NavComponent implements AfterViewInit {
     this.feature_sub = this.userinfo.signin_status.subscribe(
       data=>{
         // this.signin_stat_str=" \n\t";
+        this.signin_obj = data;
         this.signin_stat_str = data.receiver;
-        if(this.signin_stat_str != null && this.signin_stat_str.length >0){
+        if(this.signin_obj.status != "fail"){
           this.signin_stat = true;
         }
         else {

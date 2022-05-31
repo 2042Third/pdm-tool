@@ -40,7 +40,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   error = '';
   cur_function="Sign In";
   signup_msg="wait...";
-  signup_email="";
+  signup_email:String="";
   server_back:ServerMsg;
   public signup_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
@@ -54,7 +54,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
     this.signup_async= this.auth.signupSubject.asObservable();
     this.signup_sub = this.signup_async.subscribe(
     data=>{
-      this.signup_email=data.v2;
+      this.signup_email=data.email;
       if(this.signup_email == "" || this.signup_email.length < 1){
         this.signup_msg="This email was already signed up for another account. Use a different email.";
       }

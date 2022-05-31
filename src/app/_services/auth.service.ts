@@ -11,27 +11,24 @@ import { UserinfoService } from './userinfo.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private userSubject: BehaviorSubject<User>;
+    private userSubject: BehaviorSubject<ServerMsg>;
     public signupSubject: BehaviorSubject<ServerMsg>;
 
     private signup_obj:ServerMsg=new ServerMsg;
-    public user: Observable<User>;
+    public user: Observable<ServerMsg>;
     constructor(
         private router: Router,
         private userinfo: UserinfoService,
         private http: HttpClient
     ) {
-      this.signup_obj.v1='';
-      this.signup_obj.v2='';
-      this.signup_obj.v3='';
-      this.signup_obj.v4='';
+
       this.signupSubject =new BehaviorSubject<ServerMsg>(this.signup_obj);
       this.userinfo.set_signin_status( JSON.parse(localStorage.getItem('user')));
-      this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+      this.userSubject = new BehaviorSubject<ServerMsg>(JSON.parse(localStorage.getItem('user')));
       this.user = this.userSubject.asObservable();
     }
 
-    public get userValue(): User {
+    public get userValue(): ServerMsg {
         return this.userSubject.value;
     }
 
@@ -48,7 +45,7 @@ export class AuthService {
     login(umail: string, upw: string) {
       let temp = { "umail":umail, "upw":upw };
       // this.userinfo.set_pswd(temp.upw);
-      return this.http.post<User>(
+      return this.http.post<ServerMsg>(
       'https://pdm.pw/auth/signin',temp)
             .pipe(map(authData => {
                 // store user details and basic auth credentials in local storage to keep user logged in between page refreshes

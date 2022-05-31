@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { NamedServerMsgA } from '../_types/ServerMsg';
+import { ServerMsg } from '../_types/ServerMsg';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  chat_hist:NamedServerMsgA[] = new Array();
+  chat_hist:ServerMsg[] = new Array();
 
   constructor() { }
 
-  public save_msg(a:NamedServerMsgA){
+  public save_msg(a:ServerMsg){
     this.chat_hist.push(a);
   }
 
