@@ -26,9 +26,11 @@ export class NavComponent implements AfterViewInit {
   signin_stat_str:string="Not Signed In";
   signin_stat:boolean=false;
   currentRoute="";
+  note_status:String="no id";
   // elements
   @ViewChild('drawer') maindrawer: MatDrawer;
   @ViewChild('rightDrawer') public notesnav: MatSidenav;
+  errorMessage: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,7 +39,6 @@ export class NavComponent implements AfterViewInit {
     private themeService: ThemeService,
     private notes_serv:NotesService,
   ) {
-
     this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
             this.currentRoute = event.url;
@@ -57,8 +58,8 @@ export class NavComponent implements AfterViewInit {
         }
       });
     this.themeService.setDarkTheme();
-
   }
+
   ngAfterViewInit(): void {
     this.notes_serv.setSidenav(this.notesnav);
   }
@@ -70,16 +71,16 @@ export class NavComponent implements AfterViewInit {
         this.feature = params.get('feature')
       )
     );
-
   }
-
 
   toNotes(){
     this.feature="notes";
   }
+
   toChat(){
     this.feature="chat";
   }
+
   toSignin(){
     this.feature="signin";
   }
@@ -101,7 +102,21 @@ export class NavComponent implements AfterViewInit {
 
     this.setLightbulb();
   }
+
   ngOnDestroy() {
     this.feature_sub.unsubscribe();
+  }
+
+  newNote(){
+    this.notes_serv.new_note().subscribe({
+          next: data => {
+            this.note_status=data.note_id;
+            console.log(this.note_status);
+          },
+          error: error => {
+            this.errorMessage = error.message;
+            console.error('There was an error!', error);
+          }
+      });
   }
 }

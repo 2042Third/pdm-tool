@@ -20,17 +20,15 @@ mat-divider{
   margin:2em;
   border-top-color: rgba(182, 189, 183, 0.285);
 }
+
 .drawer-styles{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: right;
   height: 92%;
-
   padding: 1em;
   padding-top: 2em;
-
-  // border-right: 1px dotted black;
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }
@@ -47,11 +45,13 @@ p .sidetitle {
   color:#919191;
   color: #0d6d3b;
 }
+
 mat-drawer-content {
   padding: 1em;
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }
+
 nav {
   height: 2rem;
   display: flex;
@@ -63,11 +63,11 @@ nav {
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
   font-size: 1rem;
-  }
+}
 
 nav .title {
   margin-left: auto;
   margin-right: auto;
   height :10%;
-  }
+}
 

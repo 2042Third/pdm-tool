@@ -8,3 +8,15 @@ export class User {
   v4:string;
   authdata?:string;
 }
+
+export class NotesMsg{
+  content: String;
+  email:String;
+  note_id:String;
+  session:String;
+  ntype:String; // 0 update, 1 new, 2 heads, 3 retrieve
+  sess:String;
+  h:String;
+  username:String;
+
+}

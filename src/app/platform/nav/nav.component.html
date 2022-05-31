@@ -1,10 +1,17 @@
-<mat-sidenav-container>
+<!-- <mat-sidenav-container>
 
-</mat-sidenav-container>
+</mat-sidenav-container> -->
 
 <mat-drawer-container>
   <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="drawer-styles rightside"  mode="side" hasBackDrop="false" opened="true">
-    Sidenav
+    <div class="drawer-styles">
+      <button mat-icon-button color="secondary" (click)="newNote()"
+        class="icons">New Note</button>
+      <mat-divider></mat-divider>
+      <p class="signin_status">
+        {{note_status}}
+      </p>
+    </div>
   </mat-drawer>
 
   <mat-drawer #drawer class="drawer-styles"  mode="side" hasBackDrop="false" opened="true">
