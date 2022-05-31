@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+::ng-deep.mat-dialog-container{
+  display: flex!important;
+  flex-direction: column;
+  align-items: stretch!important;
+  width:100%!important;
+  height: 100%!important;
+  background-color: var(--background-tertiary)!important;
+  color: var(--foreground-quaternary)!important;
+}
+
+$my-palette: mat.define-palette(mat.$indigo-palette);
+
+.custom-modalbox {
+  background: var(--background-tertiary);
+  color: var(--foreground-quaternary);
+}
+// s
+
+

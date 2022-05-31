@@ -23,28 +23,31 @@ export class NotesService {
   signin_stat_str: String = "Not Signed In";
   signin_stat: boolean = false;
   dialogRef:MatDialogRef<DialogNotificationsComponent, any>;
+  dialogConfig = new MatDialogConfig();
   constructor(
     private http: HttpClient,
     private userinfo: UserinfoService,
     public dialog: MatDialog,
     private router: Router,
     ) {
-      this.notesSubject =new BehaviorSubject<NotesMsg>(this.notes_obj);
-      this.feature_sub = this.userinfo.signin_status.subscribe(
-      data=>{
-        if(data != null ){
-          this.signin_stat_str = data.receiver;
-          if(this.signin_stat_str != null && this.signin_stat_str.length >0){
-            this.signin_stat = true;
-          }
-          else {
-            this.signin_stat_str="Not Signed In";
-            this.signin_stat = false;
-          }
+    this.notesSubject =new BehaviorSubject<NotesMsg>(this.notes_obj);
+    this.feature_sub = this.userinfo.signin_status.subscribe(
+    data=>{
+      if(data != null ){
+        this.signin_stat_str = data.receiver;
+        if(this.signin_stat_str != null && this.signin_stat_str.length >0){
+          this.signin_stat = true;
         }
-      });
+        else {
+          this.signin_stat_str="Not Signed In";
+          this.signin_stat = false;
+        }
+      }
+    });
 
-
+    this.dialogConfig.autoFocus = true;
+    this.dialogConfig.data = {dialogType:"Alert", message:"Please log in."};
+    this.dialogConfig.panelClass= 'custom-modalbox';
     }
   private sidenav: MatSidenav;
   ngOnInit() {
@@ -54,15 +57,12 @@ export class NotesService {
     //   });
   }
   openDialog(){
-    const dialogConfig = new MatDialogConfig();
     // dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {dialogType:"Alert", message:"Please log in."};
-    this.dialogRef = this.dialog.open(DialogNotificationsComponent, dialogConfig);
   }
 
   public new_note(){
     if(!this.signin_stat) {
+    this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
       return null;
     }
     return this.http.post<NotesMsg>(
