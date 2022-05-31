@@ -5,9 +5,9 @@
 <mat-drawer-container>
   <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="drawer-styles rightside"  mode="side" hasBackDrop="false" opened="true">
     <div class="drawer-styles">
-      <button mat-icon-button color="secondary" (click)="newNote()"
-        class="icons">New Note</button>
-        <button mat-button (click)="notes_serv.openDialog()">Launch dialog</button>
+      <button mat-icon-button color="secondary" (click)="newNote()" class="icons">New Note</button>
+      <button mat-icon-button color="secondary" (click)="getNotesHeads()" class="icons">Get Notes</button>
+      <button mat-button (click)="notes_serv.openDialog()">Launch dialog</button>
       <mat-divider></mat-divider>
       <p class="signin_status">
         {{note_status}}

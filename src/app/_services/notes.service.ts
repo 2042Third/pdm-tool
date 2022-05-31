@@ -79,6 +79,25 @@ export class NotesService {
       return upData;
     }));
   }
+  public get_notes_heads(){
+    if(!this.signin_stat) {
+    this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
+      return null;
+    }
+    return this.http.post<NotesMsg>(
+    'https://pdm.pw/auth/note',
+    { "username":this.signin_obj.username,
+      "content":this.notes_obj.content,
+      "sess":this.signin_obj.sess,
+      "ntype":"heads",
+      "email":this.signin_obj.email,
+    }
+    )
+    .pipe(map(upData => {
+      this.notesSubject.next(upData);
+      return upData;
+    }));
+  }
 
   public setSidenav(sidenav: MatSidenav) {
       this.sidenav = sidenav;

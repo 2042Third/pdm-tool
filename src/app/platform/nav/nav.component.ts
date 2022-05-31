@@ -14,6 +14,7 @@ import { ActivatedRoute, ParamMap,Router, Event, NavigationStart, NavigationEnd,
 import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
 import { NotesService } from 'src/app/_services/notes.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
+import { NotesMsg } from '../../_types/User';
 
 @Component({
   selector: "app-nav",
@@ -34,7 +35,7 @@ export class NavComponent implements AfterViewInit {
   signin_obj: ServerMsg;
   signin_stat_str: String = "Not Signed In";
   signin_stat: boolean = false;
-
+  notes_heads: NotesMsg;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -116,6 +117,20 @@ export class NavComponent implements AfterViewInit {
           next: data => {
             this.note_status=data.note_id;
             console.log(this.note_status);
+          },
+          error: error => {
+            this.errorMessage = error.message;
+            console.error('There was an error!', error);
+          }
+      });
+  }
+
+  getNotesHeads(){
+
+    this.notes_serv.get_notes_heads().subscribe({
+          next: data => {
+            this.notes_heads=data;
+            console.log(this.notes_heads);
           },
           error: error => {
             this.errorMessage = error.message;
