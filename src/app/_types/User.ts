@@ -20,3 +20,9 @@ export class NotesMsg{
   username:String;
 
 }
+
+export class NoteHead{
+  head:String;
+  note_id:String;
+
+}

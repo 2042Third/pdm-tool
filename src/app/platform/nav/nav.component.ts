@@ -14,7 +14,7 @@ import { ActivatedRoute, ParamMap,Router, Event, NavigationStart, NavigationEnd,
 import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
 import { NotesService } from 'src/app/_services/notes.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
-import { NotesMsg } from '../../_types/User';
+import { NoteHead, NotesMsg } from '../../_types/User';
 
 @Component({
   selector: "app-nav",
@@ -36,6 +36,11 @@ export class NavComponent implements AfterViewInit {
   signin_stat_str: String = "Not Signed In";
   signin_stat: boolean = false;
   notes_heads: NotesMsg;
+  named_notes_heads:NoteHead[];
+
+  has_heads=false;
+  notes_subject : Subscription;
+  notes_obj : NotesMsg;
   // signin_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
   constructor(
@@ -77,6 +82,21 @@ export class NavComponent implements AfterViewInit {
       )
     ;
     this.themeService.setDarkTheme();
+    this.notes_subject = notes_serv.notesSubject.subscribe(
+      data=>{
+        this.notes_obj = JSON.parse(JSON.stringify(data));
+        console.log("NAV COMPONENT recieved content: "+ this.notes_obj.content);
+        if(this.notes_obj.ntype == "heads_return"){
+          console.log("NAV COMPONENT recieved is heads"+JSON.stringify(this.notes_obj.content));
+          this.notes_heads = this.notes_obj;
+          this.named_notes_heads=JSON.parse(JSON.stringify(this.notes_obj.content));
+          this.peak_heads();
+        }
+        else {
+          this.has_heads=false;
+        }
+      }
+    );
   }
 
   ngAfterViewInit(): void {
@@ -92,6 +112,17 @@ export class NavComponent implements AfterViewInit {
       )
     );
 
+  }
+
+  peak_heads(){
+    let i=0;
+    for (i=0;i<this.named_notes_heads.length;i++){
+      if(this.named_notes_heads[i].head == null){
+        this.named_notes_heads[i].head = "unnamed note";
+      }
+      console.log("head part " +i+"-->"+this.named_notes_heads[i].head);
+    }
+    this.has_heads = true;
   }
 
   toNotes(){
@@ -127,6 +158,7 @@ export class NavComponent implements AfterViewInit {
   ngOnDestroy() {
     console.log("unsubcalled!!!!!");
     this.signup_sub.unsubscribe();
+    this.notes_subject.unsubscribe();
   }
 
   newNote(){

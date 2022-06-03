@@ -16,7 +16,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 })
 export class NotesService {
   notes_obj:NotesMsg = new NotesMsg();
-  public notesSubject: BehaviorSubject<NotesMsg>;
+  public notesSubject: BehaviorSubject<NotesMsg> = new BehaviorSubject<NotesMsg>(this.notes_obj);
   errorMessage: any;
   feature_sub: Subscription;
   signin_obj: ServerMsg;
@@ -25,6 +25,10 @@ export class NotesService {
   dialogRef:MatDialogRef<DialogNotificationsComponent, any>;
   dialogConfig = new MatDialogConfig();
   private signup_sub:Subscription;
+
+  //debug data
+  private debug_str = '{"note_id":"listed","sess":"debugkey","h":"listed","ntype":"heads_return","content":[{"head":null,"note_id":"5"},{"head":null,"note_id":"6"},{"head":null,"note_id":"7"},{"head":null,"note_id":"8"},{"head":null,"note_id":"9"},{"head":null,"note_id":"10"},{"head":null,"note_id":"11"}],"email":"18604713262@163.com","hash":"ee741763ee120d70254401bba3384388bb43c3270394f16998cb9af64c0e4b1d","status":"success"}';
+  private debug_obj:NotesMsg = JSON.parse(this.debug_str);
   constructor(
     private http: HttpClient,
     private userinfo: UserinfoService,
@@ -33,28 +37,10 @@ export class NotesService {
     private ngzone:NgZone,
     ) {
       console.log ("MAKING NOTES SERVICE");
+
     this.dialogConfig.autoFocus = true;
     this.dialogConfig.data = {dialogType:"Alert", message:"Please log in."};
     this.dialogConfig.panelClass= 'custom-modalbox';
-    // signin status
-    //   this.signup_sub = this.userinfo.signin_status_value_note.subscribe(
-    //   data=>{
-    //       // this.signin_obj.sender = data.sender;
-    //       this.ngzone.run(()=>{
-    //       this.signin_obj = JSON.parse(JSON.stringify(data)); // make a copy
-    //       console.log("notes service this.signin_obj="+this.signin_obj);
-    //       console.log("notes service this.signin_obj.status="+this.signin_obj.status);
-    //       this.signin_stat_str = this.signin_obj.receiver;
-    //       if(this.signin_obj.status == "success"){
-    //         this.signin_stat = true;
-    //       }
-    //       else {
-    //         this.signin_stat_str="Not Signed In";
-    //         this.signin_stat = false;
-    //       }
-    //     })
-    //   })
-    // ;
     this.signup_sub = this.userinfo.signin_status_value.subscribe(
       {
         next: data=>{
@@ -67,7 +53,6 @@ export class NotesService {
               this.signin_stat = true;
             }
             else {
-              // this.signin_stat_str="Not Signed In";
               this.signin_stat = false;
             }
           },
@@ -75,21 +60,23 @@ export class NotesService {
           console.log("?");
         }
       }
-    )
-    ;
+    );
     console.log("notes service signin_obj subscribed");
   }
   private sidenav: MatSidenav;
   ngOnInit() {
-        // this.ngzone.run(() => {
 
   }
+
   openDialog(){
-    // dialogConfig.disableClose = true;
+    this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
+  }
+
+  public debug_push_note_msg(){
+    this.notesSubject.next(this.debug_obj);
   }
 
   public new_note(){
-    console.log("this.signin_stat======>" + this.signin_obj.status+" \\\\ "+this.signin_stat_str);
     if(!this.signin_stat) {
     this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
       return null;

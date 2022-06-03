@@ -137,6 +137,7 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
       receiver: "testing recv",
       email: "none",
       status: "none",
+      h: "none",
       val: "TESTING ONLY, USERNAME NOT ENCRYPTED!",
       username: "",
       sess: ""

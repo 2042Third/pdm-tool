@@ -24,6 +24,7 @@ export class ServerMsg {
   email:String="";
   val:String="";
   type: String="";
+  h="";
   sender: String="";
   sess:String = '';
   status:String = "fail";

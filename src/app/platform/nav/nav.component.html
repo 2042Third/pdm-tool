@@ -6,12 +6,33 @@
   <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="drawer-styles rightside"  mode="side" hasBackDrop="false" opened="true">
     <div class="drawer-styles">
       <button mat-icon-button color="secondary" (click)="newNote()" class="icons">New Note</button>
-      <button mat-icon-button color="secondary" (click)="getNotesHeads()" class="icons">Get Notes</button>
-      <button mat-button (click)="notes_serv.openDialog()">Launch dialog</button>
+
       <mat-divider></mat-divider>
+      <mat-expansion-panel class="expansion-head">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="text-color">
+            DEBUG
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-action-row class="expansion-style">
+          <button mat-icon-button color="secondary" (click)="getNotesHeads()" class="icons">Get Notes</button>
+          <button mat-button (click)="notes_serv.openDialog()">Launch dialog</button>
+          <button mat-button (click)="notes_serv.debug_push_note_msg()">Pass Heads</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+      <mat-divider></mat-divider>
+
       <p class="signin_status">
         {{note_status}}
       </p>
+      <ul *ngIf="has_heads" >
+        <li *ngFor="let head of named_notes_heads">
+          <!-- <button type="button"> -->
+            <p >{{head.note_id}}</p>
+            <p >{{head.head}}</p>
+          <!-- </button> -->
+        </li>
+      </ul>
     </div>
   </mat-drawer>
 

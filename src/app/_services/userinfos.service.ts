@@ -23,32 +23,17 @@ export class UserinfoService {
   constructor(
     private ngzone: NgZone,
   ) {
-    console.log("NEW CONSTRUCTION OF THE USERINFO SERVICE");
-
   }
   ngOnInit(){
-    // Sign In status init
-    // this.signin_status_value = new Subject<ServerMsg>();
-    // this.signin_status_value_note = new Subject<ServerMsg>();
-    // this.signin_status = this.signin_status_value.asObservable();
-    // this.signin_status_note = this.signin_status_value_note.asObservable();
-
     // Nav status init
     this.feature_route = new BehaviorSubject<string>("chat");
     this.feature = this.feature_route.asObservable();
   }
   public set_signin_status(a:ServerMsg){
-    // this.ngzone.run(()=>{
       this.signin_status_obj = JSON.parse(JSON.stringify(a));
-      this.signin_status_value.next(a);
-      this.signin_status_value_note.next(a);
-      // this.signin_status_value.complete();
-      // this.signin_status_value_note.complete();
-
-      // console.log("user info setting the data===>"
-      // +this.signin_status_obj.status);
-
-    // });
+      this.signin_status_obj.username = this.signin_status_obj.receiver;
+      this.signin_status_value.next(this.signin_status_obj);
+      this.signin_status_value_note.next(this.signin_status_obj);
   }
 
   public is_signed_in(){

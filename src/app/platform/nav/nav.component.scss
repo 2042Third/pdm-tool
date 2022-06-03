@@ -52,6 +52,11 @@ mat-drawer-content {
   color: var(--foreground-quaternary);
 }
 
+.text-color{
+  background-color: var(--background-tertiary);
+    color: var(--foreground-quaternary);
+}
+
 nav {
   height: 2rem;
   display: flex;
@@ -71,3 +76,28 @@ nav .title {
   height :10%;
 }
 
+.expansion-style-debug {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 3rem;
+  overflow-y: scroll;
+  word-wrap: break-word;
+  color: var(--foreground-quaternary);
+  background-color: var(--background-tertiary);
+}
+.expansion-head{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 3rem;
+  color: var(--foreground-quaternary);
+  background-color: var(--background-tertiary);
+}
+.expansion-style {
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  min-height: 3rem;
+  word-wrap: break-word;
+}
