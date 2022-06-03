@@ -42,8 +42,5 @@ import { NotesEditDirective } from '../_directives/notes-edit.directive';
     NotesEditDirective,
     // EncryptComponent
    ],
-  providers: [
-    ChatService,
-  ]
 })
 export class SecurityModule { }

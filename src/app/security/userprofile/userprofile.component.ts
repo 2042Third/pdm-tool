@@ -1,6 +1,6 @@
 import { ServerMsg } from 'src/app/_types/ServerMsg';
 import { Component, OnInit } from '@angular/core';
-import {UserinfoService} from '../../_services/Userinfo.service';
+import {UserinfoService} from '../../_services/userinfos.service';
 import { Subscription,Observable } from 'rxjs';
 
 @Component({
@@ -15,7 +15,7 @@ export class UserprofileComponent implements OnInit {
   constructor(
   private userinfo: UserinfoService,
   ) {
-    this.userstatus_sub = userinfo.signin_status.subscribe(data=>{
+    this.userstatus_sub = this.userinfo.get_info().subscribe(data=>{
       this.userstatus = data
       this.usercreation=this.convertTimestamp(this.userstatus.time)
     });

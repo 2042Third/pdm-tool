@@ -5,7 +5,7 @@ import { FormControl } from "@angular/forms";
 // import { NamedServerMsg, NamedServerMsgA } from '../../_types/ServerMsg';
 import { ChatService } from 'src/app/_services/chat.service';
 // import { EncryptService } from 'src/app/_services/encrypt.service';
-import { UserinfoService } from '../../_services/userinfo.service';
+import { UserinfoService } from '../../_services/userinfos.service';
 // import { EncryptComponent } from '../encrypt/encrypt.component';
 import { c20 } from "../emscripten/c20wasm";
 import { EmscriptenWasmComponent } from "../emscripten/emscripten-wasm.component";

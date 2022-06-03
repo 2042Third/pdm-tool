@@ -19,15 +19,15 @@
 export class ServerMsg {
   msg:string="";
   username:String="";
-  msgh:string="";
-  time:string="";
+  msgh:String="";
+  time:String="";
   email:String="";
-  val:string="";
-  type: string="";
-  sender: string="";
+  val:String="";
+  type: String="";
+  sender: String="";
   sess:String = '';
   status:String = "fail";
-  receiver: string="";
-  authdata?:string="";
+  receiver: String="";
+  authdata?:String="";
 };
 

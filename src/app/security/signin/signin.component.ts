@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import {HttpClient, HttpClientModule } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators,ReactiveFormsModule} from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 
 import {AuthService} from '../../_services/auth.service';
-import {UserinfoService} from '../../_services/Userinfo.service';
+import {UserinfoService} from '../../_services/userinfos.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
 import { EmscriptenWasmComponent } from '../emscripten/emscripten-wasm.component';
 import { c20 } from '../emscripten/c20wasm';
@@ -48,9 +48,11 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
     private formBuilder:FormBuilder,
     private auth: AuthService,
     private userinfo: UserinfoService,
-    private http: HttpClient
+    private http: HttpClient,
+    private ngzone:NgZone,
   ) {
     super("Cc20Module", "notes.js");
+    console.log('sign in construction' );
     this.signup_async= this.auth.signupSubject.asObservable();
     this.signup_sub = this.signup_async.subscribe(
     data=>{
@@ -119,6 +121,16 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
             console.error('There was an error!', error);
           }
       });
+      // .subscribe({
+      //     next: data => {
+      //       this.userinfo.set_signin_status(data);
+      //     },
+      //     error: error => {
+      //       this.errorMessage = error.message;
+      //       console.error('There was an error!', error);
+      //     }
+      // })
+      ;
     }
   }
 

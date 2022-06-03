@@ -3,9 +3,9 @@
  *  2/2022
  *
 */
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { UserinfoService } from '../../_services/Userinfo.service';
-import { Subscription, Observable } from 'rxjs';
+import { AfterViewInit, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { UserinfoService } from '../../_services/userinfos.service';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { faLightbulb as faSolidLightbulb, IconDefinition} from "@fortawesome/free-solid-svg-icons";
 import { faLightbulb as faRegularLightbulb } from "@fortawesome/free-regular-svg-icons";
 import { ThemeService } from "src/app/theme/theme.service";
@@ -36,32 +36,46 @@ export class NavComponent implements AfterViewInit {
   signin_stat_str: String = "Not Signed In";
   signin_stat: boolean = false;
   notes_heads: NotesMsg;
+  // signin_async: Observable<ServerMsg>;
+  private signup_sub:Subscription;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userinfo: UserinfoService,
     private themeService: ThemeService,
     public notes_serv:NotesService,
+    private ngzone: NgZone ,
   ) {
+      console.log ("MAKING NAV COMPONENTS");
     this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
             this.currentRoute = event.url;
               console.log(event);
         }
     });
-    this.feature_sub = this.userinfo.signin_status.subscribe(
-      data=>{
-        // this.signin_stat_str=" \n\t";
-        this.signin_obj = data;
-        this.signin_stat_str = data.receiver;
-        if(this.signin_obj.status != "fail"){
-          this.signin_stat = true;
+    console.log("NAV signin_obj subscribed");
+    this.signup_sub = this.userinfo.signin_status_value.subscribe(
+      {
+        next: data=>{
+            // this.signin_obj.sender = data.sender;
+            this.signin_obj = JSON.parse(JSON.stringify(data)); // make a copy
+            console.log("NAV this.signin_obj="+this.signin_obj);
+            console.log("NAV this.signin_obj.status="+this.signin_obj.status);
+            this.signin_stat_str = data.receiver;
+            if(this.signin_obj.status != "fail"){
+              this.signin_stat = true;
+            }
+            else {
+              // this.signin_stat_str="Not Signed In";
+              this.signin_stat = false;
+            }
+          },
+        error: data=>{
+          console.log("?");
         }
-        else {
-          this.signin_stat_str="Not Signed In";
-          this.signin_stat = false;
-        }
-      });
+      }
+      )
+    ;
     this.themeService.setDarkTheme();
   }
 
@@ -71,11 +85,13 @@ export class NavComponent implements AfterViewInit {
 
   ngOnInit() {
     this.setLightbulb();
+    // Feature
     this.route.paramMap.pipe(
       switchMap((params: ParamMap)=>
         this.feature = params.get('feature')
       )
     );
+
   }
 
   toNotes(){
@@ -109,7 +125,8 @@ export class NavComponent implements AfterViewInit {
   }
 
   ngOnDestroy() {
-    this.feature_sub.unsubscribe();
+    console.log("unsubcalled!!!!!");
+    this.signup_sub.unsubscribe();
   }
 
   newNote(){

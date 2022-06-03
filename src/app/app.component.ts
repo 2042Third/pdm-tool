@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from './_services/auth.service';
-import { UserinfoService } from './_services/userinfo.service';
-import { WebsockService } from "src/app/_services/websock.service";
+import { UserinfoService } from './_services/userinfos.service';
+import { WebsockService } from './_services/websock.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,9 +10,9 @@ import { WebsockService } from "src/app/_services/websock.service";
 export class AppComponent {
   title = 'pdm-notes';
   constructor(
-    private sock: WebsockService,
-    private auth: AuthService,
-    // private userinfo: UserinfoService,
+    public sock: WebsockService,
+    public auth: AuthService,
+    public userinfo: UserinfoService,
   ){
   }
 }
