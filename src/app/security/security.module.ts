@@ -15,6 +15,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 import { DisableControlDirective } from './disableControl.directive';
 import { ChatService } from '../_services/chat.service';
 import { NotesEditDirective } from '../_directives/notes-edit.directive';
+import {MatListModule} from '@angular/material/list';
 // import { EncryptComponent } from './encrypt/encrypt.component';
 @NgModule({
   exports:[Cc20Component,
@@ -30,6 +31,7 @@ import { NotesEditDirective } from '../_directives/notes-edit.directive';
     FormsModule,
     ReactiveFormsModule,
     MatDividerModule,
+    MatListModule
   ],
   declarations: [
     Cc20Component,

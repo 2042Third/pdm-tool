@@ -1,4 +1,5 @@
 import { Component, SecurityContext } from "@angular/core";
+import {MatListModule} from '@angular/material/list';
 import { WebsockService } from "src/app/_services/websock.service";
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormControl } from "@angular/forms";
@@ -23,12 +24,14 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
   msg='';
   _term='';
   formControl;
+  public chat_hist:ServerMsg[];
+  has_display=false;
   remake = 0 ; // control
   // private encry: EncryptComponent
   constructor(
     private sock: WebsockService,
     private sr: DomSanitizer,
-    private chatservice: ChatService,
+    public chatservice: ChatService,
     private user:UserinfoService,
   ) {
     super("Cc20Module", "notes.js");
@@ -117,10 +120,10 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
    * the latest few chats first and reload more when needed.
   */
   private load_hist(){
-    var chat_hist:ServerMsg[] = this.chatservice.get_saved_msg();
-    for (let i = 0; i < chat_hist.length; i++) {
-      this.append_terminal_wh("encrypted data: \n"+JSON.stringify(chat_hist[i]));
-      this.append_terminal_gr("decrypted: \n"+this.dec(chat_hist[i].msg));
+    this.chat_hist = this.chatservice.get_saved_msg();
+    for (let i = 0; i < this.chat_hist.length; i++) {
+      this.append_terminal_wh("encrypted data: \n"+JSON.stringify(this.chat_hist[i]));
+      this.append_terminal_gr("decrypted: \n"+this.dec(this.chat_hist[i].msg));
     }
   }
   private msg_send(){
@@ -143,8 +146,8 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
       sess: ""
     };
     this.chatservice.save_msg(mp);
-    this.append_terminal_wh("encrypted data: \n"+JSON.stringify(mp));
-    this.append_terminal_gr("decrypted: \n"+this.dec(b));
+    // this.append_terminal_wh("encrypted data: \n"+JSON.stringify(mp));
+    // this.append_terminal_gr("decrypted: \n"+this.dec(b));
   }
 
   public enc (inp:string){
@@ -169,7 +172,7 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
   public scroll_to_new() {
     var objDiv = document.getElementById("output");
     // if(objDiv!=null){
-    console.log(objDiv.scrollHeight);
+    // console.log(objDiv.scrollHeight);
     objDiv.scrollTop = objDiv.scrollHeight +(objDiv.scrollHeight);
     // }
   }

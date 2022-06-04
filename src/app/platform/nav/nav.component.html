@@ -22,17 +22,30 @@
       </mat-expansion-panel>
       <mat-divider></mat-divider>
 
-      <p class="signin_status">
+      <!-- <p class="signin_status">
         {{note_status}}
-      </p>
-      <ul *ngIf="has_heads" >
-        <li *ngFor="let head of named_notes_heads">
-          <!-- <button type="button"> -->
+      </p> -->
+      <mat-list *ngIf="has_heads" dense>
+        <mat-list-item *ngFor="let head of named_notes_heads">
+          <button type="button" class="text-color note-listing">
+            <p>
+              <span>
+                <mat-icon matListIcon>folder</mat-icon>
+                {{head.note_id}} {{head.head}}
+              </span>
+            </p>
+          </button>
+        </mat-list-item>
+      </mat-list>
+
+      <!-- <ul *ngIf="has_heads" >
+        <li *ngFor="let head of named_notes_heads" >
+          <button type="button" class="text-color note-listing">
             <p >{{head.note_id}}</p>
             <p >{{head.head}}</p>
-          <!-- </button> -->
+          </button>
         </li>
-      </ul>
+      </ul>-->
     </div>
   </mat-drawer>
 

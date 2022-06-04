@@ -5,7 +5,7 @@ import { ServerMsg } from '../_types/ServerMsg';
   providedIn: 'root'
 })
 export class ChatService {
-  chat_hist:ServerMsg[] = new Array();
+  public chat_hist:ServerMsg[] = new Array();
 
   constructor() { }
 
