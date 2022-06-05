@@ -10,7 +10,7 @@ import {  MatDialogRef } from '@angular/material/dialog';
 import { DialogNotificationsComponent } from '../platform/dialogNotifications/dialogNotifications.component';
 import { Router } from '@angular/router';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +25,7 @@ export class NotesService {
   dialogRef:MatDialogRef<DialogNotificationsComponent, any>;
   dialogConfig = new MatDialogConfig();
   private signup_sub:Subscription;
-
+  public cur_content:String="";
   //debug data
   private debug_str = '{"note_id":"listed","sess":"debugkey","h":"listed","ntype":"heads_return","content":[{"head":null,"note_id":"5"},{"head":null,"note_id":"6"},{"head":null,"note_id":"7"},{"head":null,"note_id":"8"},{"head":null,"note_id":"9"},{"head":null,"note_id":"10"},{"head":null,"note_id":"11"}],"email":"18604713262@163.com","hash":"ee741763ee120d70254401bba3384388bb43c3270394f16998cb9af64c0e4b1d","status":"success"}';
   private debug_obj:NotesMsg = JSON.parse(this.debug_str);
@@ -38,10 +38,10 @@ export class NotesService {
     ) {
       console.log ("MAKING NOTES SERVICE");
 
-    this.dialogConfig.autoFocus = true;
-    this.dialogConfig.data = {dialogType:"Alert", message:"Please log in."};
-    this.dialogConfig.panelClass= 'custom-modalbox';
-    this.signup_sub = this.userinfo.signin_status_value.subscribe(
+      this.dialogConfig.autoFocus = true;
+      this.dialogConfig.data = {dialogType:"Alert", message:"Please log in."};
+      this.dialogConfig.panelClass= 'custom-modalbox';
+      this.signup_sub = this.userinfo.signin_status_value.subscribe(
       {
         next: data=>{
             // this.signin_obj.sender = data.sender;
@@ -72,6 +72,46 @@ export class NotesService {
     this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
   }
 
+  /**
+   * Push the current note's update to the server
+   *
+  */
+  public liveUpdateNote(){
+    if(!this.signin_stat) {
+      if(!environment.production){
+        // let contentConfig = new MatDialogConfig();
+        // contentConfig.autoFocus = true;
+        // contentConfig.data = {dialogType:"Alert", message:this.cur_content};
+        // contentConfig.panelClass= 'custom-modalbox';
+        // this.dialogRef = this.dialog.open(DialogNotificationsComponent, contentConfig);
+        console.log("Current content: \n\'\'\'\n"+this.cur_content+"\'\'\'");
+        return null;
+      }
+      this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
+      return null;
+    }
+    return this.ngzone.run(()=>{
+      this.notes_obj.ntype = "update";
+      return this.http.post<NotesMsg>(
+      'https://pdm.pw/auth/note',
+      { "username":this.signin_obj.username,
+        "content":this.cur_content,
+        "sess":this.signin_obj.sess,
+        "ntype":this.notes_obj.ntype,
+        "email":this.signin_obj.email,
+      }).pipe(map(upData => {
+        this.notesSubject.next(upData);
+        this.notesSubject.complete();
+        return upData;
+      }))
+    });
+  }
+  /**
+   * DEBUG ONLY.
+   * Pushes hard-coded packet to the observer.
+   * Imitating a server's response after a heads' call.
+   *
+  */
   public debug_push_note_msg(){
     this.notesSubject.next(this.debug_obj);
   }
@@ -82,26 +122,25 @@ export class NotesService {
       return null;
     }
     return this.ngzone.run(()=>{
-
-    this.notes_obj.ntype = "new";
-    return this.http.post<NotesMsg>(
-    'https://pdm.pw/auth/note',
-    { "username":this.signin_obj.username,
-      "content":"",
-      "sess":this.signin_obj.sess,
-      "ntype":this.notes_obj.ntype,
-      "email":this.signin_obj.email,
-    }
-    )
-    .pipe(map(upData => {
-      this.notesSubject.next(upData);
-      this.notesSubject.complete();
-      return upData;
-    }))
-    })
-
-    ;
+      this.notes_obj.ntype = "new";
+      return this.http.post<NotesMsg>(
+      'https://pdm.pw/auth/note',
+      { "username":this.signin_obj.username,
+        "content":"",
+        "sess":this.signin_obj.sess,
+        "ntype":this.notes_obj.ntype,
+        "email":this.signin_obj.email,
+      }).pipe(map(upData => {
+        this.notesSubject.next(upData);
+        this.notesSubject.complete();
+        return upData;
+      }))
+    });
   }
+  /**
+   * Get the heads of all the notes for this user
+   *
+  */
   public get_notes_heads(){
     if(!this.signin_stat) {
     this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
@@ -121,6 +160,10 @@ export class NotesService {
       this.notesSubject.next(upData);
       return upData;
     }));
+  }
+
+  public setCurContent(a:String){
+    this.cur_content = a;
   }
 
   public setSidenav(sidenav: MatSidenav) {

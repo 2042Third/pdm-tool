@@ -1,7 +1,11 @@
 <!-- <div class="note-box">
-  <textarea class="inputClass2" (keydown.tab)="handleKeyDown($event)" ng-trim="false" id="notes-editor"
-    [(ngModel)]="content" [appNotesEdit]="content"></textarea>
+  <textarea class="inputClass2" [(appNotesEdit)]="notes_serv.content">
+    {{notes_serv.content}}
+  </textarea>
 </div> -->
 <div class="note-box">
-  <textarea class="inputClass2" [(appNotesEdit)]="content" ></textarea>
+  <textarea matInput type="text" (keyup)="notesSave()" [(ngModel)]="keyword" class="inputClass2" [(appNotesEdit)]="keyword" >
+  </textarea>
+  <!-- <textarea class="inputClass2" [(appNotesEdit)]="notes_serv.cur_content">{{notes_serv.cur_content}}
+  </textarea> -->
 </div>

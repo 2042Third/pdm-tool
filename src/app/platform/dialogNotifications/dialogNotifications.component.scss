@@ -11,7 +11,7 @@
 
 $my-palette: mat.define-palette(mat.$indigo-palette);
 
-.custom-modalbox {
+:host .custom-modalbox {
   background: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }

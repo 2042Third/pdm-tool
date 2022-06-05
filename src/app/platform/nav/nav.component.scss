@@ -20,15 +20,29 @@ mat-divider{
   margin:2em;
   border-top-color: rgba(182, 189, 183, 0.285);
 }
+.matdrawer-styles{//outer
+  background-color: var(--background-tertiary);
+}
 
-.drawer-styles{
+.drawer-styles {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: right;
-  height: 92%;
-  padding: 1em;
-  padding-top: 2em;
+  height: 95%;
+  padding: 8pt;padding-top: 10pt;
+  background-color: var(--background-tertiary);
+  color: var(--foreground-quaternary);
+}
+
+.drawer-styles-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: right;
+  height: 95%;
+  padding: 8pt;
+  padding-top: 5pt;
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }
@@ -52,10 +66,6 @@ mat-drawer-content {
   color: var(--foreground-quaternary);
 }
 
-.text-color{
-  background-color: var(--background-tertiary);
-    color: var(--foreground-quaternary);
-}
 
 nav {
   height: 2rem;
@@ -89,10 +99,13 @@ nav .title {
 .expansion-head{
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: scroll;
   min-height: 2rem;
   color: var(--foreground-quaternary);
   background-color: var(--background-tertiary);
+}
+.expansion-contain{
+overflow-y: scroll;
 }
 
 .note-listing{
@@ -102,7 +115,14 @@ nav .title {
 .expansion-style {
   flex-direction: column;
   align-items: center;
-  overflow-y: scroll;
   min-height: 3rem;
-  word-wrap: break-word;
+}
+.text-color {
+  background-color: var(--background-tertiary);
+  color: var(--foreground-quaternary);
+}
+
+::ng-deep.mat-menu-panel{
+  background-color: var(--background-tertiary);
+  color: var(--foreground-quaternary);
 }

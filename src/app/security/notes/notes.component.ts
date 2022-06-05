@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NotesService } from 'src/app/_services/notes.service';
 import { NotesMsg } from 'src/app/_types/User';
@@ -9,13 +9,15 @@ import { NotesMsg } from 'src/app/_types/User';
   styleUrls: ['./notes.component.scss']
 })
 export class NotesComponent implements OnInit {
-  content="";
   nt_disabled = false;
-
   notes_subject : Subscription;
   notes_obj : NotesMsg;
+  content:String;
+  keyword:string;
+  change_no_wait=true;
   constructor(
-  private notes_serv:NotesService,
+    public notes_serv:NotesService,
+    private ngzone:NgZone,
   ) {
     this.notes_subject = notes_serv.notesSubject.subscribe(
       data=>{
@@ -23,9 +25,29 @@ export class NotesComponent implements OnInit {
         console.log("NOTES COMPONENT recieved content: "+ this.notes_obj.content);
       }
     );
+
   }
+
+  public notesSave() {
+    if(this.change_no_wait){
+      this.change_no_wait = false;
+    }
+    else {
+      return;
+    }
+    setTimeout(() => {
+      this.change(this.keyword);
+      this.change_no_wait = true;
+    }, 2000);
+  }
+
   toggleRightSidenav() {
     this.notes_serv.toggle();
+  }
+
+  change(a:String){
+    console.log("content change");
+    this.notes_serv.setCurContent(a);
   }
 
   ngOnInit() {

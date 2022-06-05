@@ -16,6 +16,7 @@ import { DisableControlDirective } from './disableControl.directive';
 import { ChatService } from '../_services/chat.service';
 import { NotesEditDirective } from '../_directives/notes-edit.directive';
 import {MatListModule} from '@angular/material/list';
+import { CustomScrollDirective } from '../_directives/custom-scroll.directive';
 // import { EncryptComponent } from './encrypt/encrypt.component';
 @NgModule({
   exports:[Cc20Component,
@@ -31,7 +32,7 @@ import {MatListModule} from '@angular/material/list';
     FormsModule,
     ReactiveFormsModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
   ],
   declarations: [
     Cc20Component,
@@ -42,6 +43,7 @@ import {MatListModule} from '@angular/material/list';
     SafeHtmlPipe,
     DisableControlDirective,
     NotesEditDirective,
+    CustomScrollDirective
     // EncryptComponent
    ],
 })

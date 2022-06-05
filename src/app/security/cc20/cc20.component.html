@@ -1,9 +1,9 @@
 <div chat class="plat">
   <!-- <p class="terminal" id="output" [innerHTML]="_term | safeHtml">
   </p> -->
-<p class="terminal"  id="output">
-  <mat-list dense>
-    <mat-list-item *ngFor="let onemsg of chatservice.chat_hist" class="mat-item-chat">
+<p class="terminal"  id="output" custom-scroll>
+  <mat-list dense >
+    <mat-list-item  *ngFor="let onemsg of chatservice.chat_hist" class="mat-item-chat">
       <!-- <button type="button" > -->
         <p class="text-color chat-listing">
 

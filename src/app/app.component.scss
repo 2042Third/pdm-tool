@@ -10,3 +10,48 @@ app-platform {
   background-color: var(--background-tertiary) !important;
   color: var(--foreground-quaternary) !important;
 }
+
+// ::-webkit-scrollbar {
+//   width: 4px;
+//   overflow-y: scroll;
+//   background: grey;
+//   box-shadow: inset 0 0 4px #707070;
+// }
+
+// ::-webkit-scrollbar-thumb {
+//   background: blue;
+//   border-radius: 10px;
+// }
+
+::ng-deep ::-webkit-scrollbar {
+  width: 9px;
+  height: 5px;
+}
+
+::ng-deep ::-webkit-scrollbar-corner {
+  display: none;
+}
+
+::ng-deep ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1pt solid transparent;
+  border-radius: 2pt;
+  background-clip: content-box;
+}
+
+::ng-deep ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, .2);
+  border: 1pt solid transparent;
+  background-clip: content-box;
+}
+
+::ng-deep .custom-scroll-vertical-hover::-webkit-scrollbar-thumb:vertical {
+  background: rgba(255, 255, 255, .2);
+  border: none;
+  border-radius: 0;
+}
+
+::ng-deep .custom-scroll-vertical-hover::-webkit-scrollbar-track:vertical {
+  background: rgba(255, 255, 255, .2);
+  border: none;
+}

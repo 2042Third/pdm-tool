@@ -175,16 +175,19 @@ export class NavComponent implements AfterViewInit {
   }
 
   getNotesHeads(){
-
     this.notes_serv.get_notes_heads().subscribe({
-          next: data => {
-            this.notes_heads=data;
-            console.log(this.notes_heads);
-          },
-          error: error => {
-            this.errorMessage = error.message;
-            console.error('There was an error!', error);
-          }
-      });
+      next: data => {
+        this.notes_heads=data;
+        console.log(this.notes_heads);
+      },
+      error: error => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+      }
+    });
+  }
+
+  updateNote(){
+
   }
 }

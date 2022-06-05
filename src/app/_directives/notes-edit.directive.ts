@@ -2,9 +2,9 @@ import { Directive,HostListener,Input } from '@angular/core';
 
 @Directive({
   selector: '[appNotesEdit]',
-  host: {
-    '(input)': 'onChange($event)'
-  },
+  // host: {
+  //   '(input)': 'onChange($event)'
+  // },
   // inputs:['vals'],
 })
 
@@ -29,6 +29,5 @@ export class NotesEditDirective {
   constructor(
   ) {
   }
-  onChange($event) {
-  }
+
 }

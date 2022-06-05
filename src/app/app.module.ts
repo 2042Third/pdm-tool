@@ -13,6 +13,7 @@ import { AuthService } from './_services/auth.service';
 import { NotesEditDirective } from './_directives/notes-edit.directive';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { UserinfoService } from './_services/userinfos.service';
+import { CustomScrollDirective } from './_directives/custom-scroll.directive';
 
 
 @NgModule({

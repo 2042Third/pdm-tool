@@ -3,57 +3,32 @@
 </mat-sidenav-container> -->
 
 <mat-drawer-container>
-  <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="drawer-styles rightside"  mode="side" hasBackDrop="false" opened="true">
-    <div class="drawer-styles">
-      <button mat-icon-button color="secondary" (click)="newNote()" class="icons">New Note</button>
+  <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles "  mode="side" hasBackDrop="false" opened="true">
+    <div class="drawer-styles-right">
+      <button mat-icon-button color="secondary" (click)="newNote()" class="icons">New</button>
 
       <mat-divider></mat-divider>
-      <mat-expansion-panel class="expansion-head">
-        <mat-expansion-panel-header>
-          <mat-panel-title class="text-color">
-            DEBUG
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-action-row class="expansion-style">
-          <button mat-icon-button color="secondary" (click)="getNotesHeads()" class="icons">Get Notes</button>
-          <button mat-button (click)="notes_serv.openDialog()">Launch dialog</button>
-          <button mat-button (click)="notes_serv.debug_push_note_msg()">Pass Heads</button>
-        </mat-action-row>
-      </mat-expansion-panel>
-      <mat-divider></mat-divider>
-
-      <!-- <p class="signin_status">
-        {{note_status}}
-      </p> -->
-      <mat-list *ngIf="has_heads" dense>
-        <mat-list-item *ngFor="let head of named_notes_heads">
-          <button type="button" class="text-color note-listing">
-            <p>
-              <span>
-                <mat-icon matListIcon>folder</mat-icon>
-                {{head.note_id}} {{head.head}}
-              </span>
-            </p>
-          </button>
-        </mat-list-item>
-      </mat-list>
-
-      <!-- <ul *ngIf="has_heads" >
-        <li *ngFor="let head of named_notes_heads" >
-          <button type="button" class="text-color note-listing">
-            <p >{{head.note_id}}</p>
-            <p >{{head.head}}</p>
-          </button>
-        </li>
-      </ul>-->
+      <p class="expansion-contain">
+          <mat-list *ngIf="has_heads" dense>
+            <mat-list-item *ngFor="let head of named_notes_heads">
+              <button type="button" class="text-color note-listing">
+                <p>
+                  <span>
+                    {{head.note_id}} {{head.head}}
+                  </span>
+                </p>
+              </button>
+            </mat-list-item>
+          </mat-list>
+      </p>
     </div>
   </mat-drawer>
 
-  <mat-drawer #drawer class="drawer-styles"  mode="side" hasBackDrop="false" opened="true">
+  <mat-drawer #drawer class="matdrawer-styles"  mode="side" hasBackDrop="false" opened="true">
     <div class="drawer-styles">
       <div class="signin_container">
         <mat-icon class="signin-icon" [ngStyle]="{ color: signin_stat ? 'green' : 'red' }">account_box</mat-icon>
-        <p class="signin_status">
+        <p >
           {{signin_stat_str}}
         </p>
       </div>
@@ -70,8 +45,34 @@
       <button mat-icon-button color="secondary" (click)="maindrawer.toggle()" class="icons">
         <mat-icon>menu</mat-icon>
       </button>
+
       <h5 class="title secondary-font"></h5>
-      <button *ngIf="currentRoute=='/notes'" mat-icon-button color="secondary" (click)="notesnav.toggle()" class="icons">
+      <!-- debug menu -->
+      <button mat-button [matMenuTriggerFor]="debug">Debug Menu</button>
+      <mat-menu #debug="matMenu" xPosition="before">
+        <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebug">Notes</button>
+      </mat-menu>
+
+      <mat-menu #notesDebug="matMenu" xPosition="before">
+        <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOnline">live</button>
+        <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOffline">offline</button>
+      </mat-menu>
+      <!-- offline notes debug -->
+      <mat-menu #notesDebugOffline="matMenu" xPosition="before">
+        <button class="text-color" mat-menu-item (click)="notes_serv.openDialog()">Launch dialog</button>
+        <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()">Pass Heads</button>
+      </mat-menu>
+      <!-- online notes debug -->
+      <mat-menu #notesDebugOnline="matMenu" xPosition="before">
+        <button class="text-color" mat-menu-item (click)="getNotesHeads()">Get Notes</button>
+        <button class="text-color" mat-menu-item (click)="notes_serv.liveUpdateNote()">Update Note</button>
+        <!-- <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()">Pass Heads</button> -->
+      </mat-menu>
+
+      <button *ngIf="currentRoute=='/notes'"
+       mat-icon-button color="secondary"
+       (click)="notesnav.toggle()"
+       class="icons">
         <mat-icon >list</mat-icon>
       </button>
       <!-- <fa-icon class="icons" [icon]="faLightbulb"  (click)="toggleTheme()"></fa-icon> -->
