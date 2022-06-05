@@ -15,6 +15,8 @@ export class NotesComponent implements OnInit {
   content:String;
   keyword:string;
   change_no_wait=true;
+  wait_and_check=false;
+  waiter=0;
   constructor(
     public notes_serv:NotesService,
     private ngzone:NgZone,
@@ -27,19 +29,44 @@ export class NotesComponent implements OnInit {
     );
 
   }
-
+/**
+   * By Yi Yang, June 6, 2022
+   * For pdm, notes syncing.
+   *
+  */
   public notesSave() {
+    this.wait_and_check=false;
     if(this.change_no_wait){
       this.change_no_wait = false;
+      this.waitAndCheck();
     }
     else {
       return;
     }
-    setTimeout(() => {
-      this.change(this.keyword);
-      this.change_no_wait = true;
-    }, 2000);
   }
+/**
+   * By Yi Yang, June 6, 2022
+   * For pdm, notes syncing.
+   *
+  */
+  public waitAndCheck (){
+    this.waiter=this.waiter+1;
+    if(!this.wait_and_check){ // set to check in 2 seconds, and stop others from checking
+      this.wait_and_check=true;
+      console.log("waiting: "+this.waiter);
+      setTimeout(() => {
+        if(this.wait_and_check){
+          this.change(this.keyword);
+          this.change_no_wait = true;
+          this.wait_and_check = false;
+        }
+        else {
+          this.waitAndCheck();
+        }
+      }, 2000);
+    }
+  }
+
 
   toggleRightSidenav() {
     this.notes_serv.toggle();
