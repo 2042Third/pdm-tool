@@ -79,11 +79,6 @@ export class NotesService {
   public liveUpdateNote(){
     if(!this.signin_stat) {
       if(!environment.production){
-        // let contentConfig = new MatDialogConfig();
-        // contentConfig.autoFocus = true;
-        // contentConfig.data = {dialogType:"Alert", message:this.cur_content};
-        // contentConfig.panelClass= 'custom-modalbox';
-        // this.dialogRef = this.dialog.open(DialogNotificationsComponent, contentConfig);
         console.log("Current content: \n\'\'\'\n"+this.cur_content+"\'\'\'");
         return null;
       }
@@ -101,11 +96,11 @@ export class NotesService {
         "email":this.signin_obj.email,
       }).pipe(map(upData => {
         this.notesSubject.next(upData);
-        this.notesSubject.complete();
         return upData;
       }))
     });
   }
+
   /**
    * DEBUG ONLY.
    * Pushes hard-coded packet to the observer.
@@ -113,7 +108,9 @@ export class NotesService {
    *
   */
   public debug_push_note_msg(){
-    this.notesSubject.next(this.debug_obj);
+    // this.ngzone.run(()=>{
+      this.notesSubject.next(this.debug_obj);
+    // });
   }
 
   public new_note(){
@@ -132,7 +129,6 @@ export class NotesService {
         "email":this.signin_obj.email,
       }).pipe(map(upData => {
         this.notesSubject.next(upData);
-        this.notesSubject.complete();
         return upData;
       }))
     });
@@ -154,6 +150,32 @@ export class NotesService {
       "sess":this.signin_obj.sess,
       "ntype":this.notes_obj.ntype,
       "email":this.signin_obj.email,
+    }
+    )
+    .pipe(map(upData => {
+      this.notesSubject.next(upData);
+      return upData;
+    }));
+  }
+
+  /**
+   * Get the note given the note id
+   *
+  */
+  public get_note(a:String){
+    if(!this.signin_stat) {
+    this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
+      return null;
+    }
+    this.notes_obj.ntype = "retrieve";
+    return this.http.post<NotesMsg>(
+    'https://pdm.pw/auth/note',
+    { "username":this.signin_obj.username,
+      "content":"",
+      "sess":this.signin_obj.sess,
+      "ntype":this.notes_obj.ntype,
+      "email":this.signin_obj.email,
+      "note_id":a,
     }
     )
     .pipe(map(upData => {

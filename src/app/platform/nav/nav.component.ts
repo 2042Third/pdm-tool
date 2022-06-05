@@ -49,7 +49,7 @@ export class NavComponent implements AfterViewInit {
     private userinfo: UserinfoService,
     private themeService: ThemeService,
     public notes_serv:NotesService,
-    private ngzone: NgZone ,
+    public ngzone: NgZone ,
   ) {
       console.log ("MAKING NAV COMPONENTS");
     this.router.events.subscribe((event: Event) => {
@@ -59,6 +59,7 @@ export class NavComponent implements AfterViewInit {
         }
     });
     console.log("NAV signin_obj subscribed");
+    // User signin status
     this.signup_sub = this.userinfo.signin_status_value.subscribe(
       {
         next: data=>{
@@ -82,6 +83,7 @@ export class NavComponent implements AfterViewInit {
       )
     ;
     this.themeService.setDarkTheme();
+    // User notes listing
     this.notes_subject = notes_serv.notesSubject.subscribe(
       data=>{
         this.notes_obj = JSON.parse(JSON.stringify(data));
@@ -89,18 +91,17 @@ export class NavComponent implements AfterViewInit {
         if(this.notes_obj.ntype == "heads_return"){
           console.log("NAV COMPONENT recieved is heads"+JSON.stringify(this.notes_obj.content));
           this.notes_heads = this.notes_obj;
-          this.named_notes_heads=JSON.parse(JSON.stringify(this.notes_obj.content));
-          this.peak_heads();
-        }
-        else {
-          this.has_heads=false;
+          this.ngzone.run(()=>{
+            this.has_heads=false;
+            this.named_notes_heads=JSON.parse(JSON.stringify(this.notes_obj.content));
+            this.peak_heads();
+          });
         }
       }
     );
   }
 
   ngAfterViewInit(): void {
-    this.notes_serv.setSidenav(this.notesnav);
   }
 
   ngOnInit() {
@@ -111,18 +112,27 @@ export class NavComponent implements AfterViewInit {
         this.feature = params.get('feature')
       )
     );
+    this.notes_serv.setSidenav(this.notesnav);
 
   }
 
+  getNoteId(index:number, a:NoteHead):number {
+    a.id = Number(a.note_id);
+    return a.id;
+  }
+
   peak_heads(){
+    this.notesnav.toggle();
     let i=0;
     for (i=0;i<this.named_notes_heads.length;i++){
+    this.named_notes_heads[i].id = Number(this.named_notes_heads[i].note_id);
       if(this.named_notes_heads[i].head == null){
         this.named_notes_heads[i].head = "unnamed note";
       }
       console.log("head part " +i+"-->"+this.named_notes_heads[i].head);
     }
     this.has_heads = true;
+    this.notesnav.toggle();
   }
 
   toNotes(){
@@ -144,7 +154,10 @@ export class NavComponent implements AfterViewInit {
       this.faLightbulb = faSolidLightbulb;
     }
   }
-
+  public ConvertStringToNumber(input: String) {
+      var numeric = Number(input);
+      return numeric;
+  }
   toggleTheme() {
     if (this.themeService.isDarkTheme()) {
       this.themeService.setLightTheme();
@@ -189,5 +202,19 @@ export class NavComponent implements AfterViewInit {
 
   updateNote(){
 
+  }
+
+  getNote(a:String){
+    console.log("Retrieving note: "+a);
+    this.notes_serv.get_note(a).subscribe({
+          next: data => {
+            this.note_status=data.note_id;
+            console.log(this.note_status);
+          },
+          error: error => {
+            this.errorMessage = error.message;
+            console.error('There was an error!', error);
+          }
+      });
   }
 }

@@ -29,23 +29,14 @@ mat-divider{
   flex-direction: column;
   align-items: center;
   justify-content: right;
-  height: 95%;
-  padding: 8pt;padding-top: 10pt;
+  height: 90%;
+  padding: 8pt;
+  padding-top: 18pt;
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }
 
-.drawer-styles-right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: right;
-  height: 95%;
-  padding: 8pt;
-  padding-top: 5pt;
-  background-color: var(--background-tertiary);
-  color: var(--foreground-quaternary);
-}
+
 .signin_container {
   // align-self: center;
   display: flex;

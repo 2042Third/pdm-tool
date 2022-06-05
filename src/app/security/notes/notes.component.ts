@@ -25,6 +25,10 @@ export class NotesComponent implements OnInit {
       data=>{
         this.notes_obj = JSON.parse(JSON.stringify(data));
         console.log("NOTES COMPONENT recieved content: "+ this.notes_obj.content);
+        if(this.notes_obj.ntype == "retrieve_return" ){
+          console.log("NOTES COMPONENT recieved retrival result for note "+ this.notes_obj.note_id
+          +"\nStatus: "+ this.notes_obj.status);
+        }
       }
     );
 

@@ -18,11 +18,12 @@ export class NotesMsg{
   sess:String;
   h:String;
   username:String;
+  status:String;
 
 }
 
 export class NoteHead{
   head:String;
   note_id:String;
-
+  id:number;
 }
