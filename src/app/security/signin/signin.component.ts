@@ -8,6 +8,7 @@ import {UserinfoService} from '../../_services/userinfos.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
 import { EmscriptenWasmComponent } from '../emscripten/emscripten-wasm.component';
 import { c20 } from '../emscripten/c20wasm';
+import { NotesService } from '../../_services/notes.service';
 // User action
 enum UserAc {
 SignIn,
@@ -27,7 +28,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   upw="";
   umail="";
   uname='';
-
+  timeout=2000;
   errorMessage="";
   signinForm:FormGroup;
   signupForm:FormGroup;
@@ -48,6 +49,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
     private formBuilder:FormBuilder,
     private auth: AuthService,
     private userinfo: UserinfoService,
+    private notes_serv:NotesService,
     private http: HttpClient,
     private ngzone:NgZone,
   ) {
@@ -115,22 +117,15 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
       ).subscribe({
           next: data => {
             this.userinfo.set_signin_status(data);
+            setTimeout(() => {
+              this.notes_serv.get_notes_heads().subscribe()
+            }, this.timeout);
           },
           error: error => {
             this.errorMessage = error.message;
             console.error('There was an error!', error);
           }
       });
-      // .subscribe({
-      //     next: data => {
-      //       this.userinfo.set_signin_status(data);
-      //     },
-      //     error: error => {
-      //       this.errorMessage = error.message;
-      //       console.error('There was an error!', error);
-      //     }
-      // })
-      ;
     }
   }
 

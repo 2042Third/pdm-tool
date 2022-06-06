@@ -45,6 +45,7 @@ export class NavComponent implements AfterViewInit {
   notes_obj : NotesMsg;
   // signin_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
+  timeout: number=1000;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -182,6 +183,9 @@ export class NavComponent implements AfterViewInit {
           next: data => {
             this.note_status=data.note_id;
             console.log(this.note_status);
+            setTimeout(() => {
+              this.getNotesHeads()
+            }, this.timeout);
           },
           error: error => {
             this.errorMessage = error.message;
