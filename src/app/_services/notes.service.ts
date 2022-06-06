@@ -16,7 +16,9 @@ import { environment } from 'src/environments/environment';
 })
 export class NotesService {
   notes_obj:NotesMsg = new NotesMsg();
+  savestatus="";
   public notesSubject: BehaviorSubject<NotesMsg> = new BehaviorSubject<NotesMsg>(this.notes_obj);
+  public notesSaveSubject: BehaviorSubject<String> = new BehaviorSubject<String>(this.savestatus);
   errorMessage: any;
   feature_sub: Subscription;
   signin_obj: ServerMsg;
@@ -24,8 +26,13 @@ export class NotesService {
   signin_stat: boolean = false;
   dialogRef:MatDialogRef<DialogNotificationsComponent, any>;
   dialogConfig = new MatDialogConfig();
+  private cur_open_note:String;
+  private last_save_time:number=-1;
+  private last_save_time_str:String="never";
+  private last_save_time_diff:number=-1;
   private signup_sub:Subscription;
   public cur_content:String="";
+  private sidenav: MatSidenav;
   //debug data
   private debug_str = '{"note_id":"listed","sess":"debugkey","h":"listed","ntype":"heads_return","content":[{"head":null,"note_id":"5"},{"head":null,"note_id":"6"},{"head":null,"note_id":"7"},{"head":null,"note_id":"8"},{"head":null,"note_id":"9"},{"head":null,"note_id":"10"},{"head":null,"note_id":"11"}],"email":"18604713262@163.com","hash":"ee741763ee120d70254401bba3384388bb43c3270394f16998cb9af64c0e4b1d","status":"success"}';
   private debug_obj:NotesMsg = JSON.parse(this.debug_str);
@@ -41,6 +48,7 @@ export class NotesService {
       this.dialogConfig.autoFocus = true;
       this.dialogConfig.data = {dialogType:"Alert", message:"Please log in."};
       this.dialogConfig.panelClass= 'custom-modalbox';
+      // User signin status
       this.signup_sub = this.userinfo.signin_status_value.subscribe(
       {
         next: data=>{
@@ -63,7 +71,6 @@ export class NotesService {
     );
     console.log("notes service signin_obj subscribed");
   }
-  private sidenav: MatSidenav;
   ngOnInit() {
 
   }
@@ -72,6 +79,17 @@ export class NotesService {
     this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
   }
 
+  /**
+   * DEBUG ONLY.
+   * Pushes hard-coded packet to the observer.
+   * Imitating a server's response after a heads' call.
+   *
+  */
+  public debug_push_note_msg(){
+    // this.ngzone.run(()=>{
+      this.notesSubject.next(this.debug_obj);
+    // });
+  }
   /**
    * Push the current note's update to the server
    *
@@ -94,23 +112,21 @@ export class NotesService {
         "sess":this.signin_obj.sess,
         "ntype":this.notes_obj.ntype,
         "email":this.signin_obj.email,
+        "note_id":this.cur_open_note,
       }).pipe(map(upData => {
         this.notesSubject.next(upData);
+        if(this.last_save_time==-1){
+          this.last_save_time = Number(upData.time);
+        }
+        else {
+          this.last_save_time_diff=Number(upData.time) -this.last_save_time;
+          this.last_save_time_str="saved "+this.last_save_time_diff+" ago";
+          this.last_save_time = Number(upData.time);
+          this.notesSaveSubject.next(this.last_save_time_str);
+        }
         return upData;
       }))
     });
-  }
-
-  /**
-   * DEBUG ONLY.
-   * Pushes hard-coded packet to the observer.
-   * Imitating a server's response after a heads' call.
-   *
-  */
-  public debug_push_note_msg(){
-    // this.ngzone.run(()=>{
-      this.notesSubject.next(this.debug_obj);
-    // });
   }
 
   public new_note(){
@@ -180,6 +196,9 @@ export class NotesService {
     )
     .pipe(map(upData => {
       this.notesSubject.next(upData);
+      if(upData.status == "success"){
+        this.cur_open_note = upData.note_id;
+      }
       return upData;
     }));
   }

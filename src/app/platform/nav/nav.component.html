@@ -47,29 +47,10 @@
       </button>
 
       <h5 class="title secondary-font"></h5>
+      <!-- note status -->
+      <font *ngIf="currentRoute=='/notes'" class="note-status" >{{saving_str}}</font>
       <!-- debug menu -->
       <button mat-button [matMenuTriggerFor]="debug">Debug Menu</button>
-      <mat-menu #debug="matMenu" xPosition="before">
-        <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebug">Notes</button>
-      </mat-menu>
-
-      <mat-menu #notesDebug="matMenu" xPosition="before">
-        <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOnline">live</button>
-        <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOffline">offline</button>
-      </mat-menu>
-      <!-- offline notes debug -->
-      <mat-menu #notesDebugOffline="matMenu" xPosition="before">
-        <button class="text-color" mat-menu-item (click)="notes_serv.openDialog()">Launch dialog</button>
-        <button class="text-color" mat-menu-item
-        (click)="notes_serv.debug_push_note_msg()"
-        >Pass Heads</button>
-      </mat-menu>
-      <!-- online notes debug -->
-      <mat-menu #notesDebugOnline="matMenu" xPosition="before">
-        <button class="text-color" mat-menu-item (click)="getNotesHeads()">Get Notes</button>
-        <button class="text-color" mat-menu-item (click)="notes_serv.liveUpdateNote()">Update Note</button>
-        <!-- <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()">Pass Heads</button> -->
-      </mat-menu>
 
       <button *ngIf="currentRoute=='/notes'"
        mat-icon-button color="secondary"
@@ -83,3 +64,25 @@
 
   </mat-drawer-content>
 </mat-drawer-container>
+
+
+<!-- DEBUG DEFS -->
+<mat-menu #debug="matMenu" xPosition="before">
+  <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebug">Notes</button>
+</mat-menu>
+<mat-menu #notesDebug="matMenu" xPosition="before">
+  <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOnline">live</button>
+  <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOffline">offline</button>
+</mat-menu>
+<!-- offline notes debug -->
+<mat-menu #notesDebugOffline="matMenu" xPosition="before">
+  <button class="text-color" mat-menu-item (click)="notes_serv.openDialog()">Launch dialog</button>
+  <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()">Pass Heads</button>
+  <button class="text-color" mat-menu-item (click)="userinfo.mock_ps()">Mock Pass</button>
+</mat-menu>
+<!-- online notes debug -->
+<mat-menu #notesDebugOnline="matMenu" xPosition="before">
+  <button class="text-color" mat-menu-item (click)="getNotesHeads()">Get Notes</button>
+  <button class="text-color" mat-menu-item (click)="updateNote()">Update Note</button>
+  <!-- <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()">Pass Heads</button> -->
+</mat-menu>

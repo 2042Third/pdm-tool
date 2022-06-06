@@ -19,7 +19,7 @@ export class NotesMsg{
   h:String;
   username:String;
   status:String;
-
+  time:String;
 }
 
 export class NoteHead{

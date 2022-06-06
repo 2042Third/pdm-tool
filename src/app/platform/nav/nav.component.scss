@@ -9,6 +9,10 @@
 .signin-icon{
   color: #0aac42;
 }
+.note-status {
+  color: rgb(107, 106, 106);
+  font-size: smaller;
+}
 mat-drawer-container {
 
   height: 100%;
@@ -117,3 +121,4 @@ overflow-y: scroll;
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }
+

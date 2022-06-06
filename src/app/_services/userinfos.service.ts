@@ -3,6 +3,7 @@ import{User} from '../_types/User'
 import {ServerMsg, } from '../_types/ServerMsg';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 // import { EncryptComponent } from '../security/encrypt/encrypt.component';
 
 @Injectable({
@@ -10,9 +11,11 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UserinfoService {
   private signin_status_obj:ServerMsg=new ServerMsg;
-  subject :Subject<ServerMsg> =new Subject<ServerMsg>();
-  public signin_status_value:Subject<ServerMsg> =new Subject<ServerMsg>();
-  public signin_status_value_note:Subject<ServerMsg> =new Subject<ServerMsg>();
+  // subject :Subject<ServerMsg> =new Subject<ServerMsg>();
+  private s_authdata="";
+  public signin_status_value:Subject<ServerMsg> =new BehaviorSubject<ServerMsg>(this.signin_status_obj);
+  // public signin_status_value_note:Subject<ServerMsg> =new BehaviorSubject<ServerMsg>();
+  public authdata_stream:Subject<String> = new BehaviorSubject<String>(this.s_authdata);
   public signin_status: Observable<ServerMsg>;
   public signin_status_note: Observable<ServerMsg>;
 
@@ -33,7 +36,7 @@ export class UserinfoService {
       this.signin_status_obj = JSON.parse(JSON.stringify(a));
       this.signin_status_obj.username = this.signin_status_obj.receiver;
       this.signin_status_value.next(this.signin_status_obj);
-      this.signin_status_value_note.next(this.signin_status_obj);
+      // this.signin_status_value_note.next(this.signin_status_obj);
   }
 
   public is_signed_in(){
@@ -44,11 +47,19 @@ export class UserinfoService {
     return this.signin_status_value;
   }
 
-  public get_info_note(){
-    return this.signin_status_value_note;
+  // public get_info_note(){
+  //   // return this.signin_status_value_note;
+  // }
+
+  mock_ps(){
+    if(!environment.production){
+      this.authdata_stream.next("1234");
+      this.pswd = '1234';
+    }
   }
 
   public set_pswd(a:string){
+    this.authdata_stream.next(a);
     this.pswd = a;
   }
 

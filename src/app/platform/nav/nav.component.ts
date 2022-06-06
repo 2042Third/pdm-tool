@@ -40,13 +40,15 @@ export class NavComponent implements AfterViewInit {
 
   has_heads=false;
   notes_subject : Subscription;
+  saving_subject:Subscription;
+  saving_str : String ="";
   notes_obj : NotesMsg;
   // signin_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userinfo: UserinfoService,
+    public userinfo: UserinfoService,
     private themeService: ThemeService,
     public notes_serv:NotesService,
     public ngzone: NgZone ,
@@ -80,8 +82,7 @@ export class NavComponent implements AfterViewInit {
           console.log("?");
         }
       }
-      )
-    ;
+      );
     this.themeService.setDarkTheme();
     // User notes listing
     this.notes_subject = notes_serv.notesSubject.subscribe(
@@ -97,6 +98,13 @@ export class NavComponent implements AfterViewInit {
             this.peak_heads();
           });
         }
+      }
+    );
+
+    //saving status
+    this.saving_subject = notes_serv.notesSaveSubject.subscribe(
+      data=>{
+        this.saving_str = data;
       }
     );
   }
@@ -168,11 +176,6 @@ export class NavComponent implements AfterViewInit {
     this.setLightbulb();
   }
 
-  ngOnDestroy() {
-    console.log("unsubcalled!!!!!");
-    this.signup_sub.unsubscribe();
-    this.notes_subject.unsubscribe();
-  }
 
   newNote(){
     this.notes_serv.new_note().subscribe({
@@ -201,7 +204,17 @@ export class NavComponent implements AfterViewInit {
   }
 
   updateNote(){
-
+    console.log("Updating note ");
+    this.notes_serv.liveUpdateNote().subscribe({
+          next: data => {
+            this.note_status=data.note_id;
+            console.log(this.note_status);
+          },
+          error: error => {
+            this.errorMessage = error.message;
+            console.error('There was an error!', error);
+          }
+      });
   }
 
   getNote(a:String){
@@ -216,5 +229,12 @@ export class NavComponent implements AfterViewInit {
             console.error('There was an error!', error);
           }
       });
+  }
+
+
+  ngOnDestroy() {
+    this.signup_sub.unsubscribe();
+    this.notes_subject.unsubscribe();
+    this.saving_subject.unsubscribe();
   }
 }
