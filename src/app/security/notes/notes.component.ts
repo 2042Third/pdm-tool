@@ -1,10 +1,11 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NotesService } from 'src/app/_services/notes.service';
-import { NotesMsg } from 'src/app/_types/User';
+import { NoteHead, NotesMsg } from 'src/app/_types/User';
 import { c20 } from '../emscripten/c20wasm';
 import { EmscriptenWasmComponent } from '../emscripten/emscripten-wasm.component';
 import { UserinfoService } from '../../_services/userinfos.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'security-notes',
@@ -12,6 +13,9 @@ import { UserinfoService } from '../../_services/userinfos.service';
   styleUrls: ['./notes.component.scss']
 })
 export class NotesComponent  extends EmscriptenWasmComponent<c20> {
+
+  @ViewChild('headContent') head_content_ref: ElementRef;
+  @ViewChild('mainContent') content_ref: ElementRef;
   nt_disabled = false;
   notes_subject : Subscription;
   notes_obj : NotesMsg;
@@ -20,8 +24,10 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20> {
   change_no_wait=true;
   wait_and_check=false;
   authdata:Subscription;
+  head_content="";
   authdata_make:string='';
   waiter=0;
+  named_notes_heads:NoteHead[];
   constructor(
     public notes_serv:NotesService,
     private ngzone:NgZone,
@@ -32,11 +38,34 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20> {
     this.notes_subject = notes_serv.notesSubject.subscribe(
       data=>{
         this.notes_obj = JSON.parse(JSON.stringify(data));
-        console.log("NOTES COMPONENT recieved content: "+ this.notes_obj.content);
+        console.log("NOTES COMPONENT recieved content: "+ this.notes_obj.ntype);
         if(this.notes_obj.ntype == "retrieve_return" ){
           console.log("NOTES COMPONENT recieved retrival result for note "+ this.notes_obj.note_id
           +"\n\tStatus: "+ this.notes_obj.status);
-          this.content = this.dec(this.notes_obj.content.toString());
+          if(this.notes_obj.content !=null){
+            this.content = this.dec(this.notes_obj.content.toString());
+            this.change(this.content);
+          }
+          else {
+            this.content = "";
+            this.change(this.content);
+          }
+          if(this.notes_obj.head != null){
+            this.notes_serv.setHead(this.notes_obj.head);
+            this.head_content = this.dec(this.notes_obj.head.toString());
+          }
+          else {
+            this.head_content = "";
+            this.notes_serv.setHead("");
+          }
+        }
+        else if (this.notes_obj.ntype == "heads_return" ){
+          console.log("Notes,  nav");
+          this.named_notes_heads=JSON.parse(JSON.stringify(this.notes_obj.content));
+          this.dec_heads();
+          this.notes_obj.content=JSON.stringify(this.named_notes_heads);
+          this.notes_serv.set_nav_head(this.notes_obj);
+          console.log("Notes, done pushing the heads to nav");
         }
       }
     );
@@ -47,6 +76,21 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20> {
         console.log("NOTES COMPONENT authdata: "+ this.authdata_make);
       }
     );
+  }
+
+
+  dec_heads(){
+    let i=0;
+    for (i=0;i<this.named_notes_heads.length;i++){
+    this.named_notes_heads[i].id = Number(this.named_notes_heads[i].note_id);
+      if(this.named_notes_heads[i].head == null){
+        this.named_notes_heads[i].head = "unnamed note";
+      }
+      else {
+        this.named_notes_heads[i].head = this.dec(this.named_notes_heads[i].head.toString());
+      }
+      this.named_notes_heads[i].utime = formatDate(Number(this.named_notes_heads[i].update_time)*1000, "medium",'en-US' ).toString();
+    }
   }
 /**
    * By Yi Yang, June 6, 2022
@@ -86,14 +130,23 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20> {
     }
   }
 
-
+  editHead(){
+    this.notes_serv.setHead(this.enc(this.head_content));
+    this.head_content_ref.nativeElement.blur();
+    this.content_ref.nativeElement.focus();
+  }
   toggleRightSidenav() {
     this.notes_serv.toggle();
   }
 
   change(a:String){
     console.log("content change");
-    this.notes_serv.setCurContent(this.enc(a.toString()));
+    if(a!=null){
+      this.notes_serv.setCurContent(this.enc(a.toString()));
+    }
+    else{ // empty note
+      this.notes_serv.setCurContent("");
+    }
   }
 
   ngOnInit() {

@@ -9,7 +9,18 @@ export class User {
   authdata?:string;
 }
 
-export class NotesMsg{
+export class NoteHead{
+  head:String;
+  note_id:String;
+  id:number;
+  time:Number;
+  update_time:Number;
+  utime:String;
+  ctime:String;
+
+}
+
+export class NotesMsg extends NoteHead{
   content: String;
   email:String;
   note_id:String;
@@ -19,11 +30,6 @@ export class NotesMsg{
   h:String;
   username:String;
   status:String;
-  time:String;
+  encry:String="yes";
 }
 
-export class NoteHead{
-  head:String;
-  note_id:String;
-  id:number;
-}

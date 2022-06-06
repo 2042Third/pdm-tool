@@ -12,11 +12,14 @@
           <mat-list *ngIf="has_heads" dense>
             <mat-list-item *ngFor="let head of named_notes_heads;trackBy:getNoteId">
               <button type="button" (click)="getNote(head.note_id)" class="text-color note-listing">
-                <p>
-                  <span [attr.data-id]="head.id">
+                <span [attr.data-id]="head.id">
+                  <p matLine>
                     {{head.note_id}} {{head.head}}
-                  </span>
-                </p>
+                  </p>
+                  <p  class="pdm-update-time" matLine>
+                    {{head.utime}}
+                  </p>
+                </span>
               </button>
             </mat-list-item>
           </mat-list>

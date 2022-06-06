@@ -15,6 +15,7 @@ import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
 import { NotesService } from 'src/app/_services/notes.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
 import { NoteHead, NotesMsg } from '../../_types/User';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: "app-nav",
@@ -54,28 +55,25 @@ export class NavComponent implements AfterViewInit {
     public notes_serv:NotesService,
     public ngzone: NgZone ,
   ) {
-      console.log ("MAKING NAV COMPONENTS");
+      // console.log ("MAKING NAV COMPONENTS");
     this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
             this.currentRoute = event.url;
               console.log(event);
         }
     });
-    console.log("NAV signin_obj subscribed");
+    // console.log("NAV signin_obj subscribed");
     // User signin status
     this.signup_sub = this.userinfo.signin_status_value.subscribe(
       {
         next: data=>{
-            // this.signin_obj.sender = data.sender;
             this.signin_obj = JSON.parse(JSON.stringify(data)); // make a copy
-            console.log("NAV this.signin_obj="+this.signin_obj);
-            console.log("NAV this.signin_obj.status="+this.signin_obj.status);
             this.signin_stat_str = data.receiver;
             if(this.signin_obj.status != "fail"){
               this.signin_stat = true;
             }
             else {
-              // this.signin_stat_str="Not Signed In";
+              this.signin_stat_str="Not Signed In";
               this.signin_stat = false;
             }
           },
@@ -86,16 +84,14 @@ export class NavComponent implements AfterViewInit {
       );
     this.themeService.setDarkTheme();
     // User notes listing
-    this.notes_subject = notes_serv.notesSubject.subscribe(
+    this.notes_subject = notes_serv.notesSubjectHead.subscribe(
       data=>{
         this.notes_obj = JSON.parse(JSON.stringify(data));
-        console.log("NAV COMPONENT recieved content: "+ this.notes_obj.content);
         if(this.notes_obj.ntype == "heads_return"){
-          console.log("NAV COMPONENT recieved is heads"+JSON.stringify(this.notes_obj.content));
           this.notes_heads = this.notes_obj;
           this.ngzone.run(()=>{
             this.has_heads=false;
-            this.named_notes_heads=JSON.parse(JSON.stringify(this.notes_obj.content));
+            this.named_notes_heads=JSON.parse(this.notes_obj.content.toString());
             this.peak_heads();
           });
         }
@@ -132,14 +128,6 @@ export class NavComponent implements AfterViewInit {
 
   peak_heads(){
     this.notesnav.toggle();
-    let i=0;
-    for (i=0;i<this.named_notes_heads.length;i++){
-    this.named_notes_heads[i].id = Number(this.named_notes_heads[i].note_id);
-      if(this.named_notes_heads[i].head == null){
-        this.named_notes_heads[i].head = "unnamed note";
-      }
-      console.log("head part " +i+"-->"+this.named_notes_heads[i].head);
-    }
     this.has_heads = true;
     this.notesnav.toggle();
   }

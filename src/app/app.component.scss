@@ -55,3 +55,10 @@ app-platform {
   background: rgba(255, 255, 255, .2);
   border: none;
 }
+
+// Fonts pdm
+::ng-deep .pdm-update-time {
+  font-size: 5px;
+  font-family: 'Courier New', Courier, monospace;
+  color: rgb(126, 125, 125);
+}

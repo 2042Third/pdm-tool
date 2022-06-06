@@ -5,9 +5,26 @@
     width: 100%;
     height: 90%;
 }
+input {
+  border: 0;
+  outline: 0;
+  background-color: var(--background-primary);
+  color: var(--foreground-quaternary);
+  padding: 5px;
+  margin: 3px;
+  border-radius: 5px;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+input:focus {
+  outline: none !important;
+  background-color: var(--background-secondary);
+  color: var(--foreground-quaternary);
+}
 .inputClass2 {
   // width: 90%;
-
+  outline: 0;
   height: 90%;
   border: none;
   padding: 15px;

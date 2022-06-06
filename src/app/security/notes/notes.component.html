@@ -1,11 +1,7 @@
-<!-- <div class="note-box">
-  <textarea class="inputClass2" [(appNotesEdit)]="notes_serv.content">
-    {{notes_serv.content}}
-  </textarea>
-</div> -->
+
 <div class="note-box">
-  <textarea matInput type="text" (keyup)="notesSave()" [(ngModel)]="content" class="inputClass2" [(appNotesEdit)]="content" >
+  <mat-divider></mat-divider>
+  <input #headContent (change)="editHead()" [(ngModel)]="head_content" (keyup.enter)="editHead()" >
+  <textarea #mainContent matInput type="text" (keyup)="notesSave()" (change)="change(content)" [(ngModel)]="content" class="inputClass2" [(appNotesEdit)]="content" >
   </textarea>
-  <!-- <textarea class="inputClass2" [(appNotesEdit)]="notes_serv.cur_content">{{notes_serv.cur_content}}
-  </textarea> -->
 </div>

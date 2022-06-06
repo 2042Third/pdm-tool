@@ -11,6 +11,7 @@ import { UserinfoService } from '../../_services/userinfos.service';
 import { c20 } from "../emscripten/c20wasm";
 import { EmscriptenWasmComponent } from "../emscripten/emscripten-wasm.component";
 import { ServerMsg } from "src/app/_types/ServerMsg";
+import { formatDate } from "@angular/common";
 
 
 @Component({
@@ -43,6 +44,8 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
       };
     }
     this.formControl = new FormControl({value: '', disabled: this.no_submit});
+
+
   }
 
   ngOnInit() {
