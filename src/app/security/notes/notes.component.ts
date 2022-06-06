@@ -12,7 +12,7 @@ import { formatDate } from '@angular/common';
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss']
 })
-export class NotesComponent  extends EmscriptenWasmComponent<c20> {
+export class NotesComponent  extends EmscriptenWasmComponent<c20>   implements OnInit {
 
   @ViewChild('headContent') head_content_ref: ElementRef;
   @ViewChild('mainContent') content_ref: ElementRef;
@@ -34,11 +34,24 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20> {
     private userinfo:UserinfoService,
   ) {
     super("Cc20Module", "notes.js");
+
+    // Authenticated messages
+    this.authdata = this.userinfo.authdata_stream.subscribe(
+      data=>{
+        this.authdata_make = data.toString();
+        console.log("NOTES COMPONENT authdata: "+ this.authdata_make);
+      }
+    );
+
+  }
+
+  ngOnInit(){
     // Current notes messages
-    this.notes_subject = notes_serv.notesSubject.subscribe(
+    console.log("oninit for notes");
+    this.notes_subject = this.notes_serv.notesSubject.subscribe(
       data=>{
         this.notes_obj = JSON.parse(JSON.stringify(data));
-        console.log("NOTES COMPONENT recieved content: "+ this.notes_obj.ntype);
+        console.log("NOTES COMPONENT recieved content: "+ JSON.stringify(this.notes_obj));
         if(this.notes_obj.ntype == "retrieve_return" ){
           console.log("NOTES COMPONENT recieved retrival result for note "+ this.notes_obj.note_id
           +"\n\tStatus: "+ this.notes_obj.status);
@@ -69,16 +82,7 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20> {
         }
       }
     );
-    // Authenticated messages
-    this.authdata = this.userinfo.authdata_stream.subscribe(
-      data=>{
-        this.authdata_make = data.toString();
-        console.log("NOTES COMPONENT authdata: "+ this.authdata_make);
-      }
-    );
   }
-
-
   dec_heads(){
     let i=0;
     for (i=0;i<this.named_notes_heads.length;i++){
@@ -149,9 +153,6 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20> {
     }
   }
 
-  ngOnInit() {
-  }
-
   ngOnDestroy(){
     this.notes_subject.unsubscribe();
     this.authdata.unsubscribe();
@@ -167,8 +168,11 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20> {
   }
 
   public dec (inp:string){
-    if(this.module==null || this.authdata_make==''){
+    if(this.module==null ){
       return "unable to decrypt!"
+    }
+    if(this.authdata_make==''){
+      return "unable to decrypt! No password."
     }
     if(inp.length==0){
       return '';

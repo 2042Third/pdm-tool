@@ -38,7 +38,7 @@ export class NavComponent implements AfterViewInit {
   signin_stat: boolean = false;
   notes_heads: NotesMsg;
   named_notes_heads:NoteHead[];
-
+  nav_open_mode = "side"; // nav mode for mobile or desktop
   has_heads=false;
   notes_subject : Subscription;
   saving_subject:Subscription;
@@ -47,6 +47,8 @@ export class NavComponent implements AfterViewInit {
   // signin_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
   timeout: number=1000;
+  // User view
+  isMobileDevice=false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -55,7 +57,28 @@ export class NavComponent implements AfterViewInit {
     public notes_serv:NotesService,
     public ngzone: NgZone ,
   ) {
-      // console.log ("MAKING NAV COMPONENTS");
+    // START QUOTE , from https://www.geeksforgeeks.org/how-to-detect-whether-the-website-is-being-opened-in-a-mobile-device-or-a-desktop-in-javascript/
+    //Checking is mobile or not
+    /* Storing user's device details in a variable*/
+    let details = navigator.userAgent;
+
+    /* Creating a regular expression
+    containing some mobile devices keywords
+    to search it in details string*/
+    let regexp = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+
+    /* Using test() method to search regexp in details
+    it returns boolean value*/
+    this.isMobileDevice = regexp.test(details);
+    // END QUOTE
+
+    if (this.isMobileDevice) {
+      this.nav_open_mode = "over";
+    } else {
+      this.nav_open_mode = "side";
+    }
+
+    // console.log ("MAKING NAV COMPONENTS");
     this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
             this.currentRoute = event.url;

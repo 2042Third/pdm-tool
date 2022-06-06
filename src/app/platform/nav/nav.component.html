@@ -2,8 +2,9 @@
 
 </mat-sidenav-container> -->
 
-<mat-drawer-container>
-  <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles "  mode="side" hasBackDrop="false" opened="true">
+<!-- DESKTOP -->
+<mat-drawer-container >
+  <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles "  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
     <div class="drawer-styles">
       <button mat-icon-button color="secondary" (click)="newNote()" class="icons">New</button>
 
@@ -19,6 +20,7 @@
                   <p  class="pdm-update-time" matLine>
                     {{head.utime}}
                   </p>
+                  <mat-divider></mat-divider>
                 </span>
               </button>
             </mat-list-item>
@@ -27,7 +29,7 @@
     </div>
   </mat-drawer>
 
-  <mat-drawer #drawer class="matdrawer-styles"  mode="side" hasBackDrop="false" opened="true">
+  <mat-drawer #drawer class="matdrawer-styles"  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
     <div class="drawer-styles">
       <div class="signin_container">
         <mat-icon class="signin-icon" [ngStyle]="{ color: signin_stat ? 'green' : 'red' }">account_box</mat-icon>
