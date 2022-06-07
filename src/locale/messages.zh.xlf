@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="e0f3bad114491f3fc3b2daec3e240ec8e2a32fd8" datatype="html">
+        <source>New Note</source>
+        <target>新笔记</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fcde58253a4cfd52c228eebdae74e1be7a1ab714" datatype="html">
+        <source>Notes</source>
+        <target>笔记</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5adf337be1ad12c915ae18012f1bfa1f2ca4628b" datatype="html">
+        <source>Chat</source>
+        <target>聊天</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e08a77594f3d89311cdf6da5090044270909c194" datatype="html">
+        <source>User</source>
+        <target>用户</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2a9bcbd44f048476db1f9a94a19a48780278ebb6" datatype="html">
+        <source>Debug Menu</source>
+        <target>开发菜单</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="82420228aac86874114c4182061116780baeaccd" datatype="html">
+        <source>live</source>
+        <target>在线</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">80</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4a5cd3cae2b06f71e45262453b1ee78fec5266fb" datatype="html">
+        <source>offline</source>
+        <target>离线</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3a96506cd8115d0d53af3404c0712acfbad87d34" datatype="html">
+        <source>Launch dialog</source>
+        <target>开启窗口</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8b30cac22321859a9a085a00a9b21c4818acd22d" datatype="html">
+        <source>Pass Heads</source>
+        <target>导入笔记记号</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a8c9b4221fc3079fd68071a279486843e34e98e7" datatype="html">
+        <source>Mock Pass</source>
+        <target>开发密钥</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="08dd640aca16c99feaf4a23f53ff1092f1c95928" datatype="html">
+        <source>Get Notes</source>
+        <target>获取笔记</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ff79ab4679d5ae9fdd35c6f25974d1f458adbf53" datatype="html">
+        <source>Update Note</source>
+        <target>更新笔记</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.html</context>
+          <context context-type="linenumber">92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6930557464716251673" datatype="html">
+        <source>Not Signed In</source>
+        <source>未登录</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/platform/nav/nav.component.ts</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+        <note priority="1" from="meaning">meaning</note>
+      </trans-unit>
+
+      <trans-unit id="9b2fd2a81342b5821f47ce0e6f2383b1403fd659" datatype="html">
+        <source>Email is required</source>
+        <target>请输入邮箱</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1e20f8b8a4706526c9024cc2f39d568345d100dc" datatype="html">
+        <source>Password is required</source>
+        <target>请输入密码</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="baef42f785384c441a6fe4b0e73dc2fb0adce66d" datatype="html">
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;loading&quot; class=&quot;spinner-border spinner-border-sm mr-1&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Sign In </source>
+        <target><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;loading&quot; class=&quot;spinner-border spinner-border-sm mr-1&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> 登录 </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.html</context>
+          <context context-type="linenumber">29,31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="28629af803ab8b5f6e995b17d486e6a1527e2a96" datatype="html">
+        <source>Sign Up</source>
+        <target>申请账号</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fef69ecd9746c0ae95be57dfdddd8a26e156e8df" datatype="html">
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;spinner-border spinner-border-sm mr-1&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Sign Up </source>
+        <target><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;spinner-border spinner-border-sm mr-1&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> 申请账号 </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.html</context>
+          <context context-type="linenumber">65,67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e3ae327396046c6bd9098257905f3e74b1b7196a" datatype="html">
+        <source>Back to Sign In</source>
+        <target>返回到登录界面</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7808845648623821267" datatype="html">
+        <source>Password</source>
+        <target>密码</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.ts</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+        <note priority="1" from="meaning">meaning</note>
+      </trans-unit>
+      <trans-unit id="5260139266647117929" datatype="html">
+        <source>Email</source>
+        <target>邮箱</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.ts</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+        <note priority="1" from="meaning">meaning</note>
+      </trans-unit>
+      <trans-unit id="6220074846801480646" datatype="html">
+        <source>Username</source>
+        <target>用户名</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security/signin/signin.component.ts</context>
+          <context context-type="linenumber">80</context>
+        </context-group>
+        <note priority="1" from="meaning">meaning</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

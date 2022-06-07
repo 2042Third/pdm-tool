@@ -7,6 +7,14 @@
   "newProjectRoot": "projects",
   "projects": {
     "pdm-notes": {
+
+      "i18n":{
+        "sourceLocale":"en-US",
+        "locales": {
+          "zh-CN": "src/locale/messages.zh.xlf"
+        }
+
+      },
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,6 +31,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "localize":["zh-CN"],
             "outputPath": "dist/pdm-notes",
             "index": "src/index.html",
             "main": "src/main.ts",

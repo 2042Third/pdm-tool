@@ -6,7 +6,7 @@
 <mat-drawer-container >
   <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles "  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
     <div class="drawer-styles">
-      <button mat-icon-button color="secondary" (click)="newNote()" class="icons">New</button>
+      <button mat-icon-button color="secondary" (click)="newNote()" class="icons" i18n>New Note</button>
 
       <mat-divider></mat-divider>
       <p class="expansion-contain">
@@ -18,7 +18,7 @@
                     {{head.note_id}} {{head.head}}
                   </p>
                   <p  class="pdm-update-time" matLine>
-                    {{head.utime}}
+                    {{head.utime | date}}
                   </p>
                   <mat-divider></mat-divider>
                 </span>
@@ -38,11 +38,12 @@
         </p>
       </div>
       <mat-divider></mat-divider>
-      <button routerLink="./notes" routerLinkActive="active" mat-icon-button color="secondary" (click)="toNotes()" class="icons">Notes</button>
-      <button routerLink="./chat" routerLinkActive="active" mat-icon-button color="secondary" (click)="toChat()" class="icons">Chat</button>
-      <button routerLink="./signin" routerLinkActive="active" mat-icon-button color="secondary" (click)="toSignin()" class="icons">User</button>
+      <button routerLink="./notes" routerLinkActive="active" [queryParams]="{ locale: cur_locale }" queryParamsHandling="preserve" mat-icon-button color="secondary" (click)="toNotes()" class="icons" i18n>Notes</button>
+      <button routerLink="./chat" routerLinkActive="active" [queryParams]="{ locale: cur_locale }" queryParamsHandling="preserve" mat-icon-button color="secondary" (click)="toChat()" class="icons" i18n>Chat</button>
+      <button routerLink="./signin" routerLinkActive="active" [queryParams]="{ locale: cur_locale }" queryParamsHandling="preserve" mat-icon-button color="secondary" (click)="toSignin()" class="icons" i18n>User</button>
       <mat-divider></mat-divider>
       <font class="title-font" bold="true">PDM Notes</font>
+      <a href="https://pdm.pw/web_notes/notes?locale=cn">link text</a>
     </div>
   </mat-drawer>
   <mat-drawer-content class="platf">
@@ -55,7 +56,7 @@
       <!-- note status -->
       <font *ngIf="currentRoute=='/notes'" class="note-status" >{{saving_str}}</font>
       <!-- debug menu -->
-      <button mat-button [matMenuTriggerFor]="debug">Debug Menu</button>
+      <button mat-button [matMenuTriggerFor]="debug" i18n>Debug Menu</button>
 
       <button *ngIf="currentRoute=='/notes'"
        mat-icon-button color="secondary"
@@ -73,21 +74,21 @@
 
 <!-- DEBUG DEFS -->
 <mat-menu #debug="matMenu" xPosition="before">
-  <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebug">Notes</button>
+  <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebug" i18n>Notes</button>
 </mat-menu>
 <mat-menu #notesDebug="matMenu" xPosition="before">
-  <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOnline">live</button>
-  <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOffline">offline</button>
+  <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOnline" i18n>live</button>
+  <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOffline" i18n>offline</button>
 </mat-menu>
 <!-- offline notes debug -->
 <mat-menu #notesDebugOffline="matMenu" xPosition="before">
-  <button class="text-color" mat-menu-item (click)="notes_serv.openDialog()">Launch dialog</button>
-  <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()">Pass Heads</button>
-  <button class="text-color" mat-menu-item (click)="userinfo.mock_ps()">Mock Pass</button>
+  <button class="text-color" mat-menu-item (click)="notes_serv.openDialog()" i18n>Launch dialog</button>
+  <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()" i18n>Pass Heads</button>
+  <button class="text-color" mat-menu-item (click)="userinfo.mock_ps()" i18n>Mock Pass</button>
 </mat-menu>
 <!-- online notes debug -->
 <mat-menu #notesDebugOnline="matMenu" xPosition="before">
-  <button class="text-color" mat-menu-item (click)="getNotesHeads()">Get Notes</button>
-  <button class="text-color" mat-menu-item (click)="updateNote()">Update Note</button>
+  <button class="text-color" mat-menu-item (click)="getNotesHeads()" i18n>Get Notes</button>
+  <button class="text-color" mat-menu-item (click)="updateNote()" i18n>Update Note</button>
   <!-- <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()">Pass Heads</button> -->
 </mat-menu>

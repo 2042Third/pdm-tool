@@ -43,6 +43,10 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   signup_msg="wait...";
   signup_email:String="";
   server_back:ServerMsg;
+  phps="Password";
+  phemail="Email";
+  phuser="User Name";
+
   public signup_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
   constructor(
@@ -68,6 +72,12 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
                         +" to activate.";
       }
     });
+
+
+    // LOCALE
+    this.phps=$localize`:meaning|:Password`;
+    this.phemail=$localize`:meaning|:Email`;
+    this.phuser=$localize`:meaning|:Username`;
   }
 
   ngOnInit() {
@@ -96,7 +106,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
           return;
       }
       console.log("top call request for signup");
-      this.auth.signup(this.f2.uname.value
+      this.auth.signup(this.module.loader_check(this.f2.upw.value, this.f2.uname.value)
         , this.f2.umail.value
         , this.module.get_hash(this.f2.upw.value+this.f2.upw.value)) // server only knows the hash of the pass+pass
       .pipe().subscribe(data =>this.set_server_msg(data));

@@ -34,7 +34,7 @@ export class NavComponent implements AfterViewInit {
   errorMessage: any;
   feature_sub: Subscription;
   signin_obj: ServerMsg;
-  signin_stat_str: String = "Not Signed In";
+  signin_stat_str: String = 'Not Signed In';
   signin_stat: boolean = false;
   notes_heads: NotesMsg;
   named_notes_heads:NoteHead[];
@@ -49,6 +49,8 @@ export class NavComponent implements AfterViewInit {
   timeout: number=1000;
   // User view
   isMobileDevice=false;
+  //LOCALE
+  cur_locale = "en";
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -78,14 +80,15 @@ export class NavComponent implements AfterViewInit {
       this.nav_open_mode = "side";
     }
 
-    // console.log ("MAKING NAV COMPONENTS");
     this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
             this.currentRoute = event.url;
-              console.log(event);
+            this.currentRoute = this.currentRoute.substring(0,this.currentRoute.indexOf('?') );
+            console.log(this.currentRoute);
         }
     });
-    // console.log("NAV signin_obj subscribed");
+    // LOCALE
+    this.signin_stat_str=$localize`:meaning|:Not Signed In`;
     // User signin status
     this.signup_sub = this.userinfo.signin_status_value.subscribe(
       {
@@ -133,6 +136,13 @@ export class NavComponent implements AfterViewInit {
   }
 
   ngOnInit() {
+    this.route.queryParams
+      .subscribe(params => {
+        console.log(params); // { order: "popular" }
+        this.cur_locale = params.locale;
+        console.log("Getting locale: "+this.cur_locale);
+      }
+    );
     this.setLightbulb();
     // Feature
     this.route.paramMap.pipe(
