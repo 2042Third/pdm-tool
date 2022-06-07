@@ -28,6 +28,7 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20>   implements O
   authdata_make:string='';
   waiter=0;
   named_notes_heads:NoteHead[];
+  attampted_loading=false;
   constructor(
     public notes_serv:NotesService,
     private ngzone:NgZone,
@@ -39,7 +40,7 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20>   implements O
     this.authdata = this.userinfo.authdata_stream.subscribe(
       data=>{
         this.authdata_make = data.toString();
-        console.log("NOTES COMPONENT authdata: "+ this.authdata_make);
+        // console.log("NOTES COMPONENT authdata: "+ this.authdata_make);
       }
     );
 
@@ -47,40 +48,50 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20>   implements O
 
   ngOnInit(){
     // Current notes messages
-    console.log("oninit for notes");
     this.notes_subject = this.notes_serv.notesSubject.subscribe(
-      data=>{
+      data=>{// BEGIN subscribe
+        let cur_timeout=this.notes_serv.loadingTimeout;
         this.notes_obj = JSON.parse(JSON.stringify(data));
-        console.log("NOTES COMPONENT recieved content: "+ JSON.stringify(this.notes_obj));
-        if(this.notes_obj.ntype == "retrieve_return" ){
-          console.log("NOTES COMPONENT recieved retrival result for note "+ this.notes_obj.note_id
-          +"\n\tStatus: "+ this.notes_obj.status);
-          if(this.notes_obj.content !=null){
-            this.content = this.dec(this.notes_obj.content.toString());
-            this.change(this.content);
+        // while(!this.attampted_loading){
+          if(this.module != null){
+            cur_timeout=0;
+            this.attampted_loading=true;
           }
-          else {
-            this.content = "";
-            this.change(this.content);
-          }
-          if(this.notes_obj.head != null){
-            this.notes_serv.setHead(this.notes_obj.head);
-            this.head_content = this.dec(this.notes_obj.head.toString());
-          }
-          else {
-            this.head_content = "";
-            this.notes_serv.setHead("");
-          }
-        }
-        else if (this.notes_obj.ntype == "heads_return" ){
-          console.log("Notes,  nav");
-          this.named_notes_heads=JSON.parse(JSON.stringify(this.notes_obj.content));
-          this.dec_heads();
-          this.notes_obj.content=JSON.stringify(this.named_notes_heads);
-          this.notes_serv.set_nav_head(this.notes_obj);
-          console.log("Notes, done pushing the heads to nav");
-        }
-      }
+          setTimeout(()=>{
+            console.log("NOTES COMPONENT recieved content: "+ JSON.stringify(this.notes_obj));
+            // if(this.module!=null){
+              if(this.notes_obj.ntype == "retrieve_return" ){
+                console.log("NOTES COMPONENT recieved retrival result for note "+ this.notes_obj.note_id
+                +"\n\tStatus: "+ this.notes_obj.status);
+                if(this.notes_obj.content !=null){
+                  this.content = this.dec(this.notes_obj.content.toString());
+                  this.change(this.content);
+                }
+                else {
+                  this.content = "";
+                  this.change(this.content);
+                }
+                if(this.notes_obj.head != null){
+                  this.notes_serv.setHead(this.notes_obj.head);
+                  this.head_content = this.dec(this.notes_obj.head.toString());
+                }
+                else {
+                  this.head_content = "";
+                  this.notes_serv.setHead("");
+                }
+              }
+              else if (this.notes_obj.ntype == "heads_return" ){
+                console.log("Notes,  nav");
+                this.named_notes_heads=JSON.parse(JSON.stringify(this.notes_obj.content));
+                this.dec_heads();
+                this.notes_obj.content=JSON.stringify(this.named_notes_heads);
+                this.notes_serv.set_nav_head(this.notes_obj);
+                console.log("Notes, done pushing the heads to nav");
+              }
+            // }
+          },cur_timeout);
+        // }
+      }// END subscribe
     );
   }
   dec_heads(){

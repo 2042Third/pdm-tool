@@ -4,6 +4,8 @@ import {ServerMsg, } from '../_types/ServerMsg';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { DialogNotificationsComponent } from '../platform/dialogNotifications/dialogNotifications.component';
+import { MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 // import { EncryptComponent } from '../security/encrypt/encrypt.component';
 
 @Injectable({

@@ -119,7 +119,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
             this.userinfo.set_signin_status(data);
             setTimeout(() => {
               this.notes_serv.get_notes_heads().subscribe()
-            }, this.timeout);
+            }, this.notes_serv.loadingTimeout);
           },
           error: error => {
             this.errorMessage = error.message;
