@@ -138,9 +138,10 @@ export class NavComponent implements AfterViewInit {
   ngOnInit() {
     this.route.queryParams
       .subscribe(params => {
-        console.log(params); // { order: "popular" }
-        this.cur_locale = params.locale;
-        console.log("Getting locale: "+this.cur_locale);
+        if(params.locale){
+          this.cur_locale = params.locale;
+          console.log("Getting locale: "+this.cur_locale);
+        }
       }
     );
     this.setLightbulb();

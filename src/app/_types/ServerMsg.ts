@@ -20,7 +20,6 @@ export class ServerMsg {
   msg:string="";
   username:String="";
   msgh:String="";
-  time:String="";
   email:String="";
   val:String="";
   type: String="";
@@ -30,5 +29,9 @@ export class ServerMsg {
   status:String = "fail";
   receiver: String="";
   authdata?:String="";
+  time:Number;
+  update_time:Number;
+  utime:String;
+  ctime:String;
 };
 

@@ -99,7 +99,7 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20>   implements O
     for (i=0;i<this.named_notes_heads.length;i++){
     this.named_notes_heads[i].id = Number(this.named_notes_heads[i].note_id);
       if(this.named_notes_heads[i].head == null){
-        this.named_notes_heads[i].head = "unnamed note";
+        this.named_notes_heads[i].head = "Untitled Note#";
       }
       else {
         this.named_notes_heads[i].head = this.dec(this.named_notes_heads[i].head.toString());
@@ -141,7 +141,7 @@ export class NotesComponent  extends EmscriptenWasmComponent<c20>   implements O
         else {
           this.waitAndCheck();
         }
-      }, 2000);
+      }, this.notes_serv.submitTimeout);
     }
   }
 

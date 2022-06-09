@@ -2,10 +2,12 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    width: 100%;
-    height: 90%;
+    // width: 100%;
+    height: 100%;
+    // flex:7;
 }
 input {
+  font-size: 20px;
   border: 0;
   outline: 0;
   background-color: var(--background-primary);
@@ -19,13 +21,15 @@ input {
 
 input:focus {
   outline: none !important;
+  zoom: 0;
   background-color: var(--background-secondary);
   color: var(--foreground-quaternary);
 }
 .inputClass2 {
   // width: 90%;
+  font-size: 16px;
   outline: 0;
-  height: 90%;
+  flex-grow:1;
   border: none;
   padding: 15px;
   border-radius: 5px;
@@ -34,4 +38,8 @@ input:focus {
   word-wrap: break-word;
   background-color: var(--background-secondary);
   color: var(--foreground-quaternary);
+}
+.inputClass2:focus {
+  // width: 90%;
+  zoom: 0;
 }

@@ -18,6 +18,8 @@ export class AuthService {
 
     dialogRef:MatDialogRef<DialogNotificationsComponent, any>;
     dialogConfig = new MatDialogConfig();
+    dialogConfigSuccess = new MatDialogConfig();
+    dialogConfigFail = new MatDialogConfig();
     private signup_obj:ServerMsg=new ServerMsg;
     public user: Observable<ServerMsg>;
     private data_store:{latestMsg:ServerMsg} = {latestMsg:new ServerMsg};
@@ -27,14 +29,27 @@ export class AuthService {
       private http: HttpClient,
     ) {
       this.dialogConfig.autoFocus = true;
-      this.dialogConfig.data = {dialogType:"Login Failed", message:"No account found. Please, check your email and password. "};
+      this.dialogConfig.data = {dialogType:"Sign in failed", message:"Check your email and password."};
       this.dialogConfig.panelClass= 'custom-modalbox';
+      this.dialogConfigSuccess.autoFocus = true;
+      this.dialogConfigSuccess.data = {dialogType:"Sign up success!", message:"Check your email to finish the registration."};
+      this.dialogConfigSuccess.panelClass= 'custom-modalbox';
+      this.dialogConfigFail.autoFocus = true;
+      this.dialogConfigFail.data = {dialogType:"Sign up Failed", message:"No account can be made at this point. Please, check back at a later time. "};
+      this.dialogConfigFail.panelClass= 'custom-modalbox';
     }
 
     signup(uname:string ,umail: string, upw: string) {
       return this.http.post<ServerMsg>(
       'https://pdm.pw/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" })
             .pipe(map(upData => {
+              if(upData.status == "success"){
+                this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigSuccess);
+              }
+              else {
+                this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigFail);
+
+              }
               this.signupSubject.next(upData);
               return upData;
             }));

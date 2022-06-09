@@ -138,7 +138,6 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
       msg: b,
       msgh: this.msg_hash(this.msg),
       type: "msg",
-      time: (new Date().getTime().toString()),
       sender: "testing user",
       receiver: "testing recv",
       email: "none",
@@ -146,7 +145,11 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
       h: "none",
       val: "TESTING ONLY, USERNAME NOT ENCRYPTED!",
       username: "",
-      sess: ""
+      sess: "",
+      time: undefined,
+      update_time: undefined,
+      utime: undefined,
+      ctime: undefined
     };
     this.chatservice.save_msg(mp);
     // this.append_terminal_wh("encrypted data: \n"+JSON.stringify(mp));

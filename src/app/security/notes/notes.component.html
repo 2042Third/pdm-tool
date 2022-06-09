@@ -1,7 +1,16 @@
 
 <div class="note-box">
   <mat-divider></mat-divider>
-  <input #headContent (change)="editHead()" [(ngModel)]="head_content" (keyup.enter)="editHead()" >
-  <textarea #mainContent matInput type="text" (keyup)="notesSave()" (change)="change(content)" [(ngModel)]="content" class="inputClass2" [(appNotesEdit)]="content" >
+  <input #headContent (change)="editHead()" placeholder="Untitled Note" [(ngModel)]="head_content" (keyup.enter)="editHead()" >
+  <textarea
+    #mainContent
+    matInput
+    type="text"
+    (keyup)="notesSave()"
+    (change)="change(content)"
+    [(ngModel)]="content"
+    class="inputClass2"
+    [(appNotesEdit)]="content"
+  >
   </textarea>
 </div>

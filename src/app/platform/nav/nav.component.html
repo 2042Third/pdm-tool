@@ -3,7 +3,7 @@
 </mat-sidenav-container> -->
 
 <!-- DESKTOP -->
-<mat-drawer-container >
+<mat-drawer-container class="main-container">
   <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles "  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
     <div class="drawer-styles">
       <button mat-icon-button color="secondary" (click)="newNote()" class="icons" i18n>New Note</button>
@@ -38,35 +38,50 @@
         </p>
       </div>
       <mat-divider></mat-divider>
-      <button routerLink="./notes" routerLinkActive="active" [queryParams]="{ locale: cur_locale }" queryParamsHandling="preserve" mat-icon-button color="secondary" (click)="toNotes()" class="icons" i18n>Notes</button>
-      <button routerLink="./chat" routerLinkActive="active" [queryParams]="{ locale: cur_locale }" queryParamsHandling="preserve" mat-icon-button color="secondary" (click)="toChat()" class="icons" i18n>Chat</button>
-      <button routerLink="./signin" routerLinkActive="active" [queryParams]="{ locale: cur_locale }" queryParamsHandling="preserve" mat-icon-button color="secondary" (click)="toSignin()" class="icons" i18n>User</button>
+      <button routerLink="./notes" routerLinkActive="active"
+            [queryParams]="{ locale: cur_locale }"
+            queryParamsHandling="preserve" mat-icon-button color="secondary"
+            (click)="toNotes()" class="icons" i18n>Notes</button>
+      <button routerLink="./chat" routerLinkActive="active"
+            [queryParams]="{ locale: cur_locale }"
+            queryParamsHandling="preserve" mat-icon-button
+            color="secondary"
+            (click)="toChat()" class="icons" i18n>Chat</button>
+      <button routerLink="./signin" routerLinkActive="active"
+            [queryParams]="{ locale: cur_locale }"
+            queryParamsHandling="preserve" mat-icon-button
+            color="secondary"
+            (click)="toSignin()" class="icons" i18n>User</button>
       <mat-divider></mat-divider>
       <font class="title-font" bold="true">PDM Notes</font>
-      <a href="https://pdm.pw/web_notes/notes?locale=cn">link text</a>
+      <a class="localeButton" target="_self" *ngIf="cur_locale=='cn'" href="https://pdm.pw/web_notes/notes?locale=en" > English Version </a>
+      <a class="localeButton" target="_self" *ngIf="cur_locale=='en'" href="https://pdm.pw/web_notes/notes?locale=cn" > 中文版 </a>
     </div>
   </mat-drawer>
   <mat-drawer-content class="platf">
-    <nav >
-      <button mat-icon-button color="secondary" (click)="maindrawer.toggle()" class="icons">
-        <mat-icon>menu</mat-icon>
-      </button>
+    <!-- title bar -->
+      <nav class="title-bar">
+        <button mat-icon-button color="secondary" (click)="maindrawer.toggle()" class="icons">
+          <mat-icon>menu</mat-icon>
+        </button>
 
-      <h5 class="title secondary-font"></h5>
-      <!-- note status -->
-      <font *ngIf="currentRoute=='/notes'" class="note-status" >{{saving_str}}</font>
-      <!-- debug menu -->
-      <button mat-button [matMenuTriggerFor]="debug" i18n>Debug Menu</button>
+        <h5 class="title secondary-font"></h5>
+        <!-- note status -->
+        <font *ngIf="currentRoute=='/notes'" class="note-status" >{{saving_str}}</font>
+        <!-- debug menu -->
+        <button mat-button [matMenuTriggerFor]="debug" i18n>Debug Menu</button>
 
-      <button *ngIf="currentRoute=='/notes'"
-       mat-icon-button color="secondary"
-       (click)="notesnav.toggle()"
-       class="icons">
-        <mat-icon >list</mat-icon>
-      </button>
-      <!-- <fa-icon class="icons" [icon]="faLightbulb"  (click)="toggleTheme()"></fa-icon> -->
-    </nav>
-    <router-outlet ></router-outlet>
+        <button *ngIf="currentRoute=='/notes'"
+        mat-icon-button color="secondary"
+        (click)="notesnav.toggle()"
+        class="icons">
+          <mat-icon >list</mat-icon>
+        </button>
+        <!-- <fa-icon class="icons" [icon]="faLightbulb"  (click)="toggleTheme()"></fa-icon> -->
+      </nav>
+    <!-- content -->
+    <div class="pdm-contents"><router-outlet></router-outlet></div>
+
 
   </mat-drawer-content>
 </mat-drawer-container>

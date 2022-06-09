@@ -26,7 +26,8 @@ button{
   margin: 1px;
 }
 .inputClass2 {
-  width: 90%;
+  font-size: 16px;
+    width: 90%;
   border: none;
   padding: 15px;
   border-radius: 5px;
@@ -39,7 +40,8 @@ button{
 }
 
 .inputClass2:focus {
-  outline: none;
+  zoom: 0;
+    outline: none;
 }
 input[type="file"] {
   padding: 7px 20px;

@@ -31,7 +31,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "localize":["zh-CN"],
+            "localize":["en-US"],
             "outputPath": "dist/pdm-notes",
             "index": "src/index.html",
             "main": "src/main.ts",

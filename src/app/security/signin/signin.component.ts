@@ -9,6 +9,7 @@ import { ServerMsg } from 'src/app/_types/ServerMsg';
 import { EmscriptenWasmComponent } from '../emscripten/emscripten-wasm.component';
 import { c20 } from '../emscripten/c20wasm';
 import { NotesService } from '../../_services/notes.service';
+import { formatDate } from '@angular/common';
 // User action
 enum UserAc {
 SignIn,
@@ -46,7 +47,8 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   phps="Password";
   phemail="Email";
   phuser="User Name";
-
+  local_usr:ServerMsg = new ServerMsg();
+  
   public signup_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
   constructor(
@@ -126,6 +128,9 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
         , this.module.get_hash(this.f.upw.value+this.f.upw.value) // server only knows the hash of the pass+pass
       ).subscribe({
           next: data => {
+            this.local_usr = JSON.parse(JSON.stringify(data));
+            this.local_usr.utime = formatDate(Number(this.local_usr.update_time)*1000, "medium",'en-US' ).toString()
+            data.receiver = this.module.loader_out(this.f.upw.value, data.receiver.toString());
             this.userinfo.set_signin_status(data);
             setTimeout(() => {
               this.notes_serv.get_notes_heads().subscribe()

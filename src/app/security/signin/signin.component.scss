@@ -53,8 +53,14 @@ a.form-group{
   flex-direction: column;
   width:100%
 }
-.form-control{
+
+.form-control {
+  font-size: 16px;
   justify-content: center;
+}
+
+.form-control:focus {
+  zoom:0;
 }
 a {
   color: #0aac42;
