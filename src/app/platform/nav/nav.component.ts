@@ -76,6 +76,12 @@ export class NavComponent implements AfterViewInit {
 
     if (this.isMobileDevice) {
       this.nav_open_mode = "over";
+      setTimeout(()=>{
+        this.notesnav.toggle();
+        this.maindrawer.toggle();
+      },
+        500
+      );
     } else {
       this.nav_open_mode = "side";
     }
@@ -97,6 +103,8 @@ export class NavComponent implements AfterViewInit {
             this.signin_stat_str = data.receiver;
             if(this.signin_obj.status != "fail"){
               this.signin_stat = true;
+              this.maindrawer.toggle();
+              this.maindrawer.toggle();
             }
             else {
               this.signin_stat_str="Not Signed In";

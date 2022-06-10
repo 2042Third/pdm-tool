@@ -17,6 +17,7 @@ import { ChatService } from '../_services/chat.service';
 import { NotesEditDirective } from '../_directives/notes-edit.directive';
 import {MatListModule} from '@angular/material/list';
 import { CustomScrollDirective } from '../_directives/custom-scroll.directive';
+import { EncryptionService } from './enc/encryption.service';
 // import { EncryptComponent } from './encrypt/encrypt.component';
 @NgModule({
   exports:[Cc20Component,
@@ -46,5 +47,6 @@ import { CustomScrollDirective } from '../_directives/custom-scroll.directive';
     CustomScrollDirective
     // EncryptComponent
    ],
+   providers: [EncryptionService]
 })
 export class SecurityModule { }

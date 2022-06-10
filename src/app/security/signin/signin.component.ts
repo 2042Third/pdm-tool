@@ -10,6 +10,8 @@ import { EmscriptenWasmComponent } from '../emscripten/emscripten-wasm.component
 import { c20 } from '../emscripten/c20wasm';
 import { NotesService } from '../../_services/notes.service';
 import { formatDate } from '@angular/common';
+import { environment } from 'src/environments/environment';
+import { EncryptionService } from '../enc/encryption.service';
 // User action
 enum UserAc {
 SignIn,
@@ -48,23 +50,27 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   phemail="Email";
   phuser="User Name";
   local_usr:ServerMsg = new ServerMsg();
-  
+
   public signup_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
+  mocking: Subscription;
+  debug_mocking: Boolean;
   constructor(
     private formBuilder:FormBuilder,
     private auth: AuthService,
     private userinfo: UserinfoService,
     private notes_serv:NotesService,
+    private encrypt:EncryptionService,
     private http: HttpClient,
     private ngzone:NgZone,
   ) {
     super("Cc20Module", "notes.js");
     console.log('sign in construction' );
-    this.signup_async= this.auth.signupSubject.asObservable();
-    this.signup_sub = this.signup_async.subscribe(
+    this.signup_sub= this.userinfo.signin_status_value.subscribe(
     data=>{
+      this.local_usr = JSON.parse(JSON.stringify(data));
       this.signup_email=data.email;
+      console.log("Gotten usr: "+this.local_usr.status);
       if(this.signup_email == "" || this.signup_email.length < 1){
         this.signup_msg="This email was already signed up for another account. Use a different email.";
       }
@@ -92,6 +98,36 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
           umail: ['', Validators.required],
           upw: ['', Validators.required]
       });
+      if(!environment.production){
+        setTimeout(() => {
+          let tmp1 = this.encrypt.enc("hahaha");
+          let tmp2 = this.encrypt.dec(tmp1);
+          console.log("encrypt: "+tmp1);
+          console.log("decrypt: "+tmp2);
+
+        },
+        3000);
+        // this.mocking = this.userinfo.debug_mock.subscribe(
+        //   data=>{
+        //     this.debug_mocking=data;
+        //     // User signin status
+        //     this.signup_sub = this.userinfo.signin_status_value.subscribe(
+        //       {
+        //         next: data=>{
+        //           this.local_usr = JSON.parse(JSON.stringify(data)); // make a copy
+        //           this.local_usr.receiver =
+        //           this.module.loader_out(this.userinfo.b,
+        //             this.local_usr.receiver.toString());
+        //         },
+        //         error: data=>{
+        //           console.log("?");
+        //         }
+        //       }
+        //     );
+        //   }
+        // );
+      }
+
       // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
@@ -128,13 +164,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
         , this.module.get_hash(this.f.upw.value+this.f.upw.value) // server only knows the hash of the pass+pass
       ).subscribe({
           next: data => {
-            this.local_usr = JSON.parse(JSON.stringify(data));
-            this.local_usr.utime = formatDate(Number(this.local_usr.update_time)*1000, "medium",'en-US' ).toString()
-            data.receiver = this.module.loader_out(this.f.upw.value, data.receiver.toString());
-            this.userinfo.set_signin_status(data);
-            setTimeout(() => {
-              this.notes_serv.get_notes_heads().subscribe()
-            }, this.notes_serv.loadingTimeout);
+            this.usr_setup(data);
           },
           error: error => {
             this.errorMessage = error.message;
@@ -142,6 +172,16 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
           }
       });
     }
+  }
+
+  usr_setup(data){
+    data.receiver = this.module.loader_out(this.f.upw.value, data.receiver.toString());
+    data.utime = formatDate(Number(data.time), "medium",'en-US' ).toString();
+    this.local_usr = JSON.parse(JSON.stringify(data));
+    this.userinfo.set_signin_status(data);
+    setTimeout(() => {
+      this.notes_serv.get_notes_heads().subscribe()
+    }, this.notes_serv.loadingTimeout);
   }
 
   set_server_msg(a:ServerMsg){
@@ -155,5 +195,12 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   back_to_sign_in(){
     this.cur_function = "Sign In";
     this.signup = UserAc.SignIn;
+  }
+   ngOnDestroy(){
+
+    if(!environment.production){
+      this.mocking.unsubscribe();
+    }
+    this.signup_sub.unsubscribe();
   }
 }
