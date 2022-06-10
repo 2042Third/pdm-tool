@@ -31,7 +31,7 @@ export class UserinfoService {
   mocking_status: boolean =false;
   constructor(
     private ngzone: NgZone,
-    // private dbService: NgxIndexedDBService
+    private dbService: NgxIndexedDBService
   ) {
     // super("Cc20Module", "notes.js");
 

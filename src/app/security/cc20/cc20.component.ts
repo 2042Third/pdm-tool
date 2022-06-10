@@ -2,7 +2,7 @@ import { Component, SecurityContext } from "@angular/core";
 import {MatListModule} from '@angular/material/list';
 import { WebsockService } from "src/app/_services/websock.service";
 import { DomSanitizer } from '@angular/platform-browser';
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 // import { NamedServerMsg, NamedServerMsgA } from '../../_types/ServerMsg';
 import { ChatService } from 'src/app/_services/chat.service';
 // import { EncryptService } from 'src/app/_services/encrypt.service';
@@ -43,7 +43,7 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
         var request = JSON.parse(a); // initial network
       };
     }
-    this.formControl = new FormControl({value: '', disabled: this.no_submit});
+    this.formControl = new UntypedFormControl({value: '', disabled: this.no_submit});
 
 
   }

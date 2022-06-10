@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import {HttpClient, HttpClientModule } from "@angular/common/http";
-import { FormBuilder, FormGroup, Validators,ReactiveFormsModule} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators,ReactiveFormsModule} from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 
 import {AuthService} from '../../_services/auth.service';
@@ -33,8 +33,8 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   uname='';
   timeout=2000;
   errorMessage="";
-  signinForm:FormGroup;
-  signupForm:FormGroup;
+  signinForm:UntypedFormGroup;
+  signupForm:UntypedFormGroup;
   // loginForm: FormGroup;
   loading = false;
   submitted = false;
@@ -56,7 +56,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   mocking: Subscription;
   debug_mocking: Boolean;
   constructor(
-    private formBuilder:FormBuilder,
+    private formBuilder:UntypedFormBuilder,
     private auth: AuthService,
     private userinfo: UserinfoService,
     private notes_serv:NotesService,
