@@ -14,7 +14,23 @@ import { NotesEditDirective } from './_directives/notes-edit.directive';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { UserinfoService } from './_services/userinfos.service';
 import { CustomScrollDirective } from './_directives/custom-scroll.directive';
+import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
 
+const dbConfig: DBConfig = {
+  name: 'pdmDB',
+  version: 1,
+  objectStoresMeta: [{
+    store: 'pdmTable',
+    storeConfig: {keyPath: 'id', autoIncrement: true},
+    storeSchema: [
+      {name: 'username', keypath: 'username', options: { unique: false}},
+      {name: 'val', keypath: 'val', options: { unique: false}},
+      {name: 'view', keypath: 'view', options: { unique: false}},
+      {name: 'time', keypath: 'time', options: { unique: false}},
+      {name: 'email', keypath: 'email', options: { unique: true}}
+    ]
+  }]
+};
 
 @NgModule({
   declarations: [
@@ -31,6 +47,7 @@ import { CustomScrollDirective } from './_directives/custom-scroll.directive';
     HttpClientModule,
     SecurityModule,
     AppRoutingModule,
+    NgxIndexedDBModule.forRoot(dbConfig),
   ],
   providers: [
     {provide: APP_BASE_HREF, useValue: '/web_notes'},

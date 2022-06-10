@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DialogNotificationsComponent } from '../platform/dialogNotifications/dialogNotifications.component';
 import { MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 // import { EncryptComponent } from '../security/encrypt/encrypt.component';
 
