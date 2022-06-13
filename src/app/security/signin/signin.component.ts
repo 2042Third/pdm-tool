@@ -134,7 +134,6 @@ export class SigninComponent implements OnInit {
             data.receiver = this.userinfo.dec2(this.f.upw.value, data.receiver.toString());
             this.usr_setup(data);
             this.first_setup(data);
-
           },
           error: error => {
             this.errorMessage = error.message;

@@ -27,6 +27,8 @@ export class NotesComponent   implements OnInit {
   waiter=0;
   named_notes_heads:NoteHead[];
   attampted_loading=false;
+  note_status: String;
+  errorMessage: any;
   constructor(
     public notes_serv:NotesService,
     private ngzone:NgZone,
@@ -159,8 +161,23 @@ export class NotesComponent   implements OnInit {
       this.notes_serv.setCurContent("");
     }
   }
-
+  updateNote(){
+    console.log("Updating note ");
+    this.notes_serv.liveUpdateNote().subscribe({
+          next: data => {
+            this.note_status=data.note_id;
+            console.log(this.note_status);
+          },
+          error: error => {
+            this.errorMessage = error.message;
+            console.error('There was an error!', error);
+          }
+      });
+  }
   ngOnDestroy(){
+    this.change(this.content);
+    this.editHead();
+    this.updateNote();
     this.notes_subject.unsubscribe();
     this.authdata.unsubscribe();
   }
