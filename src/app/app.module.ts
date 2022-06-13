@@ -27,9 +27,31 @@ const dbConfig: DBConfig = {
       {name: 'val', keypath: 'val', options: { unique: false}},
       {name: 'view', keypath: 'view', options: { unique: false}},
       {name: 'time', keypath: 'time', options: { unique: false}},
+      {name: 'utime', keypath: 'utime', options: { unique: false}},
+      {name: 'ctime', keypath: 'ctime', options: { unique: false}},
+      {name: 'msg', keypath: 'msg', options: { unique: false}},
+      {name: 'msgh', keypath: 'msgh', options: { unique: false}},
+      {name: 'h', keypath: 'h', options: { unique: false}},
+      {name: 'status', keypath: 'status', options: { unique: false}},
+      {name: 'sess', keypath: 'sess', options: { unique: false}},
+      {name: 'type', keypath: 'type', options: { unique: false}},
+      {name: 'authdata', keypath: 'authdata', options: { unique: false}},
+      {name: 'receiver', keypath: 'receiver', options: { unique: false}},
+      {name: 'update_time', keypath: 'update_time', options: { unique: false}},
+      {name: 'sender', keypath: 'sender', options: { unique: false}},
       {name: 'email', keypath: 'email', options: { unique: true}}
     ]
-  }]
+  },
+  {
+    store: 'pdmSecurity',
+    storeConfig: {keyPath: 'pid', autoIncrement: true},
+    storeSchema: [
+      {name: 'email', keypath: 'email', options: { unique: true}},
+      {name: 'secure', keypath: 'secure', options: {unique:false}},
+      {name: 'ponce_status', keypath: 'ponce_status', options:{unique:false}}
+    ]
+  },
+  ]
 };
 
 @NgModule({

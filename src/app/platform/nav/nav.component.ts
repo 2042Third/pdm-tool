@@ -16,6 +16,8 @@ import { NotesService } from 'src/app/_services/notes.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
 import { NoteHead, NotesMsg } from '../../_types/User';
 import { formatDate } from '@angular/common';
+import { take } from 'rxjs/operators';
+import { IndexDetails, NgxIndexedDBService } from 'ngx-indexed-db';
 
 @Component({
   selector: "app-nav",
@@ -44,6 +46,7 @@ export class NavComponent implements AfterViewInit {
   saving_subject:Subscription;
   saving_str : String ="";
   notes_obj : NotesMsg;
+  enc_back:string = "";
   // signin_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
   timeout: number=1000;
@@ -58,6 +61,7 @@ export class NavComponent implements AfterViewInit {
     private themeService: ThemeService,
     public notes_serv:NotesService,
     public ngzone: NgZone ,
+    private dbService: NgxIndexedDBService,
   ) {
     // START QUOTE , from https://www.geeksforgeeks.org/how-to-detect-whether-the-website-is-being-opened-in-a-mobile-device-or-a-desktop-in-javascript/
     //Checking is mobile or not
@@ -167,6 +171,14 @@ export class NavComponent implements AfterViewInit {
     a.id = Number(a.note_id);
     return a.id;
   }
+  encTest (a:string){
+    this.enc_back = this.userinfo.enc(a);
+    console.log("Nav encrypt =>"+ (this.enc_back  ));
+  }
+  decTest(a:string){
+    let v = this.userinfo.dec(a);
+    console.log("Nav decrypt =>"+ (v  ));
+  }
 
   peak_heads(){
     this.notesnav.toggle();
@@ -265,7 +277,65 @@ export class NavComponent implements AfterViewInit {
       });
   }
 
-
+  // DataBase
+  clear_email(){// DEBUG ONLY
+    // if(!this.local_usr.email){
+    //   return;
+    // }
+    let email = "18604713262@163.com";
+    let local_id ;
+    this.dbService.clear('pdmTable').subscribe(
+      data=>{
+        local_id = JSON.parse(JSON.stringify(data));
+        console.log("gotten: "+ local_id);
+      }
+    );
+  }
+  set_mock_db(){// DEBUG ONLY
+    this.dbService.add('pdmTable', {
+      username: "some usr",
+      val: "1234",
+      view: "signin",
+      email: "18604713262@163.com"
+    })
+    .subscribe((key) => {
+      console.log('DEBUG indexeddb key: ', key);
+    });
+  }
+  get_all_db(){
+    let local_all;
+    this.dbService.getAll('pdmTable')
+    .subscribe((kpis) => {
+      local_all = JSON.parse(JSON.stringify(kpis));
+      console.log(local_all);
+    })
+  }
+  ponce_process (){
+    this.dbService.add('pdmSecurity', {
+      email: "18604713262@163.com",
+      ponce_status: false,
+      secure: "1234"
+    })
+    .subscribe((key) => {
+      console.log('indexeddb key: ', key);
+    });
+  }
+  clear_ponce(){
+    let local_all;
+    this.dbService.getAll('pdmSecurity')
+    .subscribe((kpis) => {
+      local_all = JSON.parse(JSON.stringify(kpis));
+      console.log(local_all);
+    });
+    if(local_all==null){
+      return;
+    }
+    for (let i=0; i< local_all.length; i++){
+      this.dbService.delete('pdmSecurity', local_all[i].id).subscribe((data) => {
+        console.log('deleted:', data);
+      });
+    }
+  }
   ngOnDestroy() {
     this.signup_sub.unsubscribe();
     this.notes_subject.unsubscribe();

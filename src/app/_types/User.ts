@@ -20,6 +20,11 @@ export class NoteHead{
 
 }
 
+export class Encry{
+  data:string = "";
+  type:string = "";
+}
+
 export class NotesMsg extends NoteHead{
   content: String;
   email:String;

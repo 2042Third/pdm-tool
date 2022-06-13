@@ -17,14 +17,13 @@ import { ChatService } from '../_services/chat.service';
 import { NotesEditDirective } from '../_directives/notes-edit.directive';
 import {MatListModule} from '@angular/material/list';
 import { CustomScrollDirective } from '../_directives/custom-scroll.directive';
-import { EncryptionService } from './enc/encryption.service';
-// import { EncryptComponent } from './encrypt/encrypt.component';
+import { EncryptionComponent } from './encryption/encryption.component';
 @NgModule({
   exports:[Cc20Component,
      NotesComponent,
      SigninComponent,
      UserprofileComponent,
-    // NotesEditDirective,
+     EncryptionComponent,
     ],
   imports: [
     CommonModule,
@@ -44,9 +43,8 @@ import { EncryptionService } from './enc/encryption.service';
     SafeHtmlPipe,
     DisableControlDirective,
     NotesEditDirective,
-    CustomScrollDirective
-    // EncryptComponent
+    CustomScrollDirective,
+    EncryptionComponent,
    ],
-   providers: [EncryptionService]
 })
 export class SecurityModule { }

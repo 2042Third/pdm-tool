@@ -11,7 +11,7 @@ import { c20 } from '../emscripten/c20wasm';
 import { NotesService } from '../../_services/notes.service';
 import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
-import { EncryptionService } from '../enc/encryption.service';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 // User action
 enum UserAc {
 SignIn,
@@ -26,7 +26,7 @@ SuccessSignIn,
   styleUrls: ['./signin.component.scss']
 })
 
-export class SigninComponent extends EmscriptenWasmComponent<c20>   implements OnInit {
+export class SigninComponent implements OnInit {
   content="";
   upw="";
   umail="";
@@ -44,7 +44,6 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
   error = '';
   cur_function="Sign In";
   signup_msg="wait...";
-  signup_email:String="";
   server_back:ServerMsg;
   phps="Password";
   phemail="Email";
@@ -60,27 +59,20 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
     private auth: AuthService,
     private userinfo: UserinfoService,
     private notes_serv:NotesService,
-    private encrypt:EncryptionService,
-    private http: HttpClient,
+    private dbService: NgxIndexedDBService,
     private ngzone:NgZone,
   ) {
-    super("Cc20Module", "notes.js");
     console.log('sign in construction' );
     this.signup_sub= this.userinfo.signin_status_value.subscribe(
     data=>{
       this.local_usr = JSON.parse(JSON.stringify(data));
-      this.signup_email=data.email;
       console.log("Gotten usr: "+this.local_usr.status);
-      if(this.signup_email == "" || this.signup_email.length < 1){
-        this.signup_msg="This email was already signed up for another account. Use a different email.";
+      if(this.local_usr.status == 'fail'){
+        console.log("not user");
+        return;
       }
-      else {
-        this.signup_msg="Account registered! Click the link in the email sent to "
-                        +this.signup_email
-                        +" to activate.";
-      }
+      this.usr_setup(this.local_usr);
     });
-
 
     // LOCALE
     this.phps=$localize`:meaning|:Password`;
@@ -98,37 +90,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
           umail: ['', Validators.required],
           upw: ['', Validators.required]
       });
-      if(!environment.production){
-        setTimeout(() => {
-          let tmp1 = this.encrypt.enc("hahaha");
-          let tmp2 = this.encrypt.dec(tmp1);
-          console.log("encrypt: "+tmp1);
-          console.log("decrypt: "+tmp2);
 
-        },
-        3000);
-        // this.mocking = this.userinfo.debug_mock.subscribe(
-        //   data=>{
-        //     this.debug_mocking=data;
-        //     // User signin status
-        //     this.signup_sub = this.userinfo.signin_status_value.subscribe(
-        //       {
-        //         next: data=>{
-        //           this.local_usr = JSON.parse(JSON.stringify(data)); // make a copy
-        //           this.local_usr.receiver =
-        //           this.module.loader_out(this.userinfo.b,
-        //             this.local_usr.receiver.toString());
-        //         },
-        //         error: data=>{
-        //           console.log("?");
-        //         }
-        //       }
-        //     );
-        //   }
-        // );
-      }
-
-      // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   // convenience getter for easy access to form fields
@@ -144,9 +106,9 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
           return;
       }
       console.log("top call request for signup");
-      this.auth.signup(this.module.loader_check(this.f2.upw.value, this.f2.uname.value)
+      this.auth.signup(this.userinfo.enc2(this.f2.upw.value, this.f2.uname.value)
         , this.f2.umail.value
-        , this.module.get_hash(this.f2.upw.value+this.f2.upw.value)) // server only knows the hash of the pass+pass
+        , this.userinfo.hash(this.f2.upw.value+this.f2.upw.value)) // server only knows the hash of the pass+pass
       .pipe().subscribe(data =>this.set_server_msg(data));
       return ;
     }
@@ -158,13 +120,21 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
       }
       this.loading = true;
       this.userinfo.set_pswd(this.f.upw.value);
-      console.log(this.module.get_hash(this.f.upw.value+this.f.upw.value));
+      this.upw=this.f.upw.value;
+      this.umail = this.f.umail.value;
+      this.clear_ponce();
+      this.ponce_process();
+      console.log(this.userinfo.hash(this.f.upw.value+this.f.upw.value));
       this.auth.login(
         this.f.umail.value
-        , this.module.get_hash(this.f.upw.value+this.f.upw.value) // server only knows the hash of the pass+pass
+        , this.userinfo.hash(this.f.upw.value+this.f.upw.value) // server only knows the hash of the pass+pass
       ).subscribe({
           next: data => {
+            this.clear_same_email();
+            data.receiver = this.userinfo.dec2(this.f.upw.value, data.receiver.toString());
             this.usr_setup(data);
+            this.first_setup(data);
+
           },
           error: error => {
             this.errorMessage = error.message;
@@ -174,14 +144,68 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
     }
   }
 
+  ponce_process (){
+    console.log('making ponce new');
+    this.dbService.add('pdmSecurity', {
+      email: this.umail,
+      ponce_status: false,
+      secure:this.upw
+    })
+    .subscribe((key) => {
+      console.log('indexeddb key: ', key);
+    });
+  }
+  clear_ponce(){
+    console.log('clearing ponce ');
+    let local_all;
+    this.dbService.getAll('pdmSecurity')
+    .subscribe((kpis) => {
+      local_all = JSON.parse(JSON.stringify(kpis));
+      console.log(local_all);
+    });
+    if(local_all==null){
+      return;
+    }
+    for (let i=0; i< local_all.length; i++){
+      this.dbService.delete('pdmSecurity', local_all[i].id).subscribe((data) => {
+        console.log('deleted:', data);
+      });
+    }
+  }
   usr_setup(data){
-    data.receiver = this.module.loader_out(this.f.upw.value, data.receiver.toString());
+    console.log("beforedate:"+data.time);
     data.utime = formatDate(Number(data.time), "medium",'en-US' ).toString();
+    data.username = data.receiver;
     this.local_usr = JSON.parse(JSON.stringify(data));
+  }
+  first_setup(data){
+    // set data to indexeddb
+    this.dbService.add('pdmTable', this.local_usr)
+    .subscribe((key) => {
+      console.log('indexeddb key: ', key);
+    });
+    // Set data to usrinfo
     this.userinfo.set_signin_status(data);
     setTimeout(() => {
       this.notes_serv.get_notes_heads().subscribe()
     }, this.notes_serv.loadingTimeout);
+  }
+  clear_same_email(){
+    let local_all;
+    this.dbService.getAll('pdmTable')
+    .subscribe((kpis) => {
+      local_all = JSON.parse(JSON.stringify(kpis));
+      console.log(local_all);
+    });
+
+    if(local_all==null){
+      return;
+    }
+    for (let i=0; i< local_all.length; i++){
+      this.dbService.delete('pdmTable', local_all[i].id).subscribe((data) => {
+        console.log('deleted:', data);
+      });
+    }
   }
 
   set_server_msg(a:ServerMsg){
@@ -199,7 +223,7 @@ export class SigninComponent extends EmscriptenWasmComponent<c20>   implements O
    ngOnDestroy(){
 
     if(!environment.production){
-      this.mocking.unsubscribe();
+      // this.mocking.unsubscribe();
     }
     this.signup_sub.unsubscribe();
   }

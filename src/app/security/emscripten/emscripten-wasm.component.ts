@@ -27,7 +27,7 @@ export abstract class EmscriptenWasmComponent<M extends EmscriptenModule = Emscr
     const jsVersion = wasmCacheBusting[this.wasmJavaScriptLoader]
       ? `?v=${wasmCacheBusting[this.wasmJavaScriptLoader]}`
       : "";
-    // console.log("Trying to load cc20..."+`${environment.wasmAssetsPath}/${this.wasmJavaScriptLoader}${jsVersion}`);
+    console.log("Trying to load cc20..."+`${environment.wasmAssetsPath}/${this.wasmJavaScriptLoader}${jsVersion}`);
     loadScript(this.moduleExportName, `${environment.wasmAssetsPath}/${this.wasmJavaScriptLoader}${jsVersion}`)
       .then(() => {
         const module = <M>{
@@ -36,7 +36,7 @@ export abstract class EmscriptenWasmComponent<M extends EmscriptenModule = Emscr
             return `${environment.wasmAssetsPath}/${file}${fileVersion}`;
           },
         };
-        // console.log("loaded...");
+        console.log("loaded...");
         const moduleDecorator: EmscriptenModuleDecorator<M> = this.moduleDecorator || noopModuleDecorator;
         moduleDecorator(module);
 

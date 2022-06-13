@@ -12,6 +12,7 @@ import { c20 } from "../emscripten/c20wasm";
 import { EmscriptenWasmComponent } from "../emscripten/emscripten-wasm.component";
 import { ServerMsg } from "src/app/_types/ServerMsg";
 import { formatDate } from "@angular/common";
+import { take } from 'rxjs/operators';
 
 
 @Component({
@@ -19,13 +20,12 @@ import { formatDate } from "@angular/common";
   templateUrl: './cc20.component.html',
   styleUrls: ['./cc20.component.scss']
 })
-export class Cc20Component extends EmscriptenWasmComponent<c20>  {
+export class Cc20Component   {
   a:string="1234"; // development password
   no_submit:boolean=false;
   msg='';
   _term='';
   formControl;
-  public chat_hist:ServerMsg[];
   has_display=false;
   remake = 0 ; // control
   // private encry: EncryptComponent
@@ -33,9 +33,8 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
     private sock: WebsockService,
     private sr: DomSanitizer,
     public chatservice: ChatService,
-    private user:UserinfoService,
+    public user:UserinfoService,
   ) {
-    super("Cc20Module", "notes.js");
     if(this.sock.connected){
       this.sock.socket.onmessage = function (incoming) {
         var a:string = incoming.data;
@@ -53,10 +52,10 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
 
   ngAfterContentChecked(){
     if(this.remake === 0){
-      if(this.module!=null){
+      // if(this.module!=null){
         this.load_hist();
         this.remake=1;
-      }
+      // }
     }
 
   }
@@ -122,21 +121,28 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
    * Could have problem when the chat history is very large, which suggests loading only
    * the latest few chats first and reload more when needed.
   */
-  private load_hist(){
-    this.chat_hist = this.chatservice.get_saved_msg();
-    for (let i = 0; i < this.chat_hist.length; i++) {
-      this.append_terminal_wh("encrypted data: \n"+JSON.stringify(this.chat_hist[i]));
-      this.append_terminal_gr("decrypted: \n"+this.dec(this.chat_hist[i].msg));
-    }
+  private  load_hist(){
+    // this.chat_hist = this.chatservice.get_saved_msg();
+    // for (let i = 0; i < this.chat_hist.length; i++) {
+    //   // this.user.dec(this.chat_hist[i].msg);
+    //   let local=new ServerMsg();
+    //   local.msg = JSON.stringify(this.chat_hist[i]);
+    //   local.val = this.user.dec(this.chat_hist[i].msg);
+    //   this.chat_hist.push(local);
+    //   // this.append_terminal_wh("encrypted data: \n"+JSON.stringify(this.chat_hist[i]));
+    //   // await this.append_terminal_gr("decrypted: \n"+this.user.dec(this.chat_hist[i].msg));
+    // }
   }
-  private msg_send(){
+  private  msg_send(){
     /**
      * Only save or send encrypted data
     */
-    var b =this.enc(this.msg); // encryption
+    // var b =this.enc(this.msg); // encryption
+    var b =  this.user.enc(this.msg);
+    let hs =  this.user.hash(this.msg);
     const mp : ServerMsg = {
       msg: b,
-      msgh: this.msg_hash(this.msg),
+      msgh: hs,
       type: "msg",
       sender: "testing user",
       receiver: "testing recv",
@@ -152,28 +158,13 @@ export class Cc20Component extends EmscriptenWasmComponent<c20>  {
       ctime: undefined
     };
     this.chatservice.save_msg(mp);
+
     // this.append_terminal_wh("encrypted data: \n"+JSON.stringify(mp));
     // this.append_terminal_gr("decrypted: \n"+this.dec(b));
   }
 
-  public enc (inp:string){
-    if(this.module==null){
-      return "unable to encrypt!"
-    }
-    return this.module.loader_check(this.a,inp);
-  }
-
-  public dec (inp:string){
-    if(this.module==null){
-      return "unable to decrypt!"
-    }
-    return this.module.loader_out(this.a,inp);
-  }
-  public msg_hash(inp:string){
-    if(this.module==null){
-      return "unable to get hash of \""+inp+"\"!"
-    }
-    return this.module.get_hash(inp);
+  public dec(a:string){
+    return this.user.dec(a);
   }
   public scroll_to_new() {
     var objDiv = document.getElementById("output");

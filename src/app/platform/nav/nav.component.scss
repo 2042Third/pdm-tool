@@ -2,12 +2,14 @@
 .platf{
   display:flex;
   flex-direction: column;
+  align-items: normal;
 }
 .title-bar {
   flex-grow: 1;
 }
 .pdm-contents {
   flex-grow: 99;
+
 }
 .title-font{
   color:#0aac42;
