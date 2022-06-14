@@ -73,6 +73,12 @@ export class UserinfoService implements OnInit {
       this.signin_status_obj.username = this.signin_status_obj.receiver;
       this.signin_status_value.next(this.signin_status_obj);
   }
+  public pass_is_set(){
+    if(this.encryption_module == null ){
+      return false;
+    }
+    return this.encryption_module.pass_is_set();
+  }
 
   public is_signed_in(){
     return this.signin_status_obj.status == "success";

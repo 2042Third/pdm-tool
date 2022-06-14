@@ -40,16 +40,16 @@
       <mat-divider></mat-divider>
       <button routerLink="./notes" routerLinkActive="active"
             [queryParams]="{ locale: cur_locale }"
-            queryParamsHandling="preserve" mat-icon-button color="secondary"
+            queryParamsHandling="merge" mat-icon-button color="secondary"
             (click)="toNotes()" class="icons" i18n>Notes</button>
       <button routerLink="./chat" routerLinkActive="active"
             [queryParams]="{ locale: cur_locale }"
-            queryParamsHandling="preserve" mat-icon-button
+            queryParamsHandling="merge" mat-icon-button
             color="secondary"
             (click)="toChat()" class="icons" i18n>Chat</button>
       <button routerLink="./signin" routerLinkActive="active"
             [queryParams]="{ locale: cur_locale }"
-            queryParamsHandling="preserve" mat-icon-button
+            queryParamsHandling="merge" mat-icon-button
             color="secondary"
             (click)="toSignin()" class="icons" i18n>User</button>
       <mat-divider></mat-divider>

@@ -88,6 +88,9 @@ export class EncryptionComponent extends EmscriptenWasmComponent<c20> implements
     }
     return this.module.get_hash(inp);
   }
+  public pass_is_set(){
+    return this.authdata_make!="";
+  }
 
   ngOnDestroy(){
     this.authdata.unsubscribe();

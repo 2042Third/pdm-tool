@@ -175,9 +175,13 @@ export class NotesComponent   implements OnInit {
       });
   }
   ngOnDestroy(){
-    this.change(this.content);
-    this.editHead();
-    this.updateNote();
+    if( this.userinfo.pass_is_set()){
+      if(this.content != "" || this.head_content !=""){
+        this.change(this.content);
+        this.editHead();
+        this.updateNote();
+      }
+    }
     this.notes_subject.unsubscribe();
     this.authdata.unsubscribe();
   }
