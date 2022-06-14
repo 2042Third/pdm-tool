@@ -10,10 +10,52 @@
 }
 
 $my-palette: mat.define-palette(mat.$indigo-palette);
+input[type="file"] {
+  padding: 7px 20px;
+}
+
+input[type="text"],
+input[type="password"] {
+  color: var(--foreground-primary);
+  text-transform: none;
+  width: 90%;
+}
+
+input[type="text"]:hover {
+  cursor: text;
+}
+
+input:hover,
+button:hover {
+  background: var(--background-light) !important;
+  // background:#3a3b3a  !important;
+  cursor: pointer !important;
+}
+
+input,
+button {
+  color: var(--foreground-primary);
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: var(--background-default) !important;
+  letter-spacing: .1rem !important;
+  margin: 2px 0 !important;
+}
 
 :host .custom-modalbox {
   background: var(--background-tertiary);
   color: var(--foreground-quaternary);
+}
+.enter-control {
+  outline: 0;
+  border: 0ch;
+  font-size: 16px;
+  justify-content: center;
+}
+.dia{
+  font-size: 16px;
+  padding: 10px ;
 }
 // s
 

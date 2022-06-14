@@ -11,11 +11,11 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';
 import {PlatformRoutingModule} from './platform-routing.module';
 import {SecurityModule} from '../security/security.module';
+import { DialogNotificationsComponent } from './dialogNotifications/dialogNotifications.component';
 @NgModule({
   exports:[
     NavComponent,
     PlatformComponent,
-    // DialogNotificationsComponent,
   ],
   imports: [
     CommonModule,
@@ -32,6 +32,7 @@ import {SecurityModule} from '../security/security.module';
   declarations: [
     PlatformComponent,
     NavComponent,
+    DialogNotificationsComponent,
     // UserioComponent,
     // MainViewComponent
   ]

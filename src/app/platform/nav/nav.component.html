@@ -98,7 +98,9 @@
 <!-- offline notes debug -->
 <mat-menu #notesDebugOffline="matMenu" xPosition="before">
   <button class="text-color" mat-menu-item (click)="notes_serv.openDialog()" i18n>Launch dialog</button>
+  <button class="text-color" mat-menu-item (click)="notes_serv.openDialogEnter()" i18n>Launch dialog</button>
   <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()" i18n>Pass Heads</button>
+  <button class="text-color" mat-menu-item (click)="notes_serv.debug_live_string()" i18n>Pass Update</button>
   <button class="text-color" mat-menu-item (click)="userinfo.mock_ps()" i18n>Mock Pass</button>
   <button class="text-color" mat-menu-item (click)="userinfo.mock_usr()" i18n>Mock User</button>
   <button class="text-color" mat-menu-item (click)="encTest('1234')" i18n>Enc Test</button>

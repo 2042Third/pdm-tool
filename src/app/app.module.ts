@@ -39,6 +39,7 @@ const dbConfig: DBConfig = {
       {name: 'receiver', keypath: 'receiver', options: { unique: false}},
       {name: 'update_time', keypath: 'update_time', options: { unique: false}},
       {name: 'sender', keypath: 'sender', options: { unique: false}},
+      {name: 'pdmSecurityVersion', keypath: 'pdmSecurityVersion', options: {unique:false}},
       {name: 'email', keypath: 'email', options: { unique: true}}
     ]
   },
@@ -48,6 +49,7 @@ const dbConfig: DBConfig = {
     storeSchema: [
       {name: 'email', keypath: 'email', options: { unique: true}},
       {name: 'secure', keypath: 'secure', options: {unique:false}},
+      {name: 'pdmSecurityVersion', keypath: 'pdmSecurityVersion', options: {unique:false}},
       {name: 'ponce_status', keypath: 'ponce_status', options:{unique:false}}
     ]
   },

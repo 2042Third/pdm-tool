@@ -69,6 +69,10 @@
             <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
           </form>
           <a class="form-group" *ngIf="signup==allAc.SignUp" (click)="back_to_sign_in()" target="_blank" i18n>Back to Sign In</a>
+          <button class="btn btn-primary" (click)="sign_out()" i18n>
+            <span class="spinner-border spinner-border-sm mr-1"></span>
+            Clear Existing Data
+          </button>
         </div>
       </div><!-- end cards -->
       <div *ngIf="local_usr.status=='success'" class="user-enters">
@@ -81,7 +85,13 @@
         <div class="status">
           created at: {{local_usr.utime.toString() | date}}
         </div>
+        <mat-divider></mat-divider>
+        <button class="btn btn-primary" (click)="sign_out()" i18n>
+          <span class="spinner-border spinner-border-sm mr-1"></span>
+          Sign Out
+        </button>
       </div>
+
     </div>
 
 

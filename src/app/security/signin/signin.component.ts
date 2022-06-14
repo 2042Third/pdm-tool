@@ -6,11 +6,11 @@ import { Subscription, Observable } from 'rxjs';
 import {AuthService} from '../../_services/auth.service';
 import {UserinfoService} from '../../_services/userinfos.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
-import { EmscriptenWasmComponent } from '../emscripten/emscripten-wasm.component';
-import { c20 } from '../emscripten/c20wasm';
 import { NotesService } from '../../_services/notes.service';
 import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
+
+
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 // User action
 enum UserAc {
@@ -60,7 +60,7 @@ export class SigninComponent implements OnInit {
     private userinfo: UserinfoService,
     private notes_serv:NotesService,
     private dbService: NgxIndexedDBService,
-    private ngzone:NgZone,
+
   ) {
     console.log('sign in construction' );
     this.signup_sub= this.userinfo.signin_status_value.subscribe(
@@ -124,6 +124,7 @@ export class SigninComponent implements OnInit {
       this.umail = this.f.umail.value;
       this.clear_ponce();
       this.ponce_process();
+      //
       console.log(this.userinfo.hash(this.f.upw.value+this.f.upw.value));
       this.auth.login(
         this.f.umail.value
@@ -143,6 +144,13 @@ export class SigninComponent implements OnInit {
     }
   }
 
+  sign_out(){
+    this.clear_ponce();
+    this.clear_same_email();
+  }
+
+
+
   ponce_process (){
     console.log('making ponce new');
     this.dbService.add('pdmSecurity', {
@@ -160,16 +168,25 @@ export class SigninComponent implements OnInit {
     this.dbService.getAll('pdmSecurity')
     .subscribe((kpis) => {
       local_all = JSON.parse(JSON.stringify(kpis));
-      console.log(local_all);
+      console.log(`pdmSecurity all part ${JSON.stringify(local_all)}`);
+      if(local_all==null){
+        return;
+      }
+      for (let i=0; i<local_all.length;i++){
+        console.log(`pdmSecurity part# ${i}`);
+        let itm = (local_all[i]);
+        console.log(`pdmSecurity part ${JSON.stringify(itm)}`);
+        this.dbService.delete('pdmSecurity', itm.pid).subscribe((data) => {
+          console.log('deleted:', data);
+        });
+      }
     });
-    if(local_all==null){
-      return;
-    }
-    for (let i=0; i< local_all.length; i++){
-      this.dbService.delete('pdmSecurity', local_all[i].id).subscribe((data) => {
-        console.log('deleted:', data);
-      });
-    }
+
+    // for (let i=0; i< local_all.length; i++){
+    //   this.dbService.delete('pdmSecurity', local_all[i].id).subscribe((data) => {
+    //     console.log('deleted:', data);
+    //   });
+    // }
   }
   usr_setup(data){
     console.log("beforedate:"+data.time);
@@ -195,16 +212,15 @@ export class SigninComponent implements OnInit {
     .subscribe((kpis) => {
       local_all = JSON.parse(JSON.stringify(kpis));
       console.log(local_all);
+      if(local_all==null){
+        return;
+      }
+      for (let i=0; i< local_all.length; i++){
+        this.dbService.delete('pdmTable', local_all[i].id).subscribe((data) => {
+          console.log('deleted:', data);
+        });
+      }
     });
-
-    if(local_all==null){
-      return;
-    }
-    for (let i=0; i< local_all.length; i++){
-      this.dbService.delete('pdmTable', local_all[i].id).subscribe((data) => {
-        console.log('deleted:', data);
-      });
-    }
   }
 
   set_server_msg(a:ServerMsg){

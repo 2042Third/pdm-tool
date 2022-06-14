@@ -27,6 +27,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "ng": "^0.0.0",
+    "ngx-cookie-service": "^14.0.0",
     "ngx-indexed-db": "^11.0.2",
     "npm": "^8.3.0",
     "rxjs": "~7.4.0",

@@ -1,13 +1,13 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, OnInit } from '@angular/core';
 import{Encry, User} from '../_types/User'
 import {ServerMsg, } from '../_types/ServerMsg';
 import { lastValueFrom, Observable, Subject, Subscription } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DialogNotificationsComponent } from '../platform/dialogNotifications/dialogNotifications.component';
-import { MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-
+import { CookieService } from 'ngx-cookie-service';
 import { take } from 'rxjs/operators';
 // import { EncryptComponent } from '../security/encrypt/encrypt.component';
 import { EncryptionComponent } from '../security/encryption/encryption.component';
@@ -15,13 +15,14 @@ import { EncryptionComponent } from '../security/encryption/encryption.component
 @Injectable({
   providedIn: 'root'
 })
-export class UserinfoService {
+export class UserinfoService implements OnInit {
   private signin_status_obj:ServerMsg=new ServerMsg;
   // subject :Subject<ServerMsg> =new Subject<ServerMsg>();
   private s_authdata="";
   public signin_status_value:Subject<ServerMsg> =new BehaviorSubject<ServerMsg>(this.signin_status_obj);
   // public signin_status_value_note:Subject<ServerMsg> =new BehaviorSubject<ServerMsg>();
   public authdata_stream:Subject<String> = new BehaviorSubject<String>(this.s_authdata);
+  public authdata_stream_app:Subject<String> = new BehaviorSubject<String>(this.s_authdata);
   public enc_stream_return:Subject<EncryptionComponent> = new BehaviorSubject<EncryptionComponent>(null);// encryption return
   public debug_mock:Subject<Boolean> = new BehaviorSubject<Boolean>(false);
   public signin_status: Observable<ServerMsg>;
@@ -35,17 +36,19 @@ export class UserinfoService {
   mocking_status: boolean =false;
   stream_sub: any;
   encryption_module: EncryptionComponent;
+  dialogRef: MatDialogRef<DialogNotificationsComponent, any>;
+  authdata_stream_app_ref: Subscription;
   constructor(
     private ngzone: NgZone,
-    private dbService: NgxIndexedDBService
+    private dbService: NgxIndexedDBService,
+    public dialog: MatDialog,
+    private cookieService: CookieService
   ) {
-    // super("Cc20Module", "notes.js");
     this.get_all_db();
     this.stream_sub = this.enc_stream_return.subscribe(
       data => {
         if(data!=null){
           this.ngzone.run(()=>{
-            console.log("Getting back");
             this.encryption_module = data;
           });
         }
@@ -54,15 +57,21 @@ export class UserinfoService {
 
   }
   ngOnInit(){
-    // Nav status init
-    this.feature_route = new BehaviorSubject<string>("chat");
-    this.feature = this.feature_route.asObservable();
+    this.authdata_stream_app_ref = this.authdata_stream_app.subscribe(data=>{
+      this.coockies_setting(data.toString());
+    });
+  }
+
+  coockies_setting(a:string){
+    const dateNow = new Date();
+    dateNow.setMinutes(dateNow.getMinutes() + 20);
+
+    this.cookieService.set('application', a, dateNow,'/','pdm.pw',true,'Strict');
   }
   public set_signin_status(a:ServerMsg){
       this.signin_status_obj = JSON.parse(JSON.stringify(a));
       this.signin_status_obj.username = this.signin_status_obj.receiver;
       this.signin_status_value.next(this.signin_status_obj);
-      // this.signin_status_value_note.next(this.signin_status_obj);
   }
 
   public is_signed_in(){
@@ -171,6 +180,13 @@ export class UserinfoService {
     });
 
   }
+  openDialogEnter(){
+    let enterDialog: MatDialogConfig= new MatDialogConfig();
+    enterDialog.autoFocus = true;
+    enterDialog.data = {dialogType:"Enter",dialogTitle:"Application Password", message:"Set an application password for this computer."};
+    enterDialog.panelClass= 'custom-modalbox';
+    this.dialogRef = this.dialog.open(DialogNotificationsComponent, enterDialog);
+  }
 
   public set_pswd(a:string){
     this.authdata_stream.next(a);
@@ -183,6 +199,7 @@ export class UserinfoService {
 
   ngOnDestroy() {
     this.stream_sub.unsubscribe();
+    this.authdata_stream_app_ref.unsubscribe();
   }
 
 }

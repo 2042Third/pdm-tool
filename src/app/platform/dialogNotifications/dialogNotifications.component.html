@@ -1,5 +1,13 @@
-<h1 class="dia" mat-dialog-title>{{data.dialogType}}</h1>
-<div class="dia" mat-dialog-content>{{data.message}}</div>
+<h1 class="dia" mat-dialog-title>{{data.dialogTitle}}</h1>
+<div class="dia" mat-dialog-content>
+  <p *ngIf="data.dialogType=='Enter'" matLine>{{enterMsg}}</p>
+  <p *ngIf="data.dialogType=='Alert'" matLine>{{data.message}}</p>
+  <p matLine>
+    <input class="enter-control" [placeholder]="enterMsgSet" type="password" [(ngModel)]="dialogInput" i18n />
+  </p>
+
+</div>
 <div  class="dia" mat-dialog-actions>
   <button (click)="closeDialog()" mat-button mat-dialog-close>Close</button>
+  <button  *ngIf="data.dialogType=='Enter'" (click)="doneDialog()" mat-button mat-dialog-close>Done</button>
 </div>

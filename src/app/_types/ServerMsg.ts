@@ -32,6 +32,7 @@ export class ServerMsg {
   time:Number;
   update_time:Number;
   utime:String;
+  pdmSecurityVersion=0.1;
   ctime:String;
 };
 
