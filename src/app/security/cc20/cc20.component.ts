@@ -155,7 +155,8 @@ export class Cc20Component   {
       time: undefined,
       update_time: undefined,
       utime: undefined,
-      ctime: undefined
+      ctime: undefined,
+      pdmSecurityVersion: 0.1
     };
     this.chatservice.save_msg(mp);
 
