@@ -1,1 +1,6 @@
-{}
+{
+	"appId": "pdm.pw.pdm",
+	"appName": "pdm-notes",
+	"webDir": "dist/pdm-notes/en-US",
+	"bundledWebRuntime": false
+}
