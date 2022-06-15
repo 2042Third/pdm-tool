@@ -145,12 +145,12 @@ export class UserinfoService implements OnInit {
   }
 
   mock_ps(){
-    if(!environment.production){
+    // if(!environment.production){
       this.mocking_status = true;
       this.debug_mock.next(this.mocking_status);
       this.authdata_stream.next("1234");
       this.pswd = '1234';
-    }
+    // }
   }
 
   mock_usr(){
