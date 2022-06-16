@@ -23,7 +23,6 @@ export class NotesComponent   implements OnInit {
   wait_and_check=false;
   authdata:Subscription;
   head_content="";
-  authdata_make:string='';
   waiter=0;
   named_notes_heads:NoteHead[];
   attampted_loading=false;
@@ -34,13 +33,7 @@ export class NotesComponent   implements OnInit {
     private ngzone:NgZone,
     private userinfo:UserinfoService,
   ) {
-    // Authenticated messages
-    this.authdata = this.userinfo.authdata_stream.subscribe(
-      data=>{
-        this.authdata_make = data.toString();
-        // console.log("NOTES COMPONENT authdata: "+ this.authdata_make);
-      }
-    );
+
 
   }
 
@@ -183,7 +176,6 @@ export class NotesComponent   implements OnInit {
       }
     }
     this.notes_subject.unsubscribe();
-    this.authdata.unsubscribe();
   }
 
 }

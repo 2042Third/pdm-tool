@@ -18,7 +18,7 @@ import { EncryptionComponent } from '../security/encryption/encryption.component
 export class UserinfoService implements OnInit {
   private signin_status_obj:ServerMsg=new ServerMsg;
   // subject :Subject<ServerMsg> =new Subject<ServerMsg>();
-  private s_authdata="";
+  private s_authdata=null;
   public signin_status_value:Subject<ServerMsg> =new BehaviorSubject<ServerMsg>(this.signin_status_obj);
   // public signin_status_value_note:Subject<ServerMsg> =new BehaviorSubject<ServerMsg>();
   public authdata_stream:Subject<String> = new BehaviorSubject<String>(this.s_authdata);
@@ -38,6 +38,7 @@ export class UserinfoService implements OnInit {
   encryption_module: EncryptionComponent;
   dialogRef: MatDialogRef<DialogNotificationsComponent, any>;
   authdata_stream_app_ref: Subscription;
+  authdata_stream_ref: Subscription;
   constructor(
     private ngzone: NgZone,
     private dbService: NgxIndexedDBService,
@@ -54,19 +55,39 @@ export class UserinfoService implements OnInit {
         }
       }
     );
-
-  }
-  ngOnInit(){
     this.authdata_stream_app_ref = this.authdata_stream_app.subscribe(data=>{
-      this.coockies_setting(data.toString());
+      if(data!=null)
+        this.coockies_setting(data.toString());
     });
+    this.authdata_stream_ref = this.authdata_stream.subscribe(
+      data=>{
+        if(data!=null){
+          this.ngzone.run(()=>{
+            this.openDialogEnter();
+            let vl = this.hash(data.toString());
+            console.log("PASSSET =>"+vl);
+          });
+        }
+
+      }
+    );
+  }
+  ngOnInit(): void {
+    // throw new Error('Method not implemented.');
+  }
+  afterViewInit(){
+    console.log("userinfo init");
+
   }
 
   coockies_setting(a:string){
-    const dateNow = new Date();
+    let dateNow = new Date();
     dateNow.setMinutes(dateNow.getMinutes() + 20);
-
-    this.cookieService.set('application', a, dateNow,'/','pdm.pw',true,'Strict');
+    console.log("Setting coookies. Expiring on "+dateNow.toDateString()+" "+dateNow.getHours()+":"+dateNow.getMinutes());
+    if(!environment.production)
+      this.cookieService.set('application', a, dateNow,'/','localhost',true,'Strict');
+    else
+      this.cookieService.set('application', a, dateNow,'/','pdm.pw',true,'Strict');
   }
   public set_signin_status(a:ServerMsg){
       this.signin_status_obj = JSON.parse(JSON.stringify(a));
@@ -92,7 +113,6 @@ export class UserinfoService implements OnInit {
     this.ngzone.run(()=>{
       this.enc_stream_return.next(a);
     });
-
   }
 
   enc(a: string){
@@ -179,7 +199,7 @@ export class UserinfoService implements OnInit {
         this.dbService.getAllByIndex('pdmSecurity', "email",IDBKeyRange.only(local_all[i].email))
         .subscribe((kpis) => {
           let local_all1 = JSON.parse(JSON.stringify(kpis[0]));
-          this.set_pswd(local_all1.secure);
+          this.set_pswd(local_all1.secure); // ask user to enter application password
           console.log("pass set for: "+local_all1.email);
         });
       }
@@ -203,9 +223,93 @@ export class UserinfoService implements OnInit {
     return this.pswd;
   }
 
+
+  sign_out(){
+    this.clear_ponce();
+    this.clear_same_email();
+  }
+
+
+  /**
+   * set secure storage
+   * @param a email
+   * @param b password
+   *
+  */
+  ponce_process (a:string, b:string){
+    console.log('making ponce new');
+    let app_local = this.cookieService.get("application");
+    if(app_local == null){
+      console.log("No application password set, cannot store password.");
+      return;
+    }
+    this.dbService.add('pdmSecurity', {
+      email: a,
+      ponce_status: false,
+      secure:this.enc2(app_local,b)
+    })
+    .subscribe((key) => {
+      console.log('indexeddb key: ', key);
+    });
+  }
+  clear_ponce(){
+    console.log('clearing ponce ');
+    let local_all;
+    this.dbService.getAll('pdmSecurity')
+    .subscribe((kpis) => {
+      local_all = JSON.parse(JSON.stringify(kpis));
+      console.log(`pdmSecurity all part ${JSON.stringify(local_all)}`);
+      if(local_all==null){
+        return;
+      }
+      for (let i=0; i<local_all.length;i++){
+        console.log(`pdmSecurity part# ${i}`);
+        let itm = (local_all[i]);
+        console.log(`pdmSecurity part ${JSON.stringify(itm)}`);
+        this.dbService.delete('pdmSecurity', itm.pid).subscribe((data) => {
+          console.log('deleted:', data);
+        });
+      }
+    });
+
+    // for (let i=0; i< local_all.length; i++){
+    //   this.dbService.delete('pdmSecurity', local_all[i].id).subscribe((data) => {
+    //     console.log('deleted:', data);
+    //   });
+    // }
+  }
+
+  clear_same_email(){
+    let local_all;
+    this.dbService.getAll('pdmTable')
+    .subscribe((kpis) => {
+      local_all = JSON.parse(JSON.stringify(kpis));
+      console.log(local_all);
+      if(local_all==null){
+        return;
+      }
+      for (let i=0; i< local_all.length; i++){
+        this.dbService.delete('pdmTable', local_all[i].id).subscribe((data) => {
+          console.log('deleted:', data);
+        });
+      }
+    });
+  }
+
+  set_mock_db(){// DEBUG ONLY
+    this.dbService.add('pdmTable', {
+      username: "some usr",
+      view: "signin",
+      email: "18604713262@163.com"
+    })
+    .subscribe((key) => {
+      console.log('DEBUG indexeddb key: ', key);
+    });
+  }
   ngOnDestroy() {
     this.stream_sub.unsubscribe();
     this.authdata_stream_app_ref.unsubscribe();
+    this.authdata_stream_ref.unsubscribe();
   }
 
 }

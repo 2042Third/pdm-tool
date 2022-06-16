@@ -21,8 +21,10 @@ export class EncryptionComponent extends EmscriptenWasmComponent<c20> implements
     // Authenticated messages
     this.authdata = this.userinfo.authdata_stream.subscribe(
       data=>{
-        this.authdata_make = data.toString();
-        console.log("ENCRYPTION COMPONENT authdata: "+ this.authdata_make);
+        if(data!=null){
+          this.authdata_make = data.toString();
+          console.log("ENCRYPTION COMPONENT authdata: "+ this.authdata_make);
+        }
       }
     );
   }

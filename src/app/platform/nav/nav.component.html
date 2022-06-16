@@ -115,10 +115,10 @@
 </mat-menu>
 <!-- offline indexeddb -->
 <mat-menu #notesDebugOfflineDB="matMenu" xPosition="before">
-  <button class="text-color" mat-menu-item (click)="clear_email()" i18n>Clear By Email</button>
-  <button class="text-color" mat-menu-item (click)="set_mock_db()" i18n>Set Mock DB</button>
-  <button class="text-color" mat-menu-item (click)="get_all_db()" i18n>Get Mock DB</button>
-  <button class="text-color" mat-menu-item (click)="ponce_process()" i18n>Set Mock DB ponce</button>
-  <button class="text-color" mat-menu-item (click)="clear_ponce()" i18n>clear Mock DB ponce</button>
+  <button class="text-color" mat-menu-item (click)="userinfo.clear_same_email()" i18n>Clear By Email</button>
+  <button class="text-color" mat-menu-item (click)="userinfo.set_mock_db()" i18n>Set Mock DB</button>
+  <button class="text-color" mat-menu-item (click)="userinfo.get_all_db()" i18n>Get Mock DB</button>
+  <button class="text-color" mat-menu-item (click)="userinfo.ponce_process('18604713262@163.com','12345')" i18n>Set Mock DB ponce</button>
+  <button class="text-color" mat-menu-item (click)="userinfo.clear_ponce()" i18n>clear Mock DB ponce</button>
   <!-- <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()">Pass Heads</button> -->
 </mat-menu>

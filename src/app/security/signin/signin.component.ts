@@ -122,16 +122,15 @@ export class SigninComponent implements OnInit {
       this.userinfo.set_pswd(this.f.upw.value);
       this.upw=this.f.upw.value;
       this.umail = this.f.umail.value;
-      this.clear_ponce();
-      this.ponce_process();
-      //
-      console.log(this.userinfo.hash(this.f.upw.value+this.f.upw.value));
+      this.userinfo.clear_ponce();
+      this.userinfo.ponce_process(this.umail, this.upw);
+      // console.log(this.userinfo.hash(this.f.upw.value+this.f.upw.value));
       this.auth.login(
         this.f.umail.value
         , this.userinfo.hash(this.f.upw.value+this.f.upw.value) // server only knows the hash of the pass+pass
       ).subscribe({
           next: data => {
-            this.clear_same_email();
+            this.userinfo.clear_same_email();
             data.receiver = this.userinfo.dec2(this.f.upw.value, data.receiver.toString());
             this.usr_setup(data);
             this.first_setup(data);
@@ -144,50 +143,6 @@ export class SigninComponent implements OnInit {
     }
   }
 
-  sign_out(){
-    this.clear_ponce();
-    this.clear_same_email();
-  }
-
-
-
-  ponce_process (){
-    console.log('making ponce new');
-    this.dbService.add('pdmSecurity', {
-      email: this.umail,
-      ponce_status: false,
-      secure:this.upw
-    })
-    .subscribe((key) => {
-      console.log('indexeddb key: ', key);
-    });
-  }
-  clear_ponce(){
-    console.log('clearing ponce ');
-    let local_all;
-    this.dbService.getAll('pdmSecurity')
-    .subscribe((kpis) => {
-      local_all = JSON.parse(JSON.stringify(kpis));
-      console.log(`pdmSecurity all part ${JSON.stringify(local_all)}`);
-      if(local_all==null){
-        return;
-      }
-      for (let i=0; i<local_all.length;i++){
-        console.log(`pdmSecurity part# ${i}`);
-        let itm = (local_all[i]);
-        console.log(`pdmSecurity part ${JSON.stringify(itm)}`);
-        this.dbService.delete('pdmSecurity', itm.pid).subscribe((data) => {
-          console.log('deleted:', data);
-        });
-      }
-    });
-
-    // for (let i=0; i< local_all.length; i++){
-    //   this.dbService.delete('pdmSecurity', local_all[i].id).subscribe((data) => {
-    //     console.log('deleted:', data);
-    //   });
-    // }
-  }
   usr_setup(data){
     console.log("beforedate:"+data.time);
     data.utime = formatDate(Number(data.time), "medium",'en-US' ).toString();
@@ -206,27 +161,13 @@ export class SigninComponent implements OnInit {
       this.notes_serv.get_notes_heads().subscribe()
     }, this.notes_serv.loadingTimeout);
   }
-  clear_same_email(){
-    let local_all;
-    this.dbService.getAll('pdmTable')
-    .subscribe((kpis) => {
-      local_all = JSON.parse(JSON.stringify(kpis));
-      console.log(local_all);
-      if(local_all==null){
-        return;
-      }
-      for (let i=0; i< local_all.length; i++){
-        this.dbService.delete('pdmTable', local_all[i].id).subscribe((data) => {
-          console.log('deleted:', data);
-        });
-      }
-    });
-  }
 
   set_server_msg(a:ServerMsg){
     this.server_back = a;
   }
-
+  sign_out(){
+    this.userinfo.sign_out();
+  }
   sign_up(){
     this.cur_function = "Sign Up";
     this.signup = UserAc.SignUp;
