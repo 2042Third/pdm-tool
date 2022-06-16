@@ -185,6 +185,8 @@ export class UserinfoService implements OnInit {
 
   get_all_db(){
     let local_all;
+    let stored_app = this.cookieService.get("application");
+
     this.dbService.getAll('pdmTable')
     .subscribe((kpis) => {
       local_all = JSON.parse(JSON.stringify(kpis));
@@ -199,6 +201,12 @@ export class UserinfoService implements OnInit {
         this.dbService.getAllByIndex('pdmSecurity', "email",IDBKeyRange.only(local_all[i].email))
         .subscribe((kpis) => {
           let local_all1 = JSON.parse(JSON.stringify(kpis[0]));
+          if(stored_app == null){
+            this.openDialogReenter(local_all1.email);
+          }
+          else {
+            this.authdata_stream_app.next(stored_app);
+          }
           this.set_pswd(local_all1.secure); // ask user to enter application password
           console.log("pass set for: "+local_all1.email);
         });
@@ -210,6 +218,16 @@ export class UserinfoService implements OnInit {
     let enterDialog: MatDialogConfig= new MatDialogConfig();
     enterDialog.autoFocus = true;
     enterDialog.data = {dialogType:"Enter",dialogTitle:"Application Password", message:"Set an application password for this computer."};
+    enterDialog.panelClass= 'custom-modalbox';
+    this.dialogRef = this.dialog.open(DialogNotificationsComponent, enterDialog);
+  }
+
+  openDialogReenter(a:string){
+    let enterDialog: MatDialogConfig= new MatDialogConfig();
+    enterDialog.autoFocus = true;
+    enterDialog.data = {dialogType:"Enter",dialogTitle:"Application Password",
+      message:"Local storage found encrypted account for user \""
+        +a+"\". \nIf this is your account, please the application password for this user."};
     enterDialog.panelClass= 'custom-modalbox';
     this.dialogRef = this.dialog.open(DialogNotificationsComponent, enterDialog);
   }
