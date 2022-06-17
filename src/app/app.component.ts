@@ -4,11 +4,7 @@ import { UserinfoService } from './_services/userinfos.service';
 import { WebsockService } from './_services/websock.service';
 import { EncryptionComponent } from './security/encryption/encryption.component';
 import { PlatformComponent } from './platform/platform.component';
-import {
-  disableBodyScroll,
-  enableBodyScroll,
-  clearAllBodyScrollLocks
-} from "body-scroll-lock";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -18,14 +14,12 @@ export class AppComponent{
   title = 'pdm-notes';
 
   @ViewChild('encryption') mainencrypt: EncryptionComponent;
-  @ViewChild('main') main: PlatformComponent;
   constructor(
     public sock: WebsockService,
     public auth: AuthService,
     public userinfo: UserinfoService,
   ){
 
-    disableBodyScroll(this.main);
     // setTimeout(()=>{userinfo.set_encryption(this.mainencrypt)},1000);
   }
   ngAfterViewInit() {
