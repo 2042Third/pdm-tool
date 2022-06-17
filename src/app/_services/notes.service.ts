@@ -27,7 +27,6 @@ export class NotesService {
   signin_stat_str: String = "Not Signed In";
   signin_stat: boolean = false;
   dialogRef:MatDialogRef<DialogNotificationsComponent, any>;
-  dialogConfig = new MatDialogConfig();
   private cur_open_note:String;
   private last_save_time:number=-1;
   private last_save_time_str:String="never";
@@ -49,9 +48,6 @@ export class NotesService {
     private router: Router,
     private ngzone:NgZone,
     ) {
-      this.dialogConfig.autoFocus = true;
-      this.dialogConfig.data = {dialogType:"Alert",dialogTitle:"Alert", message:"Please log in."};
-      this.dialogConfig.panelClass= 'custom-modalbox';
       // User signin status
       this.signup_sub = this.userinfo.signin_status_value.subscribe(
       {
@@ -74,17 +70,6 @@ export class NotesService {
   }
   ngOnInit() {
 
-  }
-
-  openDialog(){
-    this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
-  }
-  openDialogEnter(){
-    let enterDialog: MatDialogConfig= new MatDialogConfig();
-    enterDialog.autoFocus = true;
-    enterDialog.data = {dialogType:"Enter",dialogTitle:"Application Password", message:"Set an application password for this computer."};
-    enterDialog.panelClass= 'custom-modalbox';
-    this.dialogRef = this.dialog.open(DialogNotificationsComponent, enterDialog);
   }
 
   /**
@@ -130,7 +115,7 @@ export class NotesService {
         // console.log("Current content: \n\'\'\'\n"+this.cur_content+"\'\'\'");
         return null;
       }
-      this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
+      this.userinfo.openDialog();
       return null;
     }
     // setTimeout(()=>{
@@ -171,7 +156,7 @@ export class NotesService {
 
   public new_note(){
     if(!this.signin_stat) {
-    this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
+      this.userinfo.openDialog();
       return null;
     }
     return this.ngzone.run(()=>{
@@ -195,7 +180,7 @@ export class NotesService {
   */
   public get_notes_heads(){
     if(!this.signin_stat) {
-    this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
+      this.userinfo.openDialog();
       return null;
     }
     this.notes_obj.ntype = "heads";
@@ -220,7 +205,7 @@ export class NotesService {
   */
   public get_note(a:String){
     if(!this.signin_stat) {
-    this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
+      this.userinfo.openDialog();
       return null;
     }
     this.notes_obj.ntype = "retrieve";

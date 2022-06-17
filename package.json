@@ -30,6 +30,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "body-scroll-lock": "^4.0.0-beta.0",
     "ng": "^0.0.0",
     "ngx-cookie-service": "^14.0.0",
     "ngx-indexed-db": "^11.0.2",

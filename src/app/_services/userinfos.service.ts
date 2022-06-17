@@ -39,6 +39,9 @@ export class UserinfoService implements OnInit {
   dialogRef: MatDialogRef<DialogNotificationsComponent, any>;
   authdata_stream_app_ref: Subscription;
   authdata_stream_ref: Subscription;
+  waiting_for_app: boolean =false;
+  app_local:string = null;
+  enc_info:ServerMsg=new ServerMsg();
   constructor(
     private ngzone: NgZone,
     private dbService: NgxIndexedDBService,
@@ -56,8 +59,15 @@ export class UserinfoService implements OnInit {
       }
     );
     this.authdata_stream_app_ref = this.authdata_stream_app.subscribe(data=>{
-      if(data!=null)
-        this.coockies_setting(data.toString());
+      if(data!=null){
+        this.app_local = data.toString();
+        this.coockies_setting(this.app_local);
+        if(this.waiting_for_app){
+          this.waiting_for_app = false;
+          this.set_pswd(this.dec2(this.app_local,this.enc_info.val.toString())); // ask user to enter application password; TO BE CONTINUED!!!!!!!!!!!!!!
+          console.log("pass set for: "+this.enc_info.email);
+        }
+      }
     });
     this.authdata_stream_ref = this.authdata_stream.subscribe(
       data=>{
@@ -186,7 +196,7 @@ export class UserinfoService implements OnInit {
   get_all_db(){
     let local_all;
     let stored_app = this.cookieService.get("application");
-
+    let waiting_enc:string;
     this.dbService.getAll('pdmTable')
     .subscribe((kpis) => {
       local_all = JSON.parse(JSON.stringify(kpis));
@@ -201,19 +211,30 @@ export class UserinfoService implements OnInit {
         this.dbService.getAllByIndex('pdmSecurity', "email",IDBKeyRange.only(local_all[i].email))
         .subscribe((kpis) => {
           let local_all1 = JSON.parse(JSON.stringify(kpis[0]));
+          this.enc_info.email =local_all[i].email;
+          this.enc_info.val = local_all1.secure;
           if(stored_app == null){
             this.openDialogReenter(local_all1.email);
           }
           else {
+            waiting_enc = stored_app;
             this.authdata_stream_app.next(stored_app);
           }
-          this.set_pswd(local_all1.secure); // ask user to enter application password
-          console.log("pass set for: "+local_all1.email);
+          this.waiting_for_app = true;
         });
       }
-    });
 
+    });
   }
+
+  openDialog(){
+    let dialogConfig: MatDialogConfig= new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {dialogType:"Alert",dialogTitle:"Alert", message:"Please log in."};
+    dialogConfig.panelClass= 'custom-modalbox';
+    this.dialogRef = this.dialog.open(DialogNotificationsComponent, dialogConfig);
+  }
+
   openDialogEnter(){
     let enterDialog: MatDialogConfig= new MatDialogConfig();
     enterDialog.autoFocus = true;
