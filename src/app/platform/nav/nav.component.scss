@@ -25,7 +25,8 @@
   font-size: smaller;
 }
 .main-container {
-  overscroll-behavior: contain;
+  overscroll-behavior: contain; // scrolling
+  position: fixed; // scrolling
   display:flex;
   flex-direction:column;
   align-items: stretch;
