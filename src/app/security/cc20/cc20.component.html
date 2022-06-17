@@ -1,36 +1,36 @@
 <div chat class="plat">
   <!-- <p class="terminal" id="output" [innerHTML]="_term | safeHtml">
   </p> -->
-<p class="terminal"  id="output" custom-scroll>
-  <mat-list dense >
-    <mat-list-item  *ngFor="let onemsg of chatservice.chat_hist" class="mat-item-chat">
-      <!-- <button type="button" > -->
-        <p class="text-color chat-listing">
+  <p class="terminal"  id="output" custom-scroll>
+    <mat-list dense >
+      <mat-list-item  *ngFor="let onemsg of chatservice.chat_hist" class="mat-item-chat">
+        <!-- <button type="button" > -->
+          <p class="text-color chat-listing">
 
-          <font color="grey" matLine>
-            {{onemsg.time}}
-          </font>
-          <span matLine>
-            {{onemsg.msg}}
-          </span>
-          <span matLine>
-            {{user.dec(onemsg.msg)}}
-          </span>
-          <mat-divider></mat-divider>
-        </p>
-      <!-- </button> -->
-    </mat-list-item>
-  </mat-list>
-</p>
-<form
-(ngSubmit)="handleSubmit($event)"
-(keydown.enter)="handleKeyDown($event)"
-(keyup.enter)="handleKeyUp($event)"
-class="chat-box"
->
-  <textarea class="inputClass2" name="msg" [(ngModel)]="msg"
-  [readonly]="no_submit"></textarea>
-  <button type="submit" class="btn btn-primary">send</button>
-</form>
+            <font color="grey" matLine>
+              {{onemsg.time}}
+            </font>
+            <span matLine>
+              {{onemsg.msg}}
+            </span>
+            <span matLine>
+              {{user.dec(onemsg.msg)}}
+            </span>
+            <mat-divider></mat-divider>
+          </p>
+        <!-- </button> -->
+      </mat-list-item>
+    </mat-list>
+  </p>
+  <form
+  (ngSubmit)="handleSubmit($event)"
+  (keydown.enter)="handleKeyDown($event)"
+  (keyup.enter)="handleKeyUp($event)"
+  class="chat-box"
+  >
+    <textarea class="inputClass2" name="msg" [(ngModel)]="msg"
+    [readonly]="no_submit"></textarea>
+    <button type="submit" class="btn btn-primary">send</button>
+  </form>
 
 </div>

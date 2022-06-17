@@ -15,15 +15,8 @@ import { MatDrawer, MatDrawerContainer, MatSidenav } from '@angular/material/sid
 import { NotesService } from 'src/app/_services/notes.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
 import { NoteHead, NotesMsg } from '../../_types/User';
-import { formatDate } from '@angular/common';
-import { take } from 'rxjs/operators';
 import { IndexDetails, NgxIndexedDBService } from 'ngx-indexed-db';
-import { PlatformComponent } from '../platform.component';
-import {
-  disableBodyScroll,
-  enableBodyScroll,
-  clearAllBodyScrollLocks
-} from "body-scroll-lock";
+
 @Component({
   selector: "app-nav",
   templateUrl: "./nav.component.html",
@@ -60,7 +53,6 @@ export class NavComponent implements AfterViewInit {
   //LOCALE
   cur_locale = "en";
 
-  @ViewChild('main') main: MatDrawerContainer;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -71,7 +63,6 @@ export class NavComponent implements AfterViewInit {
     private dbService: NgxIndexedDBService,
   ) {
 
-    disableBodyScroll(this.main);
     // START QUOTE , from https://www.geeksforgeeks.org/how-to-detect-whether-the-website-is-being-opened-in-a-mobile-device-or-a-desktop-in-javascript/
     //Checking is mobile or not
     /* Storing user's device details in a variable*/
