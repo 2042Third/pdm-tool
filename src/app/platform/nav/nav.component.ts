@@ -104,7 +104,7 @@ export class NavComponent implements AfterViewInit {
       {
         next: data=>{
             this.signin_obj = JSON.parse(JSON.stringify(data)); // make a copy
-            this.signin_stat_str = data.receiver;
+            this.signin_stat_str = data.username;
             if(this.signin_obj.status != "fail"){
               this.signin_stat = true;
               this.maindrawer.toggle();

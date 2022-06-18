@@ -45,7 +45,7 @@ const dbConfig: DBConfig = {
   },
   {
     store: 'pdmSecurity',
-    storeConfig: {keyPath: 'pid', autoIncrement: true},
+    storeConfig: {keyPath: 'id', autoIncrement: true},
     storeSchema: [
       {name: 'email', keypath: 'email', options: { unique: true}},
       {name: 'secure', keypath: 'secure', options: {unique:false}},

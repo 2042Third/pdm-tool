@@ -56,6 +56,9 @@ export class NotesService {
             this.signin_stat_str = data.receiver;
             if(this.signin_obj.status == "success"){
               this.signin_stat = true;
+              setTimeout(() => {
+                this.get_notes_heads().subscribe()
+              }, this.loadingTimeout);
             }
             else {
               this.signin_stat = false;

@@ -5,6 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { dialogData } from 'src/app/_types/Compos';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserinfoService } from '../../_services/userinfos.service';
+import { Encry } from 'src/app/_types/User';
 @Component({
   selector: 'app-dialogNotifications',
   templateUrl: './dialogNotifications.component.html',
@@ -23,11 +24,24 @@ export class DialogNotificationsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("Open "+ this.data.dialogType);
+
   }
   closeDialog(){
     this.dialogRef.close();
   }
   doneDialog(){
-    this.userinfo.authdata_stream_app.next(this.dialogInput);
+    let authdata_stream_app_obj = new Encry();
+    authdata_stream_app_obj.val = this.dialogInput;
+    authdata_stream_app_obj.type = "user_enter";
+    this.userinfo.authdata_stream_app.next(authdata_stream_app_obj);
+    if(this.data.dialogType=='Reenter' && this.data.encInput != null){
+      let tmp = new Encry();
+      tmp.type = "set_pass";
+      tmp.data = "none";
+      tmp.val = this.userinfo.dec2(this.dialogInput.toString(),this.data.encInput.toString());
+      this.userinfo.authdata_stream.next(tmp);
+    }
+    this.closeDialog();
   }
 }

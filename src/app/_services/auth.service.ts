@@ -13,7 +13,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 export class AuthService {
     // private userSubject: BehaviorSubject<ServerMsg>;
     // public signupSubject: BehaviorSubject<ServerMsg>;
-    private userSubject: Subject<ServerMsg> = new Subject<ServerMsg>();
+    public userSubject: Subject<ServerMsg> = new Subject<ServerMsg>();
     public signupSubject: Subject<ServerMsg> = new Subject<ServerMsg>();
 
     dialogRef:MatDialogRef<DialogNotificationsComponent, any>;
@@ -22,7 +22,7 @@ export class AuthService {
     dialogConfigFail = new MatDialogConfig();
     private signup_obj:ServerMsg=new ServerMsg;
     public user: Observable<ServerMsg>;
-    private data_store:{latestMsg:ServerMsg} = {latestMsg:new ServerMsg};
+    private data_store:ServerMsg;
     constructor(
       private router: Router,
       public dialog: MatDialog,
@@ -63,9 +63,10 @@ export class AuthService {
             if (authData.status == "fail"){
               this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
             }
+
             localStorage.setItem('user', JSON.stringify(window.btoa(umail + ':' + upw)));
-            this.data_store.latestMsg = authData;
-            this.userSubject.next(Object.assign({}, this.data_store).latestMsg);
+            this.data_store = JSON.parse(JSON.stringify(authData));
+            this.userSubject.next(this.data_store);
             return authData;
         }));
     }

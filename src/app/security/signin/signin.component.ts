@@ -122,18 +122,18 @@ export class SigninComponent implements OnInit {
       this.userinfo.set_pswd(this.f.upw.value);
       this.upw=this.f.upw.value;
       this.umail = this.f.umail.value;
-      this.userinfo.clear_ponce();
-      this.userinfo.ponce_process(this.umail, this.upw);
-      // console.log(this.userinfo.hash(this.f.upw.value+this.f.upw.value));
+      // this.userinfo.clear_ponce();
+      // this.userinfo.ponce_process(this.umail, this.upw);
       this.auth.login(
         this.f.umail.value
         , this.userinfo.hash(this.f.upw.value+this.f.upw.value) // server only knows the hash of the pass+pass
       ).subscribe({
           next: data => {
+            // original before correction
             this.userinfo.clear_same_email();
-            data.receiver = this.userinfo.dec2(this.f.upw.value, data.receiver.toString());
             this.usr_setup(data);
-            this.first_setup(data);
+              // *moved to userinfo after pass set
+              // this.first_setup(data);
           },
           error: error => {
             this.errorMessage = error.message;
@@ -149,18 +149,7 @@ export class SigninComponent implements OnInit {
     data.username = data.receiver;
     this.local_usr = JSON.parse(JSON.stringify(data));
   }
-  first_setup(data){
-    // set data to indexeddb
-    this.dbService.add('pdmTable', this.local_usr)
-    .subscribe((key) => {
-      console.log('indexeddb key: ', key);
-    });
-    // Set data to usrinfo
-    this.userinfo.set_signin_status(data);
-    setTimeout(() => {
-      this.notes_serv.get_notes_heads().subscribe()
-    }, this.notes_serv.loadingTimeout);
-  }
+
 
   set_server_msg(a:ServerMsg){
     this.server_back = a;

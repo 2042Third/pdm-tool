@@ -28,6 +28,7 @@ export class NotesComponent   implements OnInit {
   attampted_loading=false;
   note_status: String;
   errorMessage: any;
+  has_change = false;
   constructor(
     public notes_serv:NotesService,
     private ngzone:NgZone,
@@ -43,14 +44,8 @@ export class NotesComponent   implements OnInit {
       data=>{// BEGIN subscribe
         let cur_timeout=this.notes_serv.loadingTimeout;
         this.notes_obj = JSON.parse(JSON.stringify(data));
-        // while(!this.attampted_loading){
-          // if(this.module != null){
-          //   cur_timeout=0;
-          //   this.attampted_loading=true;
-          // }
           setTimeout(()=>{
             console.log("NOTES COMPONENT recieved content: "+ JSON.stringify(this.notes_obj));
-            // if(this.module!=null){
               if(this.notes_obj.ntype == "retrieve_return" ){
                 console.log("NOTES COMPONENT recieved retrival result for note "+ this.notes_obj.note_id
                 +"\n\tStatus: "+ this.notes_obj.status);
@@ -79,9 +74,7 @@ export class NotesComponent   implements OnInit {
                 this.notes_serv.set_nav_head(this.notes_obj);
                 console.log("Notes, done pushing the heads to nav");
               }
-            // }
           },10);
-        // }
       }// END subscribe
     );
   }
@@ -137,6 +130,7 @@ export class NotesComponent   implements OnInit {
   }
 
   editHead(){
+    this.has_change = true;
     this.notes_serv.setHead(this.userinfo.enc(this.head_content));
     this.head_content_ref.nativeElement.blur();
     this.content_ref.nativeElement.focus();
@@ -147,6 +141,7 @@ export class NotesComponent   implements OnInit {
 
   change(a:String){
     console.log("content change");
+    this.has_change = true;
     if(a!=null){
       this.notes_serv.setCurContent(this.userinfo.enc(a.toString()));
     }
@@ -168,7 +163,7 @@ export class NotesComponent   implements OnInit {
       });
   }
   ngOnDestroy(){
-    if( this.userinfo.pass_is_set()){
+    if( this.userinfo.pass_is_set() && this.has_change){
       if(this.content != "" || this.head_content !=""){
         this.change(this.content);
         this.editHead();

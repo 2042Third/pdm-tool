@@ -22,7 +22,7 @@ export class EncryptionComponent extends EmscriptenWasmComponent<c20> implements
     this.authdata = this.userinfo.authdata_stream.subscribe(
       data=>{
         if(data!=null){
-          this.authdata_make = data.toString();
+          this.authdata_make = data.val.toString();
           console.log("ENCRYPTION COMPONENT authdata: "+ this.authdata_make);
         }
       }
@@ -43,22 +43,18 @@ export class EncryptionComponent extends EmscriptenWasmComponent<c20> implements
 
 
   enc2(p:string,a: string){
-    if(this.module==null || this.authdata_make==''){
-      return "unable to encrypt!"
-    }
     if(a.length==0){
       return '';
     }
+    console.log("DELETE THIS MESSAGE ENC2 "+p+"    "+a);
     return this.module.loader_check(p,a);
   }
 
   dec2(p:string,a:string){
-    if(this.module==null || this.authdata_make==''){
-      return "unable to encrypt!"
-    }
     if(a.length==0){
       return '';
     }
+    console.log("DELETE THIS MESSAGE DEC2 "+p+"    "+a);
     return this.module.loader_out(p,a);
   }
 

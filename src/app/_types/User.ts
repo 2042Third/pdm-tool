@@ -23,6 +23,7 @@ export class NoteHead{
 export class Encry{
   data:string = "";
   type:string = "";
+  val:string="";
 }
 
 export class NotesMsg extends NoteHead{
