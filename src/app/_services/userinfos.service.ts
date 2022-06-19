@@ -56,7 +56,6 @@ export class UserinfoService implements OnInit {
     this.stream_sub = this.enc_stream_return.subscribe(
       data => {
         if(data!=null){
-          console.log("enc_stream_return not null");
           this.ngzone.run(()=>{
             this.encryption_module = data;
             this.get_all_db();
@@ -79,8 +78,6 @@ export class UserinfoService implements OnInit {
         console.log("app set");
         this.app_local = data.val.toString();
         this.cookies_setting(this.app_local, this.local_not_set.email.toString());
-
-
         // pass set, push user info or set signin status
         if(this.local_not_set!=null){
           console.log("local setting status signin");
@@ -88,14 +85,7 @@ export class UserinfoService implements OnInit {
         }else {}
         if(data.type == "user_enter"){
           this.ponce_process(this.local_not_set.email.toString(), this.pswd); // moved from signin comp
-          // console.log("local not set is null");
-          // this.clear_ponce(); // moved from signin comp
         }
-        // if(this.waiting_for_app){
-        //   this.waiting_for_app = false;
-        //   this.set_pswd(this.dec2(this.app_local,this.enc_info.val.toString()));
-        //   console.log("pass set for: "+this.enc_info.email);
-        // }
       }
     });
     this.authdata_stream_ref = this.authdata_stream.subscribe(
@@ -103,26 +93,8 @@ export class UserinfoService implements OnInit {
         if(data!=null){
           console.log("authdata_stream not null");
         }
-        //   this.ngzone.run(()=>{
-        //     if(this.cookieService.get('application') == null || this.cookieService.get('application') == undefined){ // if there is not cookies found for this computer
-        //       this.openDialogEnter();
-        //       let vl = this.hash(data.toString());
-        //       console.log("PASSSET =>"+vl);
-        //     }
-        //     else {
-
-        //     }
-        //     // // pass set, push user info or set signin status
-        //     // if(this.local_not_set!=null){
-        //     //   this.first_setup(data.data);
-        //     // }else {
-        //     //   console.log("local not set is null");
-        //     // }
-        //   });
       }
     );
-
-    // read from local storage
   }
   ngOnInit(): void {
     console.log("userinfo init");
@@ -137,7 +109,8 @@ export class UserinfoService implements OnInit {
     // set data to indexeddb
     this.dbService.add('pdmTable', data)
     .subscribe((key) => {
-      console.log('indexeddb key: ', key);
+      this.b = JSON.stringify(key);
+      // console.log('indexeddb key: ', key);
     });
     // Set data to usrinfo
     this.set_signin_status( data);
@@ -200,9 +173,7 @@ export class UserinfoService implements OnInit {
     });
   }
 
-
   mock_ps(){
-    // if(!environment.production){
       this.mocking_status = true;
       this.debug_mock.next(this.mocking_status);
       let tmp = new Encry();
@@ -211,7 +182,6 @@ export class UserinfoService implements OnInit {
       tmp.data = "none";
       this.authdata_stream.next(tmp);
       this.pswd = '1234';
-    // }
   }
 
   mock_usr(){
@@ -230,20 +200,18 @@ export class UserinfoService implements OnInit {
     this.dbService.getAll('pdmTable')
     .subscribe((kpis) => {
       local_all = JSON.parse(JSON.stringify(kpis));
-      console.log("reading local:"+JSON.stringify(local_all));
+      // console.log("reading local:"+JSON.stringify(local_all));
       if(local_all==null){
         console.log("No local user");
         return;
       }
       else { // target the pass with the user's email
         stored_app = this.cookieService.get(this.cookies_encode(local_all[0].email)); // app pass
-        console.log("Asking for cookies "+this.cookies_encode(local_all[0].email));
+        // console.log("Asking for cookies "+this.cookies_encode(local_all[0].email));
       }
       for(let i=0; i< 1;i ++){ // HARDCODED TO ONLY TAKE THE FIRST RESULT
-        console.log("Found local user, resuming session: "+ JSON.stringify(local_all[i]));
+        // console.log("Found local user, resuming session: "+ JSON.stringify(local_all[i]));
         this.local_not_set = JSON.parse(JSON.stringify(local_all[i]));
-        // this.set_signin_status(local_all[i]);
-
         this.dbService.getAllByIndex('pdmSecurity', "email",IDBKeyRange.only(local_all[i].email))
         .subscribe((kpis) => {
           let local_all1 = JSON.parse(JSON.stringify(kpis[0]));
@@ -251,7 +219,7 @@ export class UserinfoService implements OnInit {
           this.enc_info.val = local_all1.secure;
           this.waiting_for_app = true;
           if(stored_app == null || stored_app == ""){// app pass ask, when there is local
-            console.log("store null");
+            // console.log("store null");
             this.openDialogReenter(local_all1.email,local_all1.secure);
           }
           else {
@@ -262,10 +230,9 @@ export class UserinfoService implements OnInit {
             let tmp = new Encry();
             tmp.type = "local_signin";
             tmp.data = (JSON.stringify(kpis[0]));
-            console.log(stored_app+" store not null "+ (JSON.parse(tmp.data).secure.toString()));
+            // console.log(stored_app+" store not null "+ (JSON.parse(tmp.data).secure.toString()));
             tmp.val = this.dec2(stored_app,JSON.parse(tmp.data).secure.toString());
-            console.log("recover p "+ JSON.stringify(tmp));
-
+            // console.log("recover p "+ JSON.stringify(tmp));
             this.ponce_process(this.local_not_set.email.toString(), this.pswd); // moved from signin comp
             setTimeout(() => {
               this.authdata_stream.next(tmp);
@@ -337,13 +304,13 @@ export class UserinfoService implements OnInit {
    *
   */
   ponce_process (a:string, b:string){
-    console.log('making ponce new');
+    // console.log('making ponce new');
     let app_local = this.cookieService.get(this.cookies_encode(a));
     if(app_local == null){
-      console.log("No application password set, cannot store password.");
+      // console.log("No application password set, cannot store password.");
       return;
     }
-    console.log("Using application password, "+app_local+" to "+b);
+    // console.log("Using application password, "+app_local+" to "+b);
     this.dbService.add('pdmSecurity', {
       email: a,
       ponce_status: false,
@@ -376,11 +343,6 @@ export class UserinfoService implements OnInit {
         });
       }
     });
-    // for (let i=0; i< local_all.length; i++){
-    //   this.dbService.delete('pdmSecurity', local_all[i].id).subscribe((data) => {
-    //     console.log('deleted:', data);
-    //   });
-    // }
   }
   /**
    * Deletes all local stores of account details

@@ -46,7 +46,6 @@ export class EncryptionComponent extends EmscriptenWasmComponent<c20> implements
     if(a.length==0){
       return '';
     }
-    console.log("DELETE THIS MESSAGE ENC2 "+p+"    "+a);
     return this.module.loader_check(p,a);
   }
 
@@ -54,7 +53,6 @@ export class EncryptionComponent extends EmscriptenWasmComponent<c20> implements
     if(a.length==0){
       return '';
     }
-    console.log("DELETE THIS MESSAGE DEC2 "+p+"    "+a);
     return this.module.loader_out(p,a);
   }
 
