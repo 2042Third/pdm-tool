@@ -23,7 +23,7 @@ export class EncryptionComponent extends EmscriptenWasmComponent<c20> implements
       data=>{
         if(data!=null){
           this.authdata_make = data.val.toString();
-          console.log("ENCRYPTION COMPONENT authdata: "+ this.authdata_make);
+          // console.log("ENCRYPTION COMPONENT authdata: "+ this.authdata_make);
         }
       }
     );
@@ -40,7 +40,6 @@ export class EncryptionComponent extends EmscriptenWasmComponent<c20> implements
       console.log("Module success!");
     }
   }
-
 
   enc2(p:string,a: string){
     if(a.length==0){

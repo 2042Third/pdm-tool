@@ -65,22 +65,20 @@ export class UserinfoService implements OnInit {
     );
     this.usersubject_ref = this.auth_serv.userSubject.subscribe( // only happen in
       data=>{ // set local_not_set
-        this.openDialogEnter(); // set app pass
-        this.local_not_set = JSON.parse(JSON.stringify(data));
+        if(data!=null){
+          this.openDialogEnter(); // set app pass
+          this.local_not_set = JSON.parse(JSON.stringify(data));
+        }
       }
     );
 
     this.authdata_stream_app_ref = this.authdata_stream_app.subscribe(data=>{
-      if(data!=null){
-          console.log("authdata_stream_app not null");
-        }
       if(data!=null){
         console.log("app set");
         this.app_local = data.val.toString();
         this.cookies_setting(this.app_local, this.local_not_set.email.toString());
         // pass set, push user info or set signin status
         if(this.local_not_set!=null){
-          console.log("local setting status signin");
           this.first_setup(this.local_not_set);
         }else {}
         if(data.type == "user_enter"){
@@ -152,6 +150,7 @@ export class UserinfoService implements OnInit {
     this.signin_status_obj.username = this.dec(this.signin_status_obj.receiver.toString());
     this.signin_status_value.next(this.signin_status_obj);
   }
+
   public pass_is_set(){
     if(this.encryption_module == null ){
       return false;
@@ -219,24 +218,19 @@ export class UserinfoService implements OnInit {
           this.enc_info.val = local_all1.secure;
           this.waiting_for_app = true;
           if(stored_app == null || stored_app == ""){// app pass ask, when there is local
-            // console.log("store null");
             this.openDialogReenter(local_all1.email,local_all1.secure);
           }
-          else {
+          else {  // Complicate stuff ended up being solved best with simple answers
+            let tmp = new Encry();
+            tmp.type = "local_signin";
+            tmp.data = (JSON.stringify(kpis[0]));
+            tmp.val = this.dec2(stored_app,JSON.parse(tmp.data).secure.toString());
+            this.authdata_stream.next(tmp);
             let authdata_stream_app_obj = new Encry();
             authdata_stream_app_obj.val = stored_app;
             authdata_stream_app_obj.type = "local_read";
             this.authdata_stream_app.next(authdata_stream_app_obj);
-            let tmp = new Encry();
-            tmp.type = "local_signin";
-            tmp.data = (JSON.stringify(kpis[0]));
-            // console.log(stored_app+" store not null "+ (JSON.parse(tmp.data).secure.toString()));
-            tmp.val = this.dec2(stored_app,JSON.parse(tmp.data).secure.toString());
-            // console.log("recover p "+ JSON.stringify(tmp));
             this.ponce_process(this.local_not_set.email.toString(), this.pswd); // moved from signin comp
-            setTimeout(() => {
-              this.authdata_stream.next(tmp);
-            }, 100);
           }
         });
       }
