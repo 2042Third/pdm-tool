@@ -15,6 +15,9 @@ export class DialogNotificationsComponent implements OnInit {
   public enterMsgSet = "Application password.";
   public enterMsg = "This password is used for encrypting your information on this computer.";
   public dialogInput = "";
+  private times_remain = 5;
+  private remain_msg1 = "Application password incorrect, ";
+  private remain_msg2 = " tries remaining.";
   constructor(
     @Inject(MAT_DIALOG_DATA) public data:  dialogData,
     private dialogRef: MatDialogRef<DialogNotificationsComponent>,
@@ -34,13 +37,32 @@ export class DialogNotificationsComponent implements OnInit {
     let authdata_stream_app_obj = new Encry();
     authdata_stream_app_obj.val = this.dialogInput;
     authdata_stream_app_obj.type = "user_enter";
-    this.userinfo.authdata_stream_app.next(authdata_stream_app_obj);
-    if(this.data.dialogType=='Reenter' && this.data.encInput != null){
+    if(this.data.dialogType == 'Enter'){
+      this.userinfo.authdata_stream_app.next(authdata_stream_app_obj);
+    }
+    else if(this.data.dialogType=='Reenter' && this.data.encInput != null){
       let tmp = new Encry();
       tmp.type = "set_pass";
       tmp.data = "none";
       tmp.val = this.userinfo.dec2(this.dialogInput.toString(),this.data.encInput.toString());
-      this.userinfo.authdata_stream.next(tmp);
+      let check = this.userinfo.dec2(this.dialogInput.toString(),this.data.checker.toString());
+      this.times_remain = this.times_remain -1;
+      if(this.data.email != check){
+        this.data.message = this.remain_msg1+this.times_remain+this.remain_msg2;
+        if(this.times_remain < 1){
+          tmp.data = null;
+          tmp.val = null;
+          this.userinfo.authdata_stream.next(tmp); // too many tries, clear all data and refresh.s
+          this.closeDialog();
+        }
+        return;
+      }
+      else {
+        this.userinfo.authdata_stream.next(tmp);
+        this.userinfo.authdata_stream_app.next(authdata_stream_app_obj);
+        this.closeDialog();
+        return;
+      }
     }
     this.closeDialog();
   }

@@ -33,6 +33,14 @@ export class ServerMsg {
   update_time:Number;
   utime:String;
   pdmSecurityVersion=0.1;
+  checker:"";
   ctime:String;
 };
 
+export class pdmSecurityStore{
+  secure:string = '';
+  email:String = "";
+  pnonce_status:Boolean = false;
+  pdmSecureityVersion = 0.1;
+  checker:string = "";
+};

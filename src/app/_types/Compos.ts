@@ -3,4 +3,6 @@ export class dialogData {
   dialogTitle:String = "pdm";
   message:String = "error!";
   encInput:String;
+  email:String= "";
+  checker:String = "";
 }

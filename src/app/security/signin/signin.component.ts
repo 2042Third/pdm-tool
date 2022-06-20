@@ -156,6 +156,7 @@ export class SigninComponent implements OnInit {
   }
   sign_out(){
     this.userinfo.sign_out();
+    setTimeout(()=>{window.location.reload();},500); // refresh page after signout
   }
   sign_up(){
     this.cur_function = "Sign Up";

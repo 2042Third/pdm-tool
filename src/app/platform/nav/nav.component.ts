@@ -62,6 +62,7 @@ export class NavComponent implements AfterViewInit {
     public ngzone: NgZone ,
     private dbService: NgxIndexedDBService,
   ) {
+    console.log("current url "+ this.router.url);
 
     // START QUOTE , from https://www.geeksforgeeks.org/how-to-detect-whether-the-website-is-being-opened-in-a-mobile-device-or-a-desktop-in-javascript/
     //Checking is mobile or not
@@ -165,6 +166,10 @@ export class NavComponent implements AfterViewInit {
     );
     this.notes_serv.setSidenav(this.notesnav);
 
+  }
+
+  refresh(){
+    window.location.reload();
   }
 
   getNoteId(index:number, a:NoteHead):number {

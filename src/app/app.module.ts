@@ -35,6 +35,7 @@ const dbConfig: DBConfig = {
       {name: 'status', keypath: 'status', options: { unique: false}},
       {name: 'sess', keypath: 'sess', options: { unique: false}},
       {name: 'type', keypath: 'type', options: { unique: false}},
+      {name: 'checker', keypath: 'checker', options: { unique: false}},
       {name: 'authdata', keypath: 'authdata', options: { unique: false}},
       {name: 'receiver', keypath: 'receiver', options: { unique: false}},
       {name: 'update_time', keypath: 'update_time', options: { unique: false}},
@@ -50,6 +51,7 @@ const dbConfig: DBConfig = {
       {name: 'email', keypath: 'email', options: { unique: true}},
       {name: 'secure', keypath: 'secure', options: {unique:false}},
       {name: 'pdmSecurityVersion', keypath: 'pdmSecurityVersion', options: {unique:false}},
+      {name: 'checker', keypath: 'checker', options: { unique: false}},
       {name: 'ponce_status', keypath: 'ponce_status', options:{unique:false}}
     ]
   },

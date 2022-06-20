@@ -46,6 +46,7 @@ export class UserinfoService implements OnInit {
   enc_info:ServerMsg=new ServerMsg();
   public local_not_set: ServerMsg;
   usersubject_ref: Subscription;
+  public cookies_timeout = 20; // timeout length
   constructor(
     private ngzone: NgZone,
     private dbService: NgxIndexedDBService,
@@ -88,8 +89,9 @@ export class UserinfoService implements OnInit {
     });
     this.authdata_stream_ref = this.authdata_stream.subscribe(
       data=>{
-        if(data!=null){
-          console.log("authdata_stream not null");
+        if(data!=null && data.val == null && data.type == "set_pass"){
+          this.sign_out();
+          setTimeout(()=>{window.location.reload();},500); // refresh page after signout
         }
       }
     );
@@ -116,26 +118,36 @@ export class UserinfoService implements OnInit {
 
   /**
    * Sets a 20 minutes timeout cookie that stores the application password.
+   * @param pass pass
+   * @param email email
    *
   */
   cookies_setting(pass:string, email:string){
-    const cookies_timeout = 20; // timeout length
     let dateNow = new Date();
-    dateNow.setMinutes(dateNow.getMinutes() + cookies_timeout);
+    dateNow.setMinutes(dateNow.getMinutes() + this.cookies_timeout);
     if( pass!= null && pass != ""){
       console.log("Setting coookies. Expiring on "+dateNow.toDateString()+" "+dateNow.getHours()+":"+dateNow.getMinutes());
       if(!environment.production)
-        this.cookieService.set(this.cookies_encode(email), pass, dateNow,'/','localhost',true,'Strict');
+        this.cookieService.set(this.cookies_encode(email), this.enc2(this.cookies_encode(email)+"pdm",pass), dateNow,'/','localhost',true,'Strict');
       else
-        this.cookieService.set(this.cookies_encode(email), pass, dateNow,'/','pdm.pw',true,'Strict');
+        this.cookieService.set(this.cookies_encode(email),  this.enc2(this.cookies_encode(email)+"pdm",pass), dateNow,'/','pdm.pw',true,'Strict');
     } else {
       console.log("No updates to cookies can be made.");
     }
   }
+
+  /**
+   * Return the cookies of the given email
+   * @param a email
+   */
+  get_cookies(a:string){
+    return this.dec2(a+"pdm",this.cookieService.get(a));
+  }
+
   /**
    * Encodes strings to URL-encoding for cookies storage.
    * Currently used for emails
-   *
+   * @param a email
   */
   cookies_encode(a:string){
     return a.replace("@", "_");
@@ -193,6 +205,8 @@ export class UserinfoService implements OnInit {
     }
   }
 
+
+
   get_all_db(){
     let local_all;
     let stored_app = null;
@@ -200,12 +214,12 @@ export class UserinfoService implements OnInit {
     .subscribe((kpis) => {
       local_all = JSON.parse(JSON.stringify(kpis));
       // console.log("reading local:"+JSON.stringify(local_all));
-      if(local_all==null){
+      if(local_all==null || local_all.length == 0){
         console.log("No local user");
         return;
       }
       else { // target the pass with the user's email
-        stored_app = this.cookieService.get(this.cookies_encode(local_all[0].email)); // app pass
+        stored_app = this.get_cookies(this.cookies_encode(local_all[0].email)); // app pass
         // console.log("Asking for cookies "+this.cookies_encode(local_all[0].email));
       }
       for(let i=0; i< 1;i ++){ // HARDCODED TO ONLY TAKE THE FIRST RESULT
@@ -218,7 +232,7 @@ export class UserinfoService implements OnInit {
           this.enc_info.val = local_all1.secure;
           this.waiting_for_app = true;
           if(stored_app == null || stored_app == ""){// app pass ask, when there is local
-            this.openDialogReenter(local_all1.email,local_all1.secure);
+            this.openDialogReenter(local_all1.email,local_all1.secure, local_all1.checker);
           }
           else {  // Complicate stuff ended up being solved best with simple answers
             let tmp = new Encry();
@@ -257,17 +271,23 @@ export class UserinfoService implements OnInit {
    * Askes user to enter the application password again.
    * @param a email
    * @param b pass
+   * @param c checker
    *
   */
-  openDialogReenter(a:string,b:String=null){
+  openDialogReenter(a:string,b:String=null, c:String=null){
     let enterDialog: MatDialogConfig= new MatDialogConfig();
     enterDialog.autoFocus = true;
-    enterDialog.data = {dialogType:"Reenter",dialogTitle:"Application Password",
-      message:"Local storage found encrypted account for user \""
+    enterDialog.data = {
+      dialogType:"Reenter"
+      ,dialogTitle:"Application Password"
+      ,message:"Local storage found encrypted account for user \""
         +a+"\". \nIf this is your account, please the application password for this user."
-        , encInput:b
+      , encInput:b
+      , email: a
+      , checker:c
       };
     enterDialog.panelClass= 'custom-modalbox';
+
     this.dialogRef = this.dialog.open(DialogNotificationsComponent, enterDialog);
   }
 
@@ -298,22 +318,26 @@ export class UserinfoService implements OnInit {
    *
   */
   ponce_process (a:string, b:string){
-    // console.log('making ponce new');
-    let app_local = this.cookieService.get(this.cookies_encode(a));
+    console.log('making ponce new');
+    let app_local = this.get_cookies(this.cookies_encode(a));
     if(app_local == null){
       // console.log("No application password set, cannot store password.");
       return;
     }
     // console.log("Using application password, "+app_local+" to "+b);
-    this.dbService.add('pdmSecurity', {
-      email: a,
-      ponce_status: false,
-      secure:this.enc2(app_local,b)
-    })
-    .subscribe((key) => {
-      console.log('indexeddb key: ', key);
+    this.clear_same_email_secure(a).subscribe((_)=>{
+      this.dbService.add('pdmSecurity', {
+        email: a,
+        ponce_status: false,
+        secure:this.enc2(app_local,b),
+        checker:this.enc2(app_local,a),
+      })
+      .subscribe((key) => {
+        console.log('indexeddb key: ', key);
+      });
     });
   }
+
   /**
    * Deletes all locale stores of ponce
    *
@@ -324,40 +348,74 @@ export class UserinfoService implements OnInit {
     this.dbService.getAll('pdmSecurity')
     .subscribe((kpis) => {
       local_all = JSON.parse(JSON.stringify(kpis));
-      console.log(`pdmSecurity all part ${JSON.stringify(local_all)}`);
+      // console.log(`pdmSecurity all part ${JSON.stringify(local_all)}`);
       if(local_all==null){
         return;
       }
       for (let i=0; i<local_all.length;i++){
-        console.log(`pdmSecurity part# ${i}`);
+        // console.log(`pdmSecurity part# ${i}`);
         let itm = (local_all[i]);
-        console.log(`pdmSecurity part ${JSON.stringify(itm)}`);
-        this.dbService.delete('pdmSecurity', itm.id).subscribe((data) => {
-          console.log('deleted:', data);
-        });
+        // console.log(`pdmSecurity part ${JSON.stringify(itm)}`);
+        this.delete_from_db("pdmSecurity",itm.id);
       }
     });
   }
+
   /**
    * Deletes all local stores of account details
-   *
+   * @param a email
   */
-  clear_same_email(){
+  clear_same_email(a:string = null){
     let local_all;
     this.dbService.getAll('pdmTable')
     .subscribe((kpis) => {
       local_all = JSON.parse(JSON.stringify(kpis));
       console.log(local_all);
-      if(local_all==null){
+      if(local_all==null || local_all.length==0){
         return;
       }
       for (let i=0; i< local_all.length; i++){
-        this.dbService.delete('pdmTable', local_all[i].id).subscribe((data) => {
-          console.log('deleted:', data);
-        });
+          this.delete_from_db("pdmTable",local_all[i].id);
       }
     });
   }
+
+  /**
+   * Deletes all local stores of account details
+   * @param a email
+  */
+  clear_same_email_secure(a:string = null){
+    let local_all;
+    return this.dbService.getAll('pdmSecurity')
+    .pipe((kpis) => {
+      local_all = JSON.parse(JSON.stringify(kpis));
+      console.log(local_all);
+      if(local_all==null || local_all.length==0){
+        return;
+      }
+      for (let i=0; i< local_all.length; i++){
+        if(a!= null && a==local_all[i].email){
+          console.log("Delete/update currennt local store");
+          this.delete_from_db("pdmSecurity",local_all[i].id);
+        }
+        else if (a == null){
+          this.delete_from_db("pdmSecurity",local_all[i].id);
+        }
+      }
+      return kpis;
+    });
+  }
+
+/**
+ * Delete from the local db
+ * @param a table name
+ * @param b item id
+*/
+delete_from_db(a:string , b:string){
+  this.dbService.delete(a, b).subscribe((data) => {
+    console.log('deleted:', data);
+  });
+}
 
   set_mock_db(){// DEBUG ONLY
     this.dbService.add('pdmTable', {
