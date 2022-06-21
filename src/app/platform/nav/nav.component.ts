@@ -3,7 +3,7 @@
  *  2/2022
  *
 */
-import { AfterViewInit, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, NgZone, OnInit, ViewChild ,  ElementRef } from '@angular/core';
 import { UserinfoService } from '../../_services/userinfos.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { faLightbulb as faSolidLightbulb, IconDefinition} from "@fortawesome/free-solid-svg-icons";
@@ -30,7 +30,7 @@ export class NavComponent implements AfterViewInit {
   note_status:String="no id";
   // elements
   @ViewChild('drawer') maindrawer: MatDrawer;
-  @ViewChild('title_bar') titleBar: HTMLElement;
+  @ViewChild('titlebar') titleBar:ElementRef;
   @ViewChild('rightDrawer') public notesnav: MatSidenav;
   errorMessage: any;
   feature_sub: Subscription;
@@ -80,18 +80,7 @@ export class NavComponent implements AfterViewInit {
     this.isMobileDevice = regexp.test(details);
     // END QUOTE
 
-    if (this.isMobileDevice) {
-      this.titleBar.style.flexGrow = '5';
-      this.nav_open_mode = "over"; // blur the main area
-      setTimeout(()=>{ // show and close the menu
-        this.notesnav.toggle();
-        this.maindrawer.toggle();
-      },
-        500
-      );
-    } else {
-      this.nav_open_mode = "side";
-    }
+
 
     this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
@@ -148,6 +137,18 @@ export class NavComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (this.isMobileDevice) {
+      this.titleBar.nativeElement.style.flexGrow = '5';
+      this.nav_open_mode = "over"; // blur the main area
+      setTimeout(()=>{ // show and close the menu
+        this.notesnav.toggle();
+        this.maindrawer.toggle();
+      },
+        500
+      );
+    } else {
+      this.nav_open_mode = "side";
+    }
   }
 
   ngOnInit() {
