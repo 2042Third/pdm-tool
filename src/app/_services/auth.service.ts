@@ -57,18 +57,18 @@ export class AuthService {
 
     login(umail: string, upw: string) {
       let temp = { "umail":umail, "upw":upw };
-        return this.http.post<ServerMsg>(
-          'https://pdm.pw/auth/signin',temp)
-          .pipe(map(authData => {
-            if (authData.status == "fail"){
-              this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
-            }
+      return this.http.post<ServerMsg>(
+        'https://pdm.pw/auth/signin',temp)
+        .pipe(map(authData => {
+          if (authData.status == "fail"){
+            this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
+          }
 
-            localStorage.setItem('user', JSON.stringify(window.btoa(umail + ':' + upw)));
-            this.data_store = JSON.parse(JSON.stringify(authData));
-            this.userSubject.next(this.data_store);
-            return authData;
-        }));
+          localStorage.setItem('user', JSON.stringify(window.btoa(umail + ':' + upw)));
+          this.data_store = JSON.parse(JSON.stringify(authData));
+          this.userSubject.next(this.data_store);
+          return authData;
+      }));
     }
 
     logout() {
