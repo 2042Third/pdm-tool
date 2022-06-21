@@ -6,6 +6,7 @@
 }
 .title-bar {
   flex-grow: 1;
+  // margin-top: auto;
 }
 .pdm-contents {
   flex-grow: 99;
@@ -43,6 +44,7 @@ mat-divider{
 }
 .matdrawer-styles{//outer
   background-color: var(--background-tertiary);
+  margin-top: 2rem;
 }
 
 .drawer-styles {

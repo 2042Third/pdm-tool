@@ -30,6 +30,7 @@ export class NavComponent implements AfterViewInit {
   note_status:String="no id";
   // elements
   @ViewChild('drawer') maindrawer: MatDrawer;
+  @ViewChild('title_bar') titleBar: HTMLElement;
   @ViewChild('rightDrawer') public notesnav: MatSidenav;
   errorMessage: any;
   feature_sub: Subscription;
@@ -80,8 +81,9 @@ export class NavComponent implements AfterViewInit {
     // END QUOTE
 
     if (this.isMobileDevice) {
-      this.nav_open_mode = "over";
-      setTimeout(()=>{
+      this.titleBar.style.flexGrow = '5';
+      this.nav_open_mode = "over"; // blur the main area
+      setTimeout(()=>{ // show and close the menu
         this.notesnav.toggle();
         this.maindrawer.toggle();
       },
