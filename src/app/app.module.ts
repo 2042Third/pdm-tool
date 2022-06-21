@@ -15,6 +15,7 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { UserinfoService } from './_services/userinfos.service';
 import { CustomScrollDirective } from './_directives/custom-scroll.directive';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { IonicModule } from '@ionic/angular';
 
 const dbConfig: DBConfig = {
   name: 'pdmDB',
@@ -74,6 +75,7 @@ const dbConfig: DBConfig = {
     SecurityModule,
     AppRoutingModule,
     NgxIndexedDBModule.forRoot(dbConfig),
+    IonicModule.forRoot(),
   ],
   providers: [
     {provide: APP_BASE_HREF, useValue: '/web_notes'},

@@ -1,0 +1,11 @@
+{
+  "defaultProject": "pdm-notes",
+  "projects": {
+    "pdm-notes": {
+      "name": "pdm-notes",
+      "integrations": {},
+      "type": "angular",
+      "root": ""
+    }
+  }
+}
