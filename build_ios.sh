@@ -1,3 +1,3 @@
 # !/bin/bash
-ng build --localize
+ionic build
 
