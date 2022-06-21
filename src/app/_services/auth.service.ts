@@ -1,6 +1,9 @@
+
 import { ServerMsg } from './../_types/ServerMsg';
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
+
+// import { HTTP } from '@awesome-cordova-plugins/plugins/';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -11,6 +14,9 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  Adetails = navigator.userAgent;
+  regexp = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+  ThisIsMobileDevice = this.regexp.test(this.Adetails);
     // private userSubject: BehaviorSubject<ServerMsg>;
     // public signupSubject: BehaviorSubject<ServerMsg>;
     public userSubject: Subject<ServerMsg> = new Subject<ServerMsg>();
