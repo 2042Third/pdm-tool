@@ -15,6 +15,7 @@ import { MatDrawer, MatDrawerContainer, MatSidenav } from '@angular/material/sid
 import { NotesService } from 'src/app/_services/notes.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
 import { NoteHead, NotesMsg } from '../../_types/User';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import { IndexDetails, NgxIndexedDBService } from 'ngx-indexed-db';
 
 @Component({

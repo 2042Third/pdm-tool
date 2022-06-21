@@ -5,7 +5,7 @@
       "name": "pdm-notes",
       "integrations": {},
       "type": "angular",
-      "root": ""
+      "root": "./"
     }
   }
 }
