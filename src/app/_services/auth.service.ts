@@ -73,7 +73,7 @@ export class AuthService {
       };
       from(Http.request({ ...options, method: 'POST' }))
         .pipe(map(data => {
-          let authData=data.data;
+          let authData=JSON.parse(data.data);
           if (authData == "fail"){
             this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
           }
