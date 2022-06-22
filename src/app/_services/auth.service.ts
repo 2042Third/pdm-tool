@@ -48,7 +48,7 @@ export class AuthService {
 
     signup(uname:string ,umail: string, upw: string) {
       return this.http.post<ServerMsg>(
-      'https://pdm.pw/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" })
+      '/pdm/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" })
             .pipe(map(upData => {
               if(upData.status == "success"){
                 this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigSuccess);
@@ -68,7 +68,7 @@ export class AuthService {
 
 
       return this.http.post<ServerMsg>(
-        'https://pdm.pw/auth/signin',temp)
+        '/pdm/auth/signin',temp)
         .pipe(map(authData => {
           if (authData.status == "fail"){
             this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
