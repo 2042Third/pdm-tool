@@ -4,8 +4,9 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
 // import { HTTP } from '@awesome-cordova-plugins/plugins/';
+import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Http, HttpResponse } from '@capacitor-community/http';
@@ -33,7 +34,8 @@ export class AuthService {
     constructor(
       private router: Router,
       public dialog: MatDialog,
-      private http: HttpClient,
+      private http: HTTP,
+      // private http: HttpClient,
     ) {
       this.dialogConfig.autoFocus = true;
       this.dialogConfig.data = {dialogType:"Sign in failed", message:"Check your email and password."};
@@ -47,17 +49,17 @@ export class AuthService {
     }
 
     signup(uname:string ,umail: string, upw: string) {
-      return this.http.post<ServerMsg>(
-      'capacitor://localhost/pdm/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" })
+      return from(this.http.post(
+      'https://pdm.pw/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" },{}))
             .pipe(map(upData => {
-              if(upData.status == "success"){
+              if(upData.data.status == "success"){
                 this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigSuccess);
               }
               else {
                 this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigFail);
 
               }
-              this.signupSubject.next(upData);
+              this.signupSubject.next(upData.data);
               return upData;
             }));
     }
@@ -66,17 +68,17 @@ export class AuthService {
       let temp = { "umail":umail, "upw":upw };
 
 
-      return this.http.post<ServerMsg>(
-        'capacitor://localhost/pdm/auth/signin',temp)
+      return from(this.http.post(
+        'https://pdm.pw/auth/signin',temp,{}))
         .pipe(map(authData => {
-          if (authData.status == "fail"){
+          if (authData.data.status == "fail"){
             this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
           }
 
           localStorage.setItem('user', JSON.stringify(window.btoa(umail + ':' + upw)));
-          this.data_store = JSON.parse(JSON.stringify(authData));
+          this.data_store = JSON.parse(JSON.stringify(authData.data));
           this.userSubject.next(this.data_store);
-          return authData;
+          return authData.data;
       }));
     }
 
