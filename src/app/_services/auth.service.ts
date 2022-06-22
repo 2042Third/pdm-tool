@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 // import { HTTP } from '@awesome-cordova-plugins/plugins/';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Http, HttpResponse } from '@capacitor-community/http';
@@ -65,28 +65,7 @@ export class AuthService {
     login(umail: string, upw: string) {
       let temp = { "umail":umail, "upw":upw };
 
-      // const data = { data: 'postData' }
-      const options = {
-        url: 'https://pdm.pw/auth/signin',
-        data: temp,
-        headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin":"*" }
-      };
-      from(Http.request({ ...options, method: 'POST' }))
-        .pipe(map(data => {
-          let authData=JSON.parse(data.data);
-          if (authData == "fail"){
-            this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
-          }
 
-          localStorage.setItem('user', JSON.stringify(window.btoa(umail + ':' + upw)));
-          this.data_store = JSON.parse(JSON.stringify(authData));
-          this.userSubject.next(this.data_store);
-          return authData;
-      }));
-        // .catch(e => {
-        //   console.log(e)
-        //   // this.changeStatus('post', 'unrestricted', 2);
-        // })
 
       return this.http.post<ServerMsg>(
         'https://pdm.pw/auth/signin',temp)

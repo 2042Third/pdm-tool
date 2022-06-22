@@ -5,7 +5,13 @@
       "name": "pdm-notes",
       "integrations": {},
       "type": "angular",
-      "root": "./"
+      "root": "./",
+      "proxies": [
+        {
+          "path": "/pdm",
+          "proxyUrl": "https://pdm.pw"
+        }
+      ]
     }
   }
 }
