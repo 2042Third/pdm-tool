@@ -4,6 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<string>capacitor://localhost</string>
 		<string>https://pdm.pw</string>
 	</array>
 </dict>
