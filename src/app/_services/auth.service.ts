@@ -67,7 +67,7 @@ export class AuthService {
     login(umail: string, upw: string) {
       let temp = { "umail":umail, "upw":upw };
 
-
+        // desktop or browser should change "authData.data" to authData
       return from(this.http.post(
         'https://pdm.pw/auth/signin',temp,{}))
         .pipe(map(authData => {

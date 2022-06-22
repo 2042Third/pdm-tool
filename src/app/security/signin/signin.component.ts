@@ -110,6 +110,7 @@ export class SigninComponent implements OnInit {
         , this.f2.umail.value
         , this.userinfo.hash(this.f2.upw.value+this.f2.upw.value)) // server only knows the hash of the pass+pass
       .pipe().subscribe(data =>this.set_server_msg(data.data));
+      // .pipe().subscribe(data =>this.set_server_msg(data)); // desktop or browser
       return ;
     }
     // signin form submission
