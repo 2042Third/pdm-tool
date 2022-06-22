@@ -34,8 +34,8 @@ export class AuthService {
     constructor(
       private router: Router,
       public dialog: MatDialog,
-      private http: HTTP,
-      // private http: HttpClient,
+      // private http: HTTP,
+      private http: HttpClient,
     ) {
       this.dialogConfig.autoFocus = true;
       this.dialogConfig.data = {dialogType:"Sign in failed", message:"Check your email and password."};
@@ -49,17 +49,17 @@ export class AuthService {
     }
 
     signup(uname:string ,umail: string, upw: string) {
-      return from(this.http.post(
-      'https://pdm.pw/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" },{}))
+      return this.http.post<ServerMsg>(
+      'https://pdm.pw/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" })
             .pipe(map(upData => {
-              if(upData.data.status == "success"){
+              if(upData.status == "success"){
                 this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigSuccess);
               }
               else {
                 this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigFail);
 
               }
-              this.signupSubject.next(upData.data);
+              this.signupSubject.next(upData);
               return upData;
             }));
     }
@@ -67,18 +67,18 @@ export class AuthService {
     login(umail: string, upw: string) {
       let temp = { "umail":umail, "upw":upw };
 
-        // desktop or browser should change "authData.data" to authData
-      return from(this.http.post(
-        'https://pdm.pw/auth/signin',temp,{}))
+        // desktop or browser should change "authData" to authData
+      return this.http.post<ServerMsg>(
+        'https://pdm.pw/auth/signin',temp)
         .pipe(map(authData => {
-          if (authData.data.status == "fail"){
+          if (authData.status == "fail"){
             this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
           }
 
           localStorage.setItem('user', JSON.stringify(window.btoa(umail + ':' + upw)));
-          this.data_store = JSON.parse(JSON.stringify(authData.data));
+          this.data_store = JSON.parse(JSON.stringify(authData));
           this.userSubject.next(this.data_store);
-          return authData.data;
+          return authData;
       }));
     }
 
