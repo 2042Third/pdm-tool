@@ -34,8 +34,8 @@ export class AuthService {
     constructor(
       private router: Router,
       public dialog: MatDialog,
-      // private http: HTTP,
-      private http: HttpClient,
+      private http: HTTP,
+      // private http: HttpClient,
     ) {
       this.dialogConfig.autoFocus = true;
       this.dialogConfig.data = {dialogType:"Sign in failed", message:"Check your email and password."};
@@ -46,31 +46,60 @@ export class AuthService {
       this.dialogConfigFail.autoFocus = true;
       this.dialogConfigFail.data = {dialogType:"Sign up Failed", message:"No account can be made at this point. Please, check back at a later time. "};
       this.dialogConfigFail.panelClass= 'custom-modalbox';
+
+      // http request setup
+      this.http.setDataSerializer('json');
     }
 
     signup(uname:string ,umail: string, upw: string) {
-      return this.http.post<ServerMsg>(
-      'https://pdm.pw/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" })
-            .pipe(map(upData => {
-              if(upData.status == "success"){
-                this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigSuccess);
-              }
-              else {
-                this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigFail);
+      // return this.http.post<ServerMsg>(
+      // 'https://pdm.pw/auth/register', { "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" })
+      //       .pipe(map(upData => {
+      //         if(upData.status == "success"){
+      //           this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigSuccess);
+      //         }
+      //         else {
+      //           this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigFail);
 
-              }
-              this.signupSubject.next(upData);
-              return upData;
-            }));
+      //         }
+      //         this.signupSubject.next(upData);
+      //         return upData;
+      //       }));
+            return from(this.http.post(
+            'https://pdm.pw/auth/register', JSON.stringify({ "uname":uname,"umail":umail, "upw":upw, "type":"pdm web" }),{}))
+                  .pipe(map(pData => {
+                    let upData=JSON.parse(JSON.stringify(pData.data));
+                    if(upData.status == "success"){
+                      this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigSuccess);
+                    }
+                    else {
+                      this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfigFail);
+
+                    }
+                    this.signupSubject.next(upData);
+                    return upData;
+                  }));
     }
 
     login(umail: string, upw: string) {
-      let temp = { "umail":umail, "upw":upw };
+      // let temp = { "umail":umail, "upw":upw };
+      // return this.http.post<ServerMsg>(
+      //   'https://pdm.pw/auth/signin',temp)
+      //   .pipe(map(authData => {
+      //     if (authData.status == "fail"){
+      //       this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
+      //     }
 
-        // desktop or browser should change "authData" to authData
-      return this.http.post<ServerMsg>(
-        'https://pdm.pw/auth/signin',temp)
-        .pipe(map(authData => {
+      //     localStorage.setItem('user', JSON.stringify(window.btoa(umail + ':' + upw)));
+      //     this.data_store = JSON.parse(JSON.stringify(authData));
+      //     this.userSubject.next(this.data_store);
+      //     return authData;
+      // }));
+      let temp = { "umail":umail, "upw":upw };
+      return from(this.http.post(
+        'https://pdm.pw/auth/signin',temp,{}))
+        .pipe(map(aData => {
+          let authData = JSON.parse(JSON.stringify(aData.data));
           if (authData.status == "fail"){
             this.dialogRef = this.dialog.open(DialogNotificationsComponent, this.dialogConfig);
           }

@@ -16,7 +16,8 @@ import { UserinfoService } from './_services/userinfos.service';
 import { CustomScrollDirective } from './_directives/custom-scroll.directive';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
 import { IonicModule } from '@ionic/angular';
-
+import { HTTP } from '@awesome-cordova-plugins/http/ngx';
+// import { HTTP } from '@ionic-native/http/ngx';
 const dbConfig: DBConfig = {
   name: 'pdmDB',
   version: 1,
@@ -81,6 +82,7 @@ const dbConfig: DBConfig = {
     {provide: APP_BASE_HREF, useValue: '/web_notes'},
     ChatService,
     NotesService,
+    HTTP,
     AuthService,
     UserinfoService
   ],

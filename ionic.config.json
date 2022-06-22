@@ -3,7 +3,9 @@
   "projects": {
     "pdm-notes": {
       "name": "pdm-notes",
-      "integrations": {},
+      "integrations": {
+        "cordova": {}
+      },
       "type": "angular",
       "root": "./",
       "proxies": [

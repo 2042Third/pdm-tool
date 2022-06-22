@@ -75,7 +75,7 @@ export class UserinfoService implements OnInit {
 
     this.authdata_stream_app_ref = this.authdata_stream_app.subscribe(data=>{
       if(data!=null){
-        console.log("app set");
+        console.log("app set => "+ JSON.stringify(data));
         this.app_local = data.val.toString();
         this.cookies_setting(this.app_local, this.local_not_set.email.toString());
         // pass set, push user info or set signin status
