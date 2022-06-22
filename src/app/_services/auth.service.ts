@@ -69,7 +69,7 @@ export class AuthService {
       const options = {
         url: 'https://pdm.pw/auth/signin',
         data: temp,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin":"*" }
       };
       from(Http.request({ ...options, method: 'POST' }))
         .pipe(map(data => {
