@@ -6,3 +6,4 @@ export class dialogData {
   email:String= "";
   checker:String = "";
 }
+

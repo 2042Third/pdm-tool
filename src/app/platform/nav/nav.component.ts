@@ -5,7 +5,7 @@
 */
 import { AfterViewInit, Component, NgZone, OnInit, ViewChild ,  ElementRef } from '@angular/core';
 import { UserinfoService } from '../../_services/userinfos.service';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, from, Observable, Subscription } from 'rxjs';
 import { faLightbulb as faSolidLightbulb, IconDefinition} from "@fortawesome/free-solid-svg-icons";
 import { faLightbulb as faRegularLightbulb } from "@fortawesome/free-regular-svg-icons";
 import { ThemeService } from "src/app/theme/theme.service";
@@ -15,8 +15,10 @@ import { MatDrawer, MatDrawerContainer, MatSidenav } from '@angular/material/sid
 import { NotesService } from 'src/app/_services/notes.service';
 import { ServerMsg } from 'src/app/_types/ServerMsg';
 import { NoteHead, NotesMsg } from '../../_types/User';
+import { Platform } from '@ionic/angular';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { IndexDetails, NgxIndexedDBService } from 'ngx-indexed-db';
+import Echo from 'src/app/_types/Native';
 
 @Component({
   selector: "app-nav",
@@ -63,6 +65,7 @@ export class NavComponent implements AfterViewInit {
     public notes_serv:NotesService,
     public ngzone: NgZone ,
     private dbService: NgxIndexedDBService,
+    private platform:Platform, // test block
   ) {
     console.log("current url "+ this.router.url);
 
@@ -138,12 +141,29 @@ export class NavComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    //routes to the notes if it is none
+    if(this.currentRoute == "/"){
+      this.router.navigateByUrl('/notes');
+      return;
+    }
+    // Per-route
+    this.route.queryParams
+      .subscribe(params => {
+        if(params.locale!=null){
+          this.cur_locale = params.locale;
+          console.log("Getting locale: "+this.cur_locale);
+        }
+      }
+    );
+    // mobile config
     if (this.isMobileDevice) {
-      this.titleBar.nativeElement.style.flexGrow = '5';
+      this.titleBar.nativeElement.style.flexGrow = '7';
       this.nav_open_mode = "over"; // blur the main area
       setTimeout(()=>{ // show and close the menu
-        this.notesnav.toggle();
-        this.maindrawer.toggle();
+        if(this.notesnav!= null)
+          this.notesnav.toggle();
+        if(this.maindrawer!=null)
+          this.maindrawer.toggle();
       },
         500
       );
@@ -153,21 +173,27 @@ export class NavComponent implements AfterViewInit {
   }
 
   ngOnInit() {
-    this.route.queryParams
-      .subscribe(params => {
-        if(params.locale){
-          this.cur_locale = params.locale;
-          console.log("Getting locale: "+this.cur_locale);
-        }
-      }
-    );
+    // TEST BLOCK
+    // TESTS, NOT TO BE INCLUDED IN PRODUCTION!!!!!!!!!
+
+    // Native call to swift in ios
+    if(this.platform.is('ios')){
+      from(Echo.echo({ value: 'Hello World!' }))
+      .subscribe(data=>{
+        console.log('Response from native:', data.value);
+      })
+    };
+    // END TEST BLOCK
+
     this.setLightbulb();
-    // Feature
+    // Feature sub
     this.route.paramMap.pipe(
       switchMap((params: ParamMap)=>
         this.feature = params.get('feature')
       )
     );
+
+    // Set the notes sidenav
     this.notes_serv.setSidenav(this.notesnav);
 
   }

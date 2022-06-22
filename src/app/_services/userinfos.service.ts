@@ -13,7 +13,7 @@ import { take } from 'rxjs/operators';
 import { EncryptionComponent } from '../security/encryption/encryption.component';
 import { NotesService } from './notes.service';
 import { AuthService } from './auth.service';
-
+import { Platform } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
 })
@@ -53,6 +53,7 @@ export class UserinfoService implements OnInit {
     public dialog: MatDialog,
     private cookieService: CookieService,
     private auth_serv:AuthService,
+    private platform : Platform,
   ) {
     this.stream_sub = this.enc_stream_return.subscribe(
       data => {
@@ -126,7 +127,9 @@ export class UserinfoService implements OnInit {
     let dateNow = new Date();
     dateNow.setMinutes(dateNow.getMinutes() + this.cookies_timeout);
     if( pass!= null && pass != ""){
-      console.log("Setting coookies. Expiring on "+dateNow.toDateString()+" "+dateNow.getHours()+":"+dateNow.getMinutes());
+      console.log("Setting coookies on \""
+      +this.platform.is('ios')? 'ios':"not ios"
+      +"\". Expiring on "+dateNow.toDateString()+" "+dateNow.getHours()+":"+dateNow.getMinutes());
       if(!environment.production)
         this.cookieService.set(this.cookies_encode(email), this.enc2(this.cookies_encode(email)+"pdm",pass), dateNow,'/','localhost',true,'Strict');
       else

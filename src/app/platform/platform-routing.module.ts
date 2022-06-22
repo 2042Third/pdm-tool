@@ -11,7 +11,7 @@ const pdmRoutes: Routes = [
   {path:'./notes', component: NotesComponent},
   {path:'./chat', component: Cc20Component},
   {path:'./signin', component: SigninComponent  },
-  {path: '', redirectTo: './chat', pathMatch: 'full'}
+  {path: '', redirectTo: './notes', pathMatch: 'full'}
 ];
 
 @NgModule({

@@ -109,6 +109,12 @@
   <button class="text-color" mat-menu-item (click)="refresh()" i18n>Refresh</button>
 
   <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOfflineDB" i18n>IndexedDB</button>
+  <button class="text-color" mat-menu-item [matMenuTriggerFor]="debugOfflineCookies" i18n>Cookies</button>
+</mat-menu>
+<!-- offline Cookies Debug -->
+<mat-menu #debugOfflineCookies="matMenu" xPosition="before">
+  <button class="text-color" mat-menu-item (click)="userinfo.cookies_setting('big pswd- and you shouldnt see this', 'hahah@email.pw')" i18n>Set Mock Cookies</button>
+
 </mat-menu>
 <!-- online notes debug -->
 <mat-menu #notesDebugOnline="matMenu" xPosition="before">
