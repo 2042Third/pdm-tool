@@ -124,7 +124,7 @@ export class NotesService {
     // setTimeout(()=>{
       this.notes_obj.ntype = "update";
       return this.http.post<NotesMsg>(
-      '/pdm/auth/note',
+      '/auth/note',
       { "username":this.signin_obj.username,
         "content":this.cur_content,
         "head":this.cur_head,
@@ -165,7 +165,7 @@ export class NotesService {
     return this.ngzone.run(()=>{
       this.notes_obj.ntype = "new";
       return this.http.post<NotesMsg>(
-      '/pdm/auth/note',
+      '/auth/note',
       { "username":this.signin_obj.username,
         "content":"",
         "sess":this.signin_obj.sess,
@@ -188,7 +188,7 @@ export class NotesService {
     }
     this.notes_obj.ntype = "heads";
     return this.http.post<NotesMsg>(
-    '/pdm/auth/note',
+    '/auth/note',
     { "username":this.signin_obj.username,
       "content":"",
       "sess":this.signin_obj.sess,
@@ -213,7 +213,7 @@ export class NotesService {
     }
     this.notes_obj.ntype = "retrieve";
     return this.http.post<NotesMsg>(
-    '/pdm/auth/note',
+    '/auth/note',
     { "username":this.signin_obj.username,
       "content":"",
       "sess":this.signin_obj.sess,

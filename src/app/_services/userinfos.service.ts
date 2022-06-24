@@ -242,6 +242,7 @@ export class UserinfoService implements OnInit {
             tmp.type = "local_signin";
             tmp.data = (JSON.stringify(kpis[0]));
             tmp.val = this.dec2(stored_app,JSON.parse(tmp.data).secure.toString());
+            console.log(JSON.stringify(tmp));
             this.authdata_stream.next(tmp);
             let authdata_stream_app_obj = new Encry();
             authdata_stream_app_obj.val = stored_app;

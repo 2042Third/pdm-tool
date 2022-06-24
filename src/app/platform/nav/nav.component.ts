@@ -67,7 +67,7 @@ export class NavComponent implements AfterViewInit {
     private dbService: NgxIndexedDBService,
     private platform:Platform, // test block
   ) {
-    console.log("current url "+ this.router.url);
+    // console.log("current platform "+ (platform.is('ios')? 'ios':"not ios"));
 
     // START QUOTE , from https://www.geeksforgeeks.org/how-to-detect-whether-the-website-is-being-opened-in-a-mobile-device-or-a-desktop-in-javascript/
     //Checking is mobile or not
@@ -83,9 +83,6 @@ export class NavComponent implements AfterViewInit {
     it returns boolean value*/
     this.isMobileDevice = regexp.test(details);
     // END QUOTE
-
-
-
     this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
             this.currentRoute = event.url;
