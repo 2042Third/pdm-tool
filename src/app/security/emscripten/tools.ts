@@ -9,7 +9,7 @@ export function loadScript(id: string, url: string): Promise<void> {
   if (script) {
     return Promise.resolve();
   }
-
+  console.log(`Loading module (id: ${id}, url: ${url})`);
   return new Promise<void>((resolve, reject) => {
     script = document.createElement("script");
     document.body.appendChild(script);

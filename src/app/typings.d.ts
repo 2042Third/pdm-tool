@@ -1,16 +1,16 @@
 /**
  * This is a simple typings definition for Emscripten's Module object
  */
-interface EmscriptenReadFileOptions {
+interface EmscriptenReadFileOptionsBAD {
   encoding?: "utf8" | "binary";
   flags?: string;
 }
 
-interface CcallOptions {
+interface CcallOptionsBAD {
   async?: boolean;
 }
 
-interface EmscriptenModule {
+interface EmscriptenModuleBAD {
   arguments?: string[];
   print?(what: string): void;
   printErr?(what: string): void;

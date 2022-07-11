@@ -211,6 +211,17 @@ export class NavComponent implements AfterViewInit {
     let v = this.userinfo.dec(a);
     console.log("Nav decrypt =>"+ (v  ));
   }
+  hashTest(){
+    let msg = "this is a message.";
+    console.log(`Message: ${msg}`);
+    console.log(`hash   : ${this.userinfo.hash(msg)}`);
+  }
+  encTestRound (){
+    let enc = this.userinfo.enc2("1234","this is a message.");
+    let dec = this.userinfo.dec2("1234",enc);
+    console.log("Round encrypt =>"+ (enc  ));
+    console.log("Round decrypt =>"+ (dec  ));
+  }
 
   peak_heads(){
     this.notesnav.toggle();
