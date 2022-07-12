@@ -3,21 +3,20 @@
  *  2/2022
  *
 */
-import { AfterViewInit, Component, NgZone, OnInit, ViewChild ,  ElementRef } from '@angular/core';
-import { UserinfoService } from '../../_services/userinfos.service';
-import { BehaviorSubject, from, Observable, Subscription } from 'rxjs';
-import { faLightbulb as faSolidLightbulb, IconDefinition} from "@fortawesome/free-solid-svg-icons";
-import { faLightbulb as faRegularLightbulb } from "@fortawesome/free-regular-svg-icons";
-import { ThemeService } from "src/app/theme/theme.service";
-import { switchMap } from 'rxjs/operators';
-import { ActivatedRoute, ParamMap,Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
-import { MatDrawer, MatDrawerContainer, MatSidenav } from '@angular/material/sidenav';
-import { NotesService } from 'src/app/_services/notes.service';
-import { ServerMsg } from 'src/app/_types/ServerMsg';
-import { NoteHead, NotesMsg } from '../../_types/User';
-import { Platform } from '@ionic/angular';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import { IndexDetails, NgxIndexedDBService } from 'ngx-indexed-db';
+import {AfterViewInit, Component, ElementRef, NgZone, ViewChild} from '@angular/core';
+import {UserinfoService} from '../../_services/userinfos.service';
+import {from, Subscription} from 'rxjs';
+import {faLightbulb as faSolidLightbulb, IconDefinition} from "@fortawesome/free-solid-svg-icons";
+import {faLightbulb as faRegularLightbulb} from "@fortawesome/free-regular-svg-icons";
+import {ThemeService} from "src/app/theme/theme.service";
+import {switchMap} from 'rxjs/operators';
+import {ActivatedRoute, Event, NavigationEnd, ParamMap, Router} from '@angular/router';
+import {MatDrawer, MatSidenav} from '@angular/material/sidenav';
+import {NotesService} from 'src/app/_services/notes.service';
+import {ServerMsg} from 'src/app/_types/ServerMsg';
+import {NoteHead, NotesMsg} from '../../_types/User';
+import {Platform} from '@ionic/angular';
+import {NgxIndexedDBService} from 'ngx-indexed-db';
 import Echo from 'src/app/_types/Native';
 
 @Component({
