@@ -11,7 +11,7 @@ import {faLightbulb as faRegularLightbulb} from "@fortawesome/free-regular-svg-i
 import {ThemeService} from "src/app/theme/theme.service";
 import {switchMap} from 'rxjs/operators';
 import {ActivatedRoute, Event, NavigationEnd, ParamMap, Router} from '@angular/router';
-import {MatDrawer, MatSidenav} from '@angular/material/sidenav';
+import {MatDrawer, MatDrawerMode, MatSidenav} from '@angular/material/sidenav';
 import {NotesService} from 'src/app/_services/notes.service';
 import {ServerMsg} from 'src/app/_types/ServerMsg';
 import {NoteHead, NotesMsg} from '../../_types/User';
@@ -41,7 +41,7 @@ export class NavComponent implements AfterViewInit {
   signin_stat: boolean = false;
   notes_heads: NotesMsg;
   named_notes_heads:NoteHead[];
-  nav_open_mode = "side"; // nav mode for mobile or desktop
+  nav_open_mode:MatDrawerMode = "side"; // nav mode for mobile or desktop
   has_heads=false;
   notes_subject : Subscription;
   saving_subject:Subscription;

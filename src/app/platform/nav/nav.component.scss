@@ -44,21 +44,36 @@ mat-divider{
 }
 .matdrawer-styles{//outer
   background-color: var(--background-tertiary);
-  margin-top: 2rem;
 }
 
 .drawer-styles {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: right;
+  //justify-content: right;
   height: 90%;
   padding: 8pt;
   padding-top: 18pt;
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }
-
+.note-button{
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width:100%;
+}
+.note-drawer-styles{
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+  //justify-content: right;
+  height: 100%;
+  padding: 8pt;
+  padding-top: 18pt;
+  background-color: var(--background-tertiary);
+  color: var(--foreground-quaternary);
+}
 
 .signin_container {
   // align-self: center;
@@ -113,7 +128,7 @@ nav .title {
 .expansion-head{
   display: flex;
   flex-direction: column;
-  align-items: scroll;
+  //align-items: scroll;
   min-height: 2rem;
   color: var(--foreground-quaternary);
   background-color: var(--background-tertiary);

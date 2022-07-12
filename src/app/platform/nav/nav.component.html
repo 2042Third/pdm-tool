@@ -4,10 +4,12 @@
 
 <!-- DESKTOP -->
 <mat-drawer-container class="main-container" #main>
-  <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles "  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
-    <div class="drawer-styles">
-      <button mat-icon-button color="secondary" (click)="newNote()" class="icons" i18n>New Note</button>
+  <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles note-drawer-styles"  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
+    <div class="">
 
+      <button  mat-icon-button
+              color="secondary"
+              (click)="newNote()" class="icons note-button" i18n>New Note</button>
       <mat-divider></mat-divider>
       <div class="expansion-contain">
           <mat-list *ngIf="has_heads" dense>
