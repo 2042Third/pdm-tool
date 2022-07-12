@@ -9,7 +9,7 @@
       <button mat-icon-button color="secondary" (click)="newNote()" class="icons" i18n>New Note</button>
 
       <mat-divider></mat-divider>
-      <p class="expansion-contain">
+      <div class="expansion-contain">
           <mat-list *ngIf="has_heads" dense>
             <mat-list-item *ngFor="let head of named_notes_heads;trackBy:getNoteId">
               <button type="button" (click)="getNote(head.note_id)" class="text-color note-listing">
@@ -25,7 +25,7 @@
               </button>
             </mat-list-item>
           </mat-list>
-      </p>
+      </div>
     </div>
   </mat-drawer>
 

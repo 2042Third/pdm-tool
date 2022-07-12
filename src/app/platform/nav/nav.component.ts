@@ -163,8 +163,20 @@ export class NavComponent implements AfterViewInit {
       },
         500
       );
-    } else {
+    } else { // desktop, open and close the nav's
       this.nav_open_mode = "side";
+      setTimeout(()=>{ // show and close the menu
+          if(this.notesnav!= null) {
+            this.notesnav.toggle();
+            this.notesnav.toggle();
+          }
+          if(this.maindrawer!=null) {
+            this.maindrawer.toggle();
+            this.maindrawer.toggle();
+          }
+        },
+        500
+      );
     }
   }
 
