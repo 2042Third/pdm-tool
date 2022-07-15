@@ -7,9 +7,11 @@
   <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles note-drawer-styles"  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
     <div class="">
 
-      <button  mat-icon-button
-              color="secondary"
-              (click)="newNote()" class="icons note-button" i18n>New Note</button>
+      <button  mat-icon-button [matTooltipShowDelay]="timeout"
+               matTooltip="Create New Note"
+              (click)="newNote()" class="icons note-button" i18n>
+        <mat-icon >add</mat-icon>
+      </button>
       <mat-divider></mat-divider>
       <div class="expansion-contain">
           <mat-list *ngIf="has_heads" dense>
@@ -56,8 +58,13 @@
             (click)="toSignin()" class="icons" i18n>User</button>
       <mat-divider></mat-divider>
       <font class="title-font" bold="true">PDM Notes</font>
+      <button mat-icon-button
+              class="settingsButton icons">
+        <mat-icon >settings</mat-icon>
+      </button>
       <a class="localeButton" target="_self" *ngIf="cur_locale=='cn'" href="https://pdm.pw/web_notes/notes?locale=en" > English Version </a>
       <a class="localeButton" target="_self" *ngIf="cur_locale=='en'" href="https://pdm.pw/web_notes/notes?locale=cn" > 中文版 </a>
+
     </div>
   </mat-drawer>
   <mat-drawer-content class="platf">

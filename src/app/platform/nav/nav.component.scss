@@ -158,11 +158,19 @@ overflow-y: scroll;
   color: var(--foreground-quaternary);
 }
 
-.localeButton{
-  background-color: var(--background-tertiary);
-  color: var(--foreground-quaternary);
+.settingsButton{
+  //background-color: var(--background-tertiary);
+  //color: gray;
   text-decoration: none;
   margin-top:auto;
+  border:0;
+  outline: 0;
+}
+
+.localeButton{
+  background-color: var(--background-tertiary);
+  color: gray;
+  text-decoration: none;
   border:0;
   outline: 0;
 }
