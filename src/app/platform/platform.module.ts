@@ -12,6 +12,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {PlatformRoutingModule} from './platform-routing.module';
 import {SecurityModule} from '../security/security.module';
 import { DialogNotificationsComponent } from './dialogNotifications/dialogNotifications.component';
+import {SettingsDialogComponent} from "./settings-dialog/settings-dialog.component";
 @NgModule({
   exports:[
     NavComponent,
@@ -33,6 +34,7 @@ import { DialogNotificationsComponent } from './dialogNotifications/dialogNotifi
     PlatformComponent,
     NavComponent,
     DialogNotificationsComponent,
+    SettingsDialogComponent
     // UserioComponent,
     // MainViewComponent
   ]

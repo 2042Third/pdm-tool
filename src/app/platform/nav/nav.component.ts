@@ -18,6 +18,9 @@ import {NoteHead, NotesMsg} from '../../_types/User';
 import {Platform} from '@ionic/angular';
 import {NgxIndexedDBService} from 'ngx-indexed-db';
 import Echo from 'src/app/_types/Native';
+import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
+import {DialogNotificationsComponent} from "../dialogNotifications/dialogNotifications.component";
+import {SettingsDialogComponent} from "../settings-dialog/settings-dialog.component";
 
 @Component({
   selector: "app-nav",
@@ -55,6 +58,7 @@ export class NavComponent implements AfterViewInit {
   isMobileDevice=false;
   //LOCALE
   cur_locale = "en";
+  private dialogRef: MatDialogRef<SettingsDialogComponent, any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -62,6 +66,7 @@ export class NavComponent implements AfterViewInit {
     public userinfo: UserinfoService,
     private themeService: ThemeService,
     public notes_serv:NotesService,
+    public dialog: MatDialog,
     public ngzone: NgZone ,
     private dbService: NgxIndexedDBService,
     private platform:Platform, // test block
@@ -331,65 +336,17 @@ export class NavComponent implements AfterViewInit {
       });
   }
 
-  // DataBase
-  // clear_email(){// DEBUG ONLY
-  //   // if(!this.local_usr.email){
-  //   //   return;
-  //   // }
-  //   let email = "18604713262@163.com";
-  //   let local_id ;
-  //   this.dbService.clear('pdmTable').subscribe(
-  //     data=>{
-  //       local_id = JSON.parse(JSON.stringify(data));
-  //       console.log("gotten: "+ local_id);
-  //     }
-  //   );
-  // }
-  // set_mock_db(){// DEBUG ONLY
-  //   this.dbService.add('pdmTable', {
-  //     username: "some usr",
-  //     val: "1234",
-  //     view: "signin",
-  //     email: "18604713262@163.com"
-  //   })
-  //   .subscribe((key) => {
-  //     console.log('DEBUG indexeddb key: ', key);
-  //   });
-  // }
-  // get_all_db(){
-  //   let local_all;
-  //   this.dbService.getAll('pdmTable')
-  //   .subscribe((kpis) => {
-  //     local_all = JSON.parse(JSON.stringify(kpis));
-  //     console.log(local_all);
-  //   })
-  // }
-  // ponce_process (){
-  //   this.dbService.add('pdmSecurity', {
-  //     email: "18604713262@163.com",
-  //     ponce_status: false,
-  //     secure: "1234"
-  //   })
-  //   .subscribe((key) => {
-  //     console.log('indexeddb key: ', key);
-  //   });
-  // }
-  // clear_ponce(){
-  //   let local_all;
-  //   this.dbService.getAll('pdmSecurity')
-  //   .subscribe((kpis) => {
-  //     local_all = JSON.parse(JSON.stringify(kpis));
-  //     console.log(local_all);
-  //   });
-  //   if(local_all==null){
-  //     return;
-  //   }
-  //   for (let i=0; i< local_all.length; i++){
-  //     this.dbService.delete('pdmSecurity', local_all[i].id).subscribe((data) => {
-  //       console.log('deleted:', data);
-  //     });
-  //   }
-  // }
+  openSettingsDialog(){
+    let enterDialog: MatDialogConfig= new MatDialogConfig();
+    enterDialog.autoFocus = true;
+    enterDialog.data = {dialogType:"Enter",dialogTitle:"Application Password", message:"Set an application password for this computer."};
+    enterDialog.panelClass= 'custom-modalbox';
+    this.dialogRef = this.dialog.open(SettingsDialogComponent);
+  }
+
+  /**
+   * Destructor
+   * */
   ngOnDestroy() {
     this.signup_sub.unsubscribe();
     this.notes_subject.unsubscribe();
