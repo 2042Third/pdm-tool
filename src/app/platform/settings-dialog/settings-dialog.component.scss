@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+::ng-deep.mat-dialog-container{
+  display: flex!important;
+  flex-direction: column;
+  align-items: stretch!important;
+  width:100%!important;
+  height: 100%!important;
+  background-color: var(--background-tertiary)!important;
+  color: var(--foreground-quaternary)!important;
+}
+.custom-color {
+  background: var(--background-light)!important;
+  color: var(--foreground-quaternary)!important;
+}
+.custom-color-parent {
+  background: var(--background-tertiary)!important;
+  color: var(--foreground-quaternary)!important;
+}
+.mat-expansion-panel{
+  box-shadow: none !important;
+}

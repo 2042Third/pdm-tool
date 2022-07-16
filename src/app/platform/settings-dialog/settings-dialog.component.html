@@ -1,26 +1,27 @@
-<mat-accordion>
+<h1 class="dia" mat-dialog-title>Settings</h1>
+<mat-accordion class="custom-color-parent">
   <!-- #docregion basic-panel -->
   <!-- #docregion hide-toggle -->
-  <mat-expansion-panel hideToggle>
+  <mat-expansion-panel class="custom-color" hideToggle>
     <!-- #enddocregion hide-toggle -->
-    <mat-expansion-panel-header>
-      <mat-panel-title>
+    <mat-expansion-panel-header class="custom-color">
+      <mat-panel-title class="custom-color">
         This is the expansion title
       </mat-panel-title>
-      <mat-panel-description>
+      <mat-panel-description class="custom-color">
         This is a summary of the content
       </mat-panel-description>
     </mat-expansion-panel-header>
     <p>This is the primary content of the panel.</p>
   </mat-expansion-panel>
   <!-- #enddocregion basic-panel -->
-  <mat-expansion-panel (opened)="panelOpenState = true"
+  <mat-expansion-panel class="custom-color" (opened)="panelOpenState = true"
                        (closed)="panelOpenState = false">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
+    <mat-expansion-panel-header class="custom-color">
+      <mat-panel-title class="custom-color">
         Self aware panel
       </mat-panel-title>
-      <mat-panel-description>
+      <mat-panel-description class="custom-color">
         Currently I am {{panelOpenState ? 'open' : 'closed'}}
       </mat-panel-description>
     </mat-expansion-panel-header>
