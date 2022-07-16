@@ -7,7 +7,7 @@
   <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles note-drawer-styles"  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
     <div class="">
 
-      <button  mat-icon-button [matTooltipShowDelay]="timeout"
+      <button  mat-icon-button [matTooltipShowDelay]="timeout" [matTooltipHideDelay]="hideTimeout"
                matTooltip="Create New Note"
               (click)="newNote()" class="icons note-button" i18n>
         <mat-icon >add</mat-icon>
@@ -60,7 +60,7 @@
       <font class="title-font" bold="true">PDM Notes</font>
       <!--settings-->
       <button mat-icon-button (click)="openSettingsDialog()"
-              class="settingsButton icons" [matTooltipShowDelay]="timeout" matTooltip="Settings">
+              class="settingsButton icons" [matTooltipShowDelay]="timeout" [matTooltipHideDelay]="hideTimeout" matTooltip="Settings">
         <mat-icon >settings</mat-icon>
       </button>
       <a class="localeButton" target="_self" *ngIf="cur_locale=='cn'" href="https://pdm.pw/web_notes/notes?locale=en" > English Version </a>

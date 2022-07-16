@@ -54,6 +54,7 @@ export class NavComponent implements AfterViewInit {
   // signin_async: Observable<ServerMsg>;
   private signup_sub:Subscription;
   timeout: number=1000;
+  hideTimeout: number=1000;
   // User view
   isMobileDevice=false;
   //LOCALE
