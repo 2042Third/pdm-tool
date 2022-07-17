@@ -62,7 +62,7 @@ export class NotesComponent   implements OnInit {
                   this.head_content = this.userinfo.dec(this.notes_obj.head.toString());
                 }
                 else {
-                  this.head_content = "";
+                  this.head_content = "Untitled Note "+this.notes_obj.note_id;
                   this.notes_serv.setHead("");
                 }
               }
@@ -83,7 +83,7 @@ export class NotesComponent   implements OnInit {
     for (i=0;i<this.named_notes_heads.length;i++){
     this.named_notes_heads[i].id = Number(this.named_notes_heads[i].note_id);
       if(this.named_notes_heads[i].head == null){
-        this.named_notes_heads[i].head = "Untitled Note#";
+        this.named_notes_heads[i].head = "Untitled Note "+this.named_notes_heads[i].id;
       }
       else {
         this.named_notes_heads[i].head = this.userinfo.dec(this.named_notes_heads[i].head.toString());
