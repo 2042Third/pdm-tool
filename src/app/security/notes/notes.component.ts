@@ -29,6 +29,7 @@ export class NotesComponent   implements OnInit {
   note_status: String;
   errorMessage: any;
   has_change = false;
+  head_placeholder: string = "";
   constructor(
     public notes_serv:NotesService,
     private ngzone:NgZone,
@@ -62,7 +63,8 @@ export class NotesComponent   implements OnInit {
                   this.head_content = this.userinfo.dec(this.notes_obj.head.toString());
                 }
                 else {
-                  this.head_content = "Untitled Note "+this.notes_obj.note_id;
+                  this.head_placeholder =  "Untitled Note "+this.notes_obj.note_id
+                  this.head_content = "";
                   this.notes_serv.setHead("");
                 }
               }
