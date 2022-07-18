@@ -1,6 +1,6 @@
 import { Injectable, NgZone, OnInit } from '@angular/core';
 import{Encry, User} from '../_types/User'
-import {ServerMsg, } from '../_types/ServerMsg';
+import {pdmSecurityStore, ServerMsg,} from '../_types/ServerMsg';
 import { lastValueFrom, Observable, Subject, Subscription } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -19,18 +19,11 @@ import { Platform } from '@ionic/angular';
 })
 export class UserinfoService implements OnInit {
   private signin_status_obj:ServerMsg=new ServerMsg;
-  // subject :Subject<ServerMsg> =new Subject<ServerMsg>();
-  private s_authdata=null;
   public signin_status_value:Subject<ServerMsg> =new BehaviorSubject<ServerMsg>(this.signin_status_obj);
-  // public signin_status_value_note:Subject<ServerMsg> =new BehaviorSubject<ServerMsg>();
   public authdata_stream:Subject<Encry> = new BehaviorSubject<Encry>(null);
   public authdata_stream_app:Subject<Encry> = new BehaviorSubject<Encry>(null);
   public enc_stream_return:Subject<EncryptionComponent> = new BehaviorSubject<EncryptionComponent>(null);// encryption return
   public debug_mock:Subject<Boolean> = new BehaviorSubject<Boolean>(false);
-  public signin_status: Observable<ServerMsg>;
-  public signin_status_note: Observable<ServerMsg>;
-
-  public feature_route:BehaviorSubject<string>;
   public feature: Observable<string>;
   private pswd:string="";
   public b:string = "1234"; // development password
@@ -46,6 +39,7 @@ export class UserinfoService implements OnInit {
   enc_info:ServerMsg=new ServerMsg();
   public local_not_set: ServerMsg;
   usersubject_ref: Subscription;
+  crypt_version;
   public cookies_timeout = 20; // timeout length
   constructor(
     private ngzone: NgZone,
@@ -55,11 +49,15 @@ export class UserinfoService implements OnInit {
     private auth_serv:AuthService,
     private platform : Platform,
   ) {
+
+
+
     this.stream_sub = this.enc_stream_return.subscribe(
       data => {
         if(data!=null){
           this.ngzone.run(()=>{
             this.encryption_module = data;
+            this.crypt_version = this.encryption_module.pdmSecurityVersion;
             this.get_all_db();
           });
         }
@@ -111,7 +109,6 @@ export class UserinfoService implements OnInit {
     this.dbService.add('pdmTable', data)
     .subscribe((key) => {
       this.b = JSON.stringify(key);
-      // console.log('indexeddb key: ', key);
     });
     // Set data to usrinfo
     this.set_signin_status( data);
@@ -216,17 +213,14 @@ export class UserinfoService implements OnInit {
     this.dbService.getAll('pdmTable')
     .subscribe((kpis) => {
       local_all = JSON.parse(JSON.stringify(kpis));
-      // console.log("reading local:"+JSON.stringify(local_all));
       if(local_all==null || local_all.length == 0){
         console.log("No local user");
         return;
       }
       else { // target the pass with the user's email
         stored_app = this.get_cookies(this.cookies_encode(local_all[0].email)); // app pass
-        // console.log("Asking for cookies "+this.cookies_encode(local_all[0].email));
       }
       for(let i=0; i< 1;i ++){ // HARDCODED TO ONLY TAKE THE FIRST RESULT
-        // console.log("Found local user, resuming session: "+ JSON.stringify(local_all[i]));
         this.local_not_set = JSON.parse(JSON.stringify(local_all[i]));
         this.dbService.getAllByIndex('pdmSecurity', "email",IDBKeyRange.only(local_all[i].email))
         .subscribe((kpis) => {
@@ -352,14 +346,11 @@ export class UserinfoService implements OnInit {
     this.dbService.getAll('pdmSecurity')
     .subscribe((kpis) => {
       local_all = JSON.parse(JSON.stringify(kpis));
-      // console.log(`pdmSecurity all part ${JSON.stringify(local_all)}`);
       if(local_all==null){
         return;
       }
       for (let i=0; i<local_all.length;i++){
-        // console.log(`pdmSecurity part# ${i}`);
         let itm = (local_all[i]);
-        // console.log(`pdmSecurity part ${JSON.stringify(itm)}`);
         this.delete_from_db("pdmSecurity",itm.id);
       }
     });

@@ -37,5 +37,7 @@ export class NotesMsg extends NoteHead{
   username:String;
   status:String;
   encry:String="yes";
+  // pdm security version should be tracked always whenever there is an encryption
+  // pdmSecurityVersion;
 }
 

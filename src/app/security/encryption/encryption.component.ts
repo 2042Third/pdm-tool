@@ -12,7 +12,7 @@ import { Encry } from 'src/app/_types/User';
 export class EncryptionComponent extends EmscriptenWasmComponent<c20> implements OnInit{
   authdata: any;
   authdata_make: string = "";
-
+  pdmSecurityVersion = 0.2;
   constructor(
     private userinfo: UserinfoService,
   ) {

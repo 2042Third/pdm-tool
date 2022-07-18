@@ -32,7 +32,7 @@ export class ServerMsg {
   time:Number;
   update_time:Number;
   utime:String;
-  pdmSecurityVersion=0.1;
+  pdmSecurityVersion;
   checker:"";
   ctime:String;
 };
@@ -40,7 +40,5 @@ export class ServerMsg {
 export class pdmSecurityStore{
   secure:string = '';
   email:String = "";
-  pnonce_status:Boolean = false;
-  pdmSecureityVersion = 0.1;
   checker:string = "";
 };
