@@ -24,16 +24,16 @@ export class HttpService {
     console.log(this.platform.platforms());
   }
   post<K>(url:string, arg1:any, arg2:any=null){
-    if(this.platform.is('ios') || this.platform.is('android')){
-      console.log("http ios/android call");
-      return from(this.http2.post(url, JSON.stringify(arg1),arg2)).pipe(map(data => {
-        return data.data;
-      }));
-    }
-    else{
+    if(this.platform.is('desktop') || this.platform.is('mobileweb')){
       console.log("http desktop/browser call");
       return this.http.post<K>(url, arg1).pipe(map(data => {
         return data;
+      }));
+    }
+    else if ((this.platform.is('ios') || this.platform.is('android'))){
+      console.log("http ios/android call");
+      return from(this.http2.post(url, JSON.stringify(arg1),arg2)).pipe(map(data => {
+        return data.data;
       }));
     }
   }
