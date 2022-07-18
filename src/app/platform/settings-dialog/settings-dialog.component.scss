@@ -19,3 +19,24 @@
 .mat-expansion-panel{
   box-shadow: none !important;
 }
+
+.custom-style{
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: var(--background-default) !important;
+  letter-spacing: .1rem !important;
+  margin: 2px 0 !important;
+}
+
+.small-setting-title{
+  font-size: small;
+}
+
+.security-dropdown{
+}
+
+
+datalist{
+  display: compact;
+}

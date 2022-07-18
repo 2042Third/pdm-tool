@@ -12,20 +12,49 @@
 
       </mat-panel-description>
     </mat-expansion-panel-header>
+    <h1>PDM Notes</h1>
     <p>Version: {{userinfo.pdm_version+'.'+userinfo.crypt_version}}</p>
     <p>Created by <a target="_blank" href="https://github.com/2042Third/pdm-tool">Yi Yang</a> </p>
   </mat-expansion-panel>
-  <!-- #enddocregion basic-panel -->
-  <mat-expansion-panel class="custom-color" (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
+  <!-- General -->
+  <mat-expansion-panel class="custom-color" (opened)="GeneralPanelOpenState = true"
+                       (closed)="GeneralPanelOpenState = false">
     <mat-expansion-panel-header class="custom-color">
       <mat-panel-title class="custom-color">
         General
       </mat-panel-title>
-      <mat-panel-description class="custom-color">
-        Currently I am {{panelOpenState ? 'open' : 'closed'}}
-      </mat-panel-description>
+<!--      <mat-panel-description class="custom-color">-->
+<!--        Currently I am {{GeneralPanelOpenState ? 'open' : 'closed'}}-->
+<!--      </mat-panel-description>-->
     </mat-expansion-panel-header>
     <p>I'm visible because I am open</p>
   </mat-expansion-panel>
+
+  <!-- Security -->
+  <mat-expansion-panel class="custom-color" (opened)="SecurityPanelOpenState = true"
+                                        (closed)="SecurityPanelOpenState = false">
+  <mat-expansion-panel-header class="custom-color">
+    <mat-panel-title class="custom-color">
+      Security
+    </mat-panel-title>
+<!--    <mat-panel-description class="custom-color">-->
+<!--      Currently I am {{SecurityPanelOpenState ? 'open' : 'closed'}}-->
+<!--    </mat-panel-description>-->
+  </mat-expansion-panel-header>
+  <h2> Local Storage </h2>
+<!--    app password storage toggle-->
+
+    <mat-slide-toggle [(ngModel)]="app_pw_toggle"
+    (change)="security_toggle_app_pw($event)"
+    color="warn" >Remember App password</mat-slide-toggle>
+
+<!--    app pw storage timeout-->
+    <p class="small-setting-title">App password deletes after (minutes):</p>
+  <select [(ngModel)]="timeout_value"
+          (change)="security_change_save_timeout($event)"
+          id="timeouts" class="custom-color">
+    <option class="custom-color" *ngFor="let i of security_list_timeout" [value]="i.name" >{{i.name}}</option>
+  </select>
+
+</mat-expansion-panel>
 </mat-accordion>
