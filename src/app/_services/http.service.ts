@@ -6,11 +6,13 @@ import {ServerMsg} from "../_types/ServerMsg";
 import {HTTP} from "@awesome-cordova-plugins/http/ngx";
 import {HttpClient} from "@angular/common/http";
 import {Platform} from "@ionic/angular";
+import {Device} from '@ionic-native/device';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
+  devicePlat: string;
   constructor(
     private http2: HTTP, // mobile
     private http: HttpClient, // desktop, browser
@@ -18,6 +20,8 @@ export class HttpService {
   ) {
     // http request setup
     this.http2.setDataSerializer('json');
+    // get device platform
+    console.log(this.platform.platforms());
   }
   post<K>(url:string, arg1:any, arg2:any=null){
     if(this.platform.is('ios') || this.platform.is('android')){

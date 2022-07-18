@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UserinfoService} from "../../_services/userinfos.service";
+import {Platform} from "@ionic/angular";
 
 @Component({
   selector: 'settingsDialogComponent',
@@ -21,11 +22,17 @@ export class SettingsDialogComponent implements OnInit {
   app_pw_toggle: boolean = true;
   selectedTabName: any = 'none';
   colorstyle: string;
+  platform_info: string = '';
 
   constructor(
-    public userinfo: UserinfoService
+    public userinfo: UserinfoService,
+    public platform: Platform,
   ) {
     this.timeout_value = userinfo.cookies_timeout;
+    console.log(this.platform.platforms());
+    for (let i in this.platform.platforms()){
+      this.platform_info = this.platform_info+" "+this.platform.platforms()[i];
+    }
   }
 
 
