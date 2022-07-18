@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {UserinfoService} from "../../_services/userinfos.service";
 
 @Component({
   selector: 'settingsDialogComponent',
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsDialogComponent implements OnInit {
   panelOpenState = false;
-  constructor() { }
+
+  constructor(
+    public userinfo: UserinfoService
+  ) {
+
+  }
 
   ngOnInit() {}
 

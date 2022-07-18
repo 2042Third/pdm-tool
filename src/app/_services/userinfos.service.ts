@@ -30,6 +30,7 @@ export class UserinfoService implements OnInit {
   private debug_usr = '{"receiver":"b8e58cc943387c15f2a5b3c04619e560041b884deee6613036a92cb9d22e2d7b6b19a23705","sender":"server","time":"1654652363467","type":"SignIn","email":"18604713262@163.com","status":"success"}';
   mocking_status: boolean =false;
   stream_sub: any;
+
   encryption_module: EncryptionComponent;
   dialogRef: MatDialogRef<DialogNotificationsComponent, any>;
   authdata_stream_app_ref: Subscription;
@@ -40,6 +41,7 @@ export class UserinfoService implements OnInit {
   public local_not_set: ServerMsg;
   usersubject_ref: Subscription;
   crypt_version;
+  pdm_version:string = '0.1';
   public cookies_timeout = 20; // timeout length
   constructor(
     private ngzone: NgZone,

@@ -6,20 +6,21 @@
     <!-- #enddocregion hide-toggle -->
     <mat-expansion-panel-header class="custom-color">
       <mat-panel-title class="custom-color">
-        This is the expansion title
+        Info
       </mat-panel-title>
       <mat-panel-description class="custom-color">
-        This is a summary of the content
+
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <p>This is the primary content of the panel.</p>
+    <p>Version: {{userinfo.pdm_version+'.'+userinfo.crypt_version}}</p>
+    <p>Created by <a target="_blank" href="https://github.com/2042Third/pdm-tool">Yi Yang</a> </p>
   </mat-expansion-panel>
   <!-- #enddocregion basic-panel -->
   <mat-expansion-panel class="custom-color" (opened)="panelOpenState = true"
                        (closed)="panelOpenState = false">
     <mat-expansion-panel-header class="custom-color">
       <mat-panel-title class="custom-color">
-        Self aware panel
+        General
       </mat-panel-title>
       <mat-panel-description class="custom-color">
         Currently I am {{panelOpenState ? 'open' : 'closed'}}
