@@ -19,6 +19,8 @@ export class SettingsDialogComponent implements OnInit {
   ];
   timeout_value: number;
   app_pw_toggle: boolean = true;
+  selectedTabName: any = 'none';
+  colorstyle: string;
 
   constructor(
     public userinfo: UserinfoService
@@ -45,4 +47,11 @@ export class SettingsDialogComponent implements OnInit {
     console.log(`Change app pw toggle to = ${this.app_pw_toggle}`);
 
   }
+
+  selected_setting(tab) {
+    console.log(`Change color `);
+    this.selectedTabName = tab;
+    this.colorstyle=this.GeneralPanelOpenState ? 'dark gray' : 'white';
+  }
+
 }

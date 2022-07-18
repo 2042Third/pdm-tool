@@ -4,8 +4,9 @@
   <!-- #docregion hide-toggle -->
   <mat-expansion-panel class="custom-color" hideToggle>
     <!-- #enddocregion hide-toggle -->
-    <mat-expansion-panel-header class="custom-color">
-      <mat-panel-title class="custom-color">
+    <mat-expansion-panel-header class="custom-color" >
+      <mat-panel-title
+        class="custom-color">
         Info
       </mat-panel-title>
       <mat-panel-description class="custom-color">
@@ -18,9 +19,13 @@
   </mat-expansion-panel>
   <!-- General -->
   <mat-expansion-panel class="custom-color" (opened)="GeneralPanelOpenState = true"
-                       (closed)="GeneralPanelOpenState = false">
+                       (closed)="GeneralPanelOpenState = false"
+  (click)="selected_setting('general')">
     <mat-expansion-panel-header class="custom-color">
-      <mat-panel-title class="custom-color">
+      <mat-panel-title *ngIf="!GeneralPanelOpenState" [style.color]="'white'">
+        General
+      </mat-panel-title>
+      <mat-panel-title *ngIf="GeneralPanelOpenState" [style.color]="'darkgray'">
         General
       </mat-panel-title>
 <!--      <mat-panel-description class="custom-color">-->
