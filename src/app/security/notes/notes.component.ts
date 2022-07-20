@@ -41,43 +41,45 @@ export class NotesComponent   implements OnInit {
 
   ngOnInit(){
     // Current notes messages
-    this.notes_subject = this.notes_serv.notesSubject.subscribe(
-      data=>{// BEGIN subscribe
-        let cur_timeout=this.notes_serv.loadingTimeout;
-        this.notes_obj = JSON.parse(JSON.stringify(data));
-          setTimeout(()=>{
-            console.log("NOTES COMPONENT recieved content: "+ JSON.stringify(this.notes_obj));
-              if(this.notes_obj.ntype == "retrieve_return" ){
-                console.log("NOTES COMPONENT recieved retrival result for note "+ this.notes_obj.note_id
-                +"\n\tStatus: "+ this.notes_obj.status);
-                if(this.notes_obj.content !=null){
-                  this.content = this.userinfo.dec(this.notes_obj.content.toString());
-                  this.change(this.content);
-                }
-                else {
-                  this.content = "";
-                  this.change(this.content);
-                }
-                if(this.notes_obj.head != null){
-                  this.notes_serv.setHead(this.notes_obj.head);
-                  this.head_content = this.userinfo.dec(this.notes_obj.head.toString());
-                }
-                else {
-                  this.head_placeholder =  "Untitled Note "+this.notes_obj.note_id
-                  this.head_content = "";
-                  this.notes_serv.setHead("");
-                }
+    this.notes_subject = this.notes_serv.notesSubject.subscribe({
+        next: data => {// BEGIN subscribe
+          let cur_timeout = this.notes_serv.loadingTimeout;
+          this.notes_obj = JSON.parse(JSON.stringify(data));
+          setTimeout(() => {
+            console.log("NOTES COMPONENT recieved content: " + JSON.stringify(this.notes_obj));
+            if (this.notes_obj.ntype == "retrieve_return") {
+              console.log("NOTES COMPONENT recieved retrival result for note " + this.notes_obj.note_id
+                + "\n\tStatus: " + this.notes_obj.status);
+              if (this.notes_obj.content != null) {
+                this.content = this.userinfo.dec(this.notes_obj.content.toString());
+                this.change(this.content);
+              } else {
+                this.content = "";
+                this.change(this.content);
               }
-              else if (this.notes_obj.ntype == "heads_return" ){
-                console.log("Notes,  nav");
-                this.named_notes_heads=JSON.parse(JSON.stringify(this.notes_obj.content));
-                this.dec_heads();
-                this.notes_obj.content=JSON.stringify(this.named_notes_heads);
-                this.notes_serv.set_nav_head(this.notes_obj);
-                console.log("Notes, done pushing the heads to nav");
+              if (this.notes_obj.head != null) {
+                this.notes_serv.setHead(this.notes_obj.head);
+                this.head_content = this.userinfo.dec(this.notes_obj.head.toString());
+              } else {
+                this.head_placeholder = "Untitled Note " + this.notes_obj.note_id
+                this.head_content = "";
+                this.notes_serv.setHead("");
               }
-          },10);
-      }// END subscribe
+            } else if (this.notes_obj.ntype == "heads_return") {
+              console.log("Notes,  nav");
+              this.named_notes_heads = JSON.parse(JSON.stringify(this.notes_obj.content));
+              this.dec_heads();
+              this.notes_obj.content = JSON.stringify(this.named_notes_heads);
+              this.notes_serv.set_nav_head(this.notes_obj);
+              console.log("Notes, done pushing the heads to nav");
+            }
+          }, 10);
+        },// END subscribe
+        error: data => {
+          console.log("Notes error "+ data.message);
+          this.userinfo.openDialog('Notes Error: unkown. \n'+data.message);
+        }
+      }
     );
   }
   dec_heads(){

@@ -107,9 +107,6 @@
 </mat-menu>
 <!-- offline notes debug -->
 <mat-menu #notesDebugOffline="matMenu" xPosition="before">
-  <button class="text-color" mat-menu-item (click)="userinfo.openDialog()" i18n>Launch dialog1</button>
-  <button class="text-color" mat-menu-item (click)="userinfo.openDialogEnter()" i18n>Launch dialog2</button>
-  <button class="text-color" mat-menu-item (click)="userinfo.openDialogReenter('18604713262@163.com')" i18n>Launch dialog3</button>
   <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()" i18n>Pass Heads</button>
   <button class="text-color" mat-menu-item (click)="notes_serv.debug_live_string()" i18n>Pass Update</button>
   <button class="text-color" mat-menu-item (click)="userinfo.mock_ps()" i18n>Mock Pass</button>
@@ -122,6 +119,7 @@
 
   <button class="text-color" mat-menu-item [matMenuTriggerFor]="notesDebugOfflineDB" i18n>IndexedDB</button>
   <button class="text-color" mat-menu-item [matMenuTriggerFor]="debugOfflineCookies" i18n>Cookies</button>
+  <button class="text-color" mat-menu-item [matMenuTriggerFor]="debugOfflineDialog" i18n>Dialogs</button>
 </mat-menu>
 <!-- offline Cookies Debug -->
 <mat-menu #debugOfflineCookies="matMenu" xPosition="before">
@@ -142,4 +140,13 @@
   <button class="text-color" mat-menu-item (click)="userinfo.ponce_process('18604713262@163.com','12345')" i18n>Set Mock DB ponce</button>
   <button class="text-color" mat-menu-item (click)="userinfo.clear_ponce()" i18n>clear Mock DB ponce</button>
   <!-- <button class="text-color" mat-menu-item (click)="notes_serv.debug_push_note_msg()">Pass Heads</button> -->
+</mat-menu>
+<!-- offline dialog debug -->
+<mat-menu #debugOfflineDialog="matMenu" xPosition="before">
+
+  <button class="text-color" mat-menu-item (click)="userinfo.openDialog()" i18n>Default Dialog</button>
+  <button class="text-color" mat-menu-item (click)="userinfo.openDialog('Custom message')" i18n>Custom  Dialog</button>
+  <button class="text-color" mat-menu-item (click)="userinfo.openDialogEnter()" i18n>Default Reenter Dialog</button>
+  <button class="text-color" mat-menu-item (click)="userinfo.openDialogReenter('email@email.mail')" i18n>Custom Reenter Dialog</button>
+
 </mat-menu>

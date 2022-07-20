@@ -48,6 +48,7 @@ export class SettingsDialogComponent implements OnInit {
   clear_timeouts(){
     this.timeout_value = 0;
   }
+
   ngOnInit() {}
 
   security_toggle_app_pw(e) {

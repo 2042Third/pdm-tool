@@ -225,19 +225,20 @@ export class UserinfoService implements OnInit {
       for(let i=0; i< 1;i ++){ // HARDCODED TO ONLY TAKE THE FIRST RESULT
         this.local_not_set = JSON.parse(JSON.stringify(local_all[i]));
         this.dbService.getAllByIndex('pdmSecurity', "email",IDBKeyRange.only(local_all[i].email))
-        .subscribe((kpis) => {
+        .subscribe({
+          next: (kpis)=>
+        {
           let local_all1 = JSON.parse(JSON.stringify(kpis[0]));
-          this.enc_info.email =local_all[i].email;
+          this.enc_info.email = local_all[i].email;
           this.enc_info.val = local_all1.secure;
           this.waiting_for_app = true;
-          if(stored_app == null || stored_app == ""){// app pass ask, when there is local
-            this.openDialogReenter(local_all1.email,local_all1.secure, local_all1.checker);
-          }
-          else {  // Complicate stuff ended up being solved best with simple answers
+          if (stored_app == null || stored_app == "") {// app pass ask, when there is local
+            this.openDialogReenter(local_all1.email, local_all1.secure, local_all1.checker);
+          } else {  // Complicate stuff ended up being solved best with simple answers
             let tmp = new Encry();
             tmp.type = "local_signin";
             tmp.data = (JSON.stringify(kpis[0]));
-            tmp.val = this.dec2(stored_app,JSON.parse(tmp.data).secure.toString());
+            tmp.val = this.dec2(stored_app, JSON.parse(tmp.data).secure.toString());
             console.log(JSON.stringify(tmp));
             this.authdata_stream.next(tmp);
             let authdata_stream_app_obj = new Encry();
@@ -246,18 +247,33 @@ export class UserinfoService implements OnInit {
             this.authdata_stream_app.next(authdata_stream_app_obj);
             this.ponce_process(this.local_not_set.email.toString(), this.pswd); // moved from signin comp
           }
-        });
+        },
+        error: data=>{
+          console.log('idexed db error');
+          this.openDialog("Indexed DB error. Unable to store user data.");
+        }
+      });
       }
 
     });
   }
 
-  openDialog(){
-    let dialogConfig: MatDialogConfig= new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {dialogType:"Alert",dialogTitle:"Alert", message:"Please log in."};
-    dialogConfig.panelClass= 'custom-modalbox';
-    this.dialogRef = this.dialog.open(DialogNotificationsComponent, dialogConfig);
+  openDialog(a:string = ''){
+    if (a != ''){ // custom alert message
+      let dialogConfig: MatDialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.data = {dialogType: "Alert", dialogTitle: "Alert", message: a};
+      dialogConfig.panelClass = 'custom-modalbox';
+      this.dialogRef = this.dialog.open(DialogNotificationsComponent, dialogConfig);
+    }
+    else
+    { // default to giving an alert to sign in
+      let dialogConfig: MatDialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.data = {dialogType: "Alert", dialogTitle: "Alert", message: "Please log in."};
+      dialogConfig.panelClass = 'custom-modalbox';
+      this.dialogRef = this.dialog.open(DialogNotificationsComponent, dialogConfig);
+    }
   }
 
   openDialogEnter(){

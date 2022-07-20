@@ -109,7 +109,15 @@ export class SigninComponent implements OnInit {
       this.auth.signup(this.userinfo.enc2(this.f2.upw.value, this.f2.uname.value)
         , this.f2.umail.value
         , this.userinfo.hash(this.f2.upw.value+this.f2.upw.value)) // server only knows the hash of the pass+pass
-      .pipe().subscribe(data =>this.set_server_msg(data));
+      .pipe().subscribe({
+        next: data=>{
+          this.set_server_msg(data)
+        },
+        error: data => {
+          console.log("Signup error "+ data.message);
+          this.userinfo.openDialog('Signup Error:  \n'+data.message);
+        }
+    });
       // .pipe().subscribe(data =>this.set_server_msg(data)); // desktop or browser
       return ;
     }
@@ -136,10 +144,10 @@ export class SigninComponent implements OnInit {
               // *moved to userinfo after pass set
               // this.first_setup(data);
           },
-          error: error => {
-            this.errorMessage = error.message;
-            console.error('There was an error!', error);
-          }
+        error: data => {
+          console.log("Signin error "+ data.message);
+          this.userinfo.openDialog('Signin Error:  \n'+data.message);
+        }
       });
     }
   }
