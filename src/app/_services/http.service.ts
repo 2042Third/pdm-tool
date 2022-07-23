@@ -6,7 +6,6 @@ import {ServerMsg} from "../_types/ServerMsg";
 import {HTTP} from "@awesome-cordova-plugins/http/ngx";
 import {HttpClient} from "@angular/common/http";
 import {Platform} from "@ionic/angular";
-import {Device} from '@ionic-native/device';
 
 @Injectable({
   providedIn: 'root'
