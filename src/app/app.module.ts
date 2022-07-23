@@ -46,17 +46,25 @@ const dbConfig: DBConfig = {
       {name: 'email', keypath: 'email', options: { unique: true}}
     ]
   },
-  {
-    store: 'pdmSecurity',
-    storeConfig: {keyPath: 'id', autoIncrement: true},
-    storeSchema: [
-      {name: 'email', keypath: 'email', options: { unique: true}},
-      {name: 'secure', keypath: 'secure', options: {unique:false}},
-      {name: 'pdmSecurityVersion', keypath: 'pdmSecurityVersion', options: {unique:false}},
-      {name: 'checker', keypath: 'checker', options: { unique: false}},
-      {name: 'ponce_status', keypath: 'ponce_status', options:{unique:false}}
-    ]
-  },
+    {
+      store: 'pdmSecurity',
+      storeConfig: {keyPath: 'id', autoIncrement: true},
+      storeSchema: [
+        {name: 'email', keypath: 'email', options: { unique: true}},
+        {name: 'secure', keypath: 'secure', options: {unique:false}},
+        {name: 'pdmSecurityVersion', keypath: 'pdmSecurityVersion', options: {unique:false}},
+        {name: 'checker', keypath: 'checker', options: { unique: false}},
+        {name: 'ponce_status', keypath: 'ponce_status', options:{unique:false}}
+      ]
+    },
+    {
+      store: 'phoneStore',
+      storeConfig: {keyPath: 'id', autoIncrement: true},
+      storeSchema: [
+        {name: 'email', keypath: 'email', options: { unique: true}},
+        {name: 'secure', keypath: 'secure', options: {unique:false}},
+      ]
+    },
   ]
 };
 

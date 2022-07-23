@@ -1,8 +1,10 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { AuthService } from './_services/auth.service';
 import { UserinfoService } from './_services/userinfos.service';
+import { StorageService } from './_services/storage.service';
 import { WebsockService } from './_services/websock.service';
 import { EncryptionComponent } from './security/encryption/encryption.component';
+import {LiveobjService} from "./_services/liveobj.service";
 import { PlatformComponent } from './platform/platform.component';
 
 @Component({
@@ -18,6 +20,8 @@ export class AppComponent{
     public sock: WebsockService,
     public auth: AuthService,
     public userinfo: UserinfoService,
+    public storage: StorageService,
+    public lobj: LiveobjService,
   ){
 
     // setTimeout(()=>{userinfo.set_encryption(this.mainencrypt)},1000);
@@ -31,7 +35,7 @@ export class AppComponent{
     }
     setTimeout(()=>{
       // if(this.mainencrypt!=null){
-        this.userinfo.enc_stream_return.next(this.mainencrypt);
+        this.lobj.enc_stream_return.next(this.mainencrypt);
       // }
     },1000);
   }

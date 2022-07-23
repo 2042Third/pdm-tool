@@ -14,6 +14,9 @@ import { EncryptionComponent } from '../security/encryption/encryption.component
 import { NotesService } from './notes.service';
 import { AuthService } from './auth.service';
 import { Platform } from '@ionic/angular';
+import {StorageService} from "./storage.service";
+import {LiveobjService} from "./liveobj.service";
+import {EncodesService} from "./encodes.service";
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +25,7 @@ export class UserinfoService implements OnInit {
   public signin_status_value:Subject<ServerMsg> =new BehaviorSubject<ServerMsg>(this.signin_status_obj);
   public authdata_stream:Subject<Encry> = new BehaviorSubject<Encry>(null);
   public authdata_stream_app:Subject<Encry> = new BehaviorSubject<Encry>(null);
-  public enc_stream_return:Subject<EncryptionComponent> = new BehaviorSubject<EncryptionComponent>(null);// encryption return
+  // public enc_stream_return:Subject<EncryptionComponent> = new BehaviorSubject<EncryptionComponent>(null);// encryption return
   public debug_mock:Subject<Boolean> = new BehaviorSubject<Boolean>(false);
   public feature: Observable<string>;
   private pswd:string="";
@@ -46,21 +49,25 @@ export class UserinfoService implements OnInit {
   constructor(
     private ngzone: NgZone,
     private dbService: NgxIndexedDBService,
+    private lobj:LiveobjService,
     public dialog: MatDialog,
-    private cookieService: CookieService,
+    // private cookieService: CookieService,
     private auth_serv:AuthService,
     private platform : Platform,
+    private storage: StorageService,
+    private encodes:EncodesService
   ) {
 
 
 
-    this.stream_sub = this.enc_stream_return.subscribe(
+    this.stream_sub = this.lobj.enc_stream_return.subscribe(
       data => {
         if(data!=null){
           this.ngzone.run(()=>{
             this.encryption_module = data;
             this.crypt_version = this.encryption_module.pdmSecurityVersion;
             this.get_all_db();
+            console.log("Userinfo gets encrypt");
           });
         }
       }
@@ -117,43 +124,27 @@ export class UserinfoService implements OnInit {
   }
 
   /**
-   * Sets a 20 minutes timeout cookie that stores the application password.
    * @param pass pass
    * @param email email
    *
   */
   cookies_setting(pass:string, email:string){
-    let dateNow = new Date();
-    dateNow.setMinutes(dateNow.getMinutes() + this.cookies_timeout);
     if( pass!= null && pass != ""){
-      console.log("Setting coookies on \""
-      +this.platform.is('ios')? 'ios':"not ios"
-      +"\". Expiring on "+dateNow.toDateString()+" "+dateNow.getHours()+":"+dateNow.getMinutes());
-      if(!environment.production)
-        this.cookieService.set(this.cookies_encode(email), this.enc2(this.cookies_encode(email)+"pdm",pass), dateNow,'/','localhost',true,'Strict');
-      else
-        this.cookieService.set(this.cookies_encode(email),  this.enc2(this.cookies_encode(email)+"pdm",pass), dateNow,'/','pdm.pw',true,'Strict');
+      this.storage.set_app_store(this.encodes.cookies_encode(email), this.enc2(this.encodes.cookies_encode(email)+"pdm",pass));
     } else {
       console.log("No updates to cookies can be made.");
     }
   }
 
-  /**
-   * Return the cookies of the given email
-   * @param a email
-   */
-  get_cookies(a:string){
-    return this.dec2(a+"pdm",this.cookieService.get(a));
-  }
+  // /**
+  //  * Return the cookies of the given email
+  //  * @param a email
+  //  */
+  // get_cookies(a:string){
+  //   return this.dec2(a+"pdm",this.cookieService.get(a));
+  // }
 
-  /**
-   * Encodes strings to URL-encoding for cookies storage.
-   * Currently used for emails
-   * @param a email
-  */
-  cookies_encode(a:string){
-    return a.replace("@", "_");
-  }
+
 
   /**
    * Sets the signin detail packet.
@@ -182,7 +173,7 @@ export class UserinfoService implements OnInit {
 
   public set_encryption(a:EncryptionComponent){
     this.ngzone.run(()=>{
-      this.enc_stream_return.next(a);
+      this.lobj.enc_stream_return.next(a);
     });
   }
 
@@ -208,7 +199,11 @@ export class UserinfoService implements OnInit {
   }
 
 
-
+  /**
+   * Runs when pdm starts from cold.
+   * Checks secure storage ()
+   *
+   * */
   get_all_db(){
     let local_all;
     let stored_app = null;
@@ -220,7 +215,8 @@ export class UserinfoService implements OnInit {
         return;
       }
       else { // target the pass with the user's email
-        stored_app = this.get_cookies(this.cookies_encode(local_all[0].email)); // app pass
+        // stored_app = this.get_cookies(this.cookies_encode(local_all[0].email)); // app pass
+        stored_app = this.storage.get_app_store(this.encodes.cookies_encode(local_all[0].email)); // app pass
       }
       for(let i=0; i< 1;i ++){ // HARDCODED TO ONLY TAKE THE FIRST RESULT
         this.local_not_set = JSON.parse(JSON.stringify(local_all[i]));
@@ -329,13 +325,16 @@ export class UserinfoService implements OnInit {
 
   /**
    * set secure storage
+   * Read existing cookies' (application password), returns if no cookies of the given email is found.
+   * If cookies of the same email is found, deletes locale store (IndexedDB) of
+   * the email.
    * @param a email
    * @param b password
    *
   */
   ponce_process (a:string, b:string){
     console.log('making ponce new');
-    let app_local = this.get_cookies(this.cookies_encode(a));
+    let app_local = this.storage.get_app_store(this.encodes.cookies_encode(a));
     if(app_local == null){
       // console.log("No application password set, cannot store password.");
       return;
