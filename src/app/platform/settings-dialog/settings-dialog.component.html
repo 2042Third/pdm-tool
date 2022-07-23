@@ -50,18 +50,22 @@
   </mat-expansion-panel-header>
   <h2> Local Storage </h2>
 <!--    app password storage toggle-->
+    <p>Storage Engine: {{storage.storage_engine}}</p>
 
-    <mat-slide-toggle [(ngModel)]="app_pw_toggle"
-    (change)="security_toggle_app_pw($event)"
-    color="warn" >Remember App password</mat-slide-toggle>
-
+    <p>
+      <mat-slide-toggle [(ngModel)]="app_pw_toggle"
+      (change)="security_toggle_app_pw($event)"
+      color="warn" >Remember App password</mat-slide-toggle>
+    </p>
 <!--    app pw storage timeout-->
-    <p class="small-setting-title">App password deletes after (minutes):</p>
-  <select [(ngModel)]="timeout_value"
-          (change)="security_change_save_timeout($event)"
-          id="timeouts" class="custom-color">
-    <option class="custom-color" *ngFor="let i of security_list_timeout" [value]="i.name" >{{i.name}}</option>
-  </select>
+    <p class="small-setting-title">App password deletes after (minutes):
+      <select [(ngModel)]="timeout_value"
+              (change)="security_change_save_timeout($event)"
+              id="timeouts" class="custom-color">
+        <option class="custom-color" *ngFor="let i of security_list_timeout" [value]="i.name" >{{i.name}}</option>
+      </select>
+    </p>
+
 
 </mat-expansion-panel>
 </mat-accordion>

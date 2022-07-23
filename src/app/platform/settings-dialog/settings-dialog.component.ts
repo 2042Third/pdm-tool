@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserinfoService} from "../../_services/userinfos.service";
 import {Platform} from "@ionic/angular";
+import {StorageService} from "../../_services/storage.service";
 
 @Component({
   selector: 'settingsDialogComponent',
@@ -27,6 +28,7 @@ export class SettingsDialogComponent implements OnInit {
   constructor(
     public userinfo: UserinfoService,
     public platform: Platform,
+    public storage: StorageService,
   ) {
     this.timeout_value = userinfo.cookies_timeout;
     console.log(this.platform.platforms());

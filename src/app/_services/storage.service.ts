@@ -17,6 +17,7 @@ export class StorageService implements OnInit{
   stream_sub: any;
   private em: EncryptionComponent;
   private cookies_timeout: number = 20;
+  public storage_engine: string;
 
   constructor(
     private ngzone: NgZone,
@@ -35,6 +36,13 @@ export class StorageService implements OnInit{
         }
       }
     );
+
+    if(this.platform.is('desktop') || this.platform.is('mobileweb')){
+      this.storage_engine = "desktop/mobile browser";
+    }
+    else if ((this.platform.is('ios') || this.platform.is('android'))){
+      this.storage_engine = "mobile";
+    }
   }
 
   ngOnInit(): void {
