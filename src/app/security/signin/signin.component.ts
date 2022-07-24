@@ -153,10 +153,7 @@ export class SigninComponent implements OnInit {
   }
 
   usr_setup(data){
-    // console.log("beforedate:"+data.time);
-    data.utime = formatDate(Number(data.time), "medium",'en-US' ).toString();
-    // data.username = data.receiver;
-    // this.local_usr = JSON.parse(JSON.stringify(data));
+    // data.utime = formatDate(Number(data.time), "medium",'en-US' ).toString();
   }
 
 
