@@ -78,7 +78,6 @@ export class UserinfoService implements OnInit {
           this.openDialogEnter(); // set app pass
           this.ngzone.run(()=>{
             this.local_not_set = JSON.parse(JSON.parse(JSON.stringify(data)));
-            console.log(`local_not_set1: ${this.local_not_set}`);
           });
         }
       }
@@ -91,8 +90,6 @@ export class UserinfoService implements OnInit {
         this.ngzone.run(()=>{
           console.log(`local_not_set2: ${this.local_not_set.email}`);
           this.cookies_setting(this.app_local, this.local_not_set.email);
-          console.log(`local_not_set2 done`);
-
         });
         // pass set, push user info or set signin status
         if(this.local_not_set!=null){
@@ -347,10 +344,10 @@ export class UserinfoService implements OnInit {
     console.log('making ponce new');
     let app_local = this.storage.get_app_store(this.encodes.cookies_encode(a));
     if(app_local == null){
-      // console.log("No application password set, cannot store password.");
+      console.log("No application password set, cannot store password.");
       return;
     }
-    // console.log("Using application password, "+app_local+" to "+b);
+    console.log("Using application password, "+app_local+" to "+b);
     this.clear_same_email_secure(a).subscribe((_)=>{
       this.dbService.add('pdmSecurity', {
         email: a,

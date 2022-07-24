@@ -64,18 +64,17 @@ export class StorageService implements OnInit{
    * */
   get_app_store(a:string){
     if(this.platform.is('desktop') || this.platform.is('mobileweb')){
-      console.log("desktop/browser call");
+      console.log("desktop/browser get "+ a);
       return this.get_cookies(a);
     }
     else if ((this.platform.is('ios') || this.platform.is('android'))){
-      console.log("ios/android call");
+      console.log("ios/android get "+ a);
       this.dbService.getAllByIndex('phoneStore', "email",IDBKeyRange.only(a))
         .subscribe({
           next: (kpis)=>
           {
-            let local_app_store = JSON.parse(JSON.stringify(kpis[0]));
-            console.log(local_app_store);
-            return local_app_store;
+            console.log("get_app_store mobile local => "+JSON.stringify(kpis[0]));
+            return JSON.parse(JSON.stringify(kpis[0]));
           },
           error: data=>{
             console.log('idexed db error');
@@ -99,30 +98,27 @@ export class StorageService implements OnInit{
   }
 
   set_phone_store(email:string, pass:string){
-    this.clear_phone_store(email).subscribe(
-      {
+    let phone_store =  {
+      email: email,
+      secure: pass
+    };
+    this.clear_phone_store(email).subscribe({
         next:(_)=>{
-          this.dbService.add('phoneStore', {
-            email: email,
-            secure: pass
-          }).subscribe({
+          this.dbService.add('phoneStore',phone_store).subscribe({
               next:(key) => {
                 console.log('phoneStore key: ', key);
-              },
+              }, //next
               error: data => {
                 console.log("Local Storage error "+ data.message);
                 this.dialogs.openDialog('Local Storage Error:  \n'+data.message);
-              }
-            }
-          );
-        },
+              } // error
+            }); // subscribe
+        }, // clear.next
         error: data => {
           console.log("Clear Local Storage error "+ data.message);
           this.dialogs.openDialog('Clear Local Storage Error:  \n'+data.message);
-        }
-      }
-
-  );
+        } // clear.error
+      });// subscribe
   }
 
   /**
