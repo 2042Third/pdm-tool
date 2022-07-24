@@ -38,6 +38,7 @@ export class NotesService {
   private sidenav: MatSidenav;
   public submitTimeout=1000;
   public loadingTimeout=100;
+  private http_root = "https://pdm.pw/";
   //debug data
   private debug_update_str = '{"head":"762c0d11435e45b504a0d2a6fdc19018f068c0c6282db2e95f12de7c4b43a607288384968d21f6ae23","note_id":"26","update_time":null,"sess":"debugkey","h":null,"time":null,"ntype":"update","content":"dd60ca4d492da0dfd3eb41c88c09af35e4b847b446d78696cb7bd24878aca1c4aad38895519e85f9b07c12448d1fc6774b9dd4d4ef27598114d8801fd115caec8b255b2fc113","email":"18604713262@163.com","hash":null,"status":"success"}';
   private debug_str = '{"note_id":"listed","sess":"debugkey","h":"listed","ntype":"heads_return","content":[{"time":"1653943277.754780","update_time":"1653943277.754780","head":null,"note_id":"5"},{"time":"1653943372.809623","update_time":"1653943372.809623","head":null,"note_id":"6"},{"time":"1654045153.648064","update_time":"1654045153.648064","head":null,"note_id":"8"},{"time":"1654214621.877539","update_time":"1654214621.877539","head":null,"note_id":"9"},{"time":"1654285157.006237","update_time":"1654285157.006237","head":null,"note_id":"10"},{"time":"1654285647.635445","update_time":"1654285647.635445","head":null,"note_id":"11"},{"time":"1654464216.661881","update_time":"1654464216.661881","head":null,"note_id":"12"},{"time":"1654466313.384610","update_time":"1654466313.384610","head":null,"note_id":"13"},{"time":"1654466599.819724","update_time":"1654466599.819724","head":null,"note_id":"14"},{"time":"1654467119.556799","update_time":"1654467119.556799","head":null,"note_id":"15"},{"time":"1654468754.584984","update_time":"1654468754.584984","head":null,"note_id":"16"},{"time":"1654470460.350691","update_time":"1654470460.350691","head":null,"note_id":"17"},{"time":"1654470608.446337","update_time":"1654470608.446337","head":null,"note_id":"18"},{"time":"1654471007.657816","update_time":"1654471007.657816","head":null,"note_id":"19"},{"time":"1654478912.637886","update_time":"1654478912.637886","head":null,"note_id":"20"},{"time":"1653943506.431303","update_time":"1654539132.144493","head":null,"note_id":"7"}],"email":"18604713262@163.com","hash":"8d59bff024dc14fb2cd63f753da9b3488940440fe090a0e84285520ad22719c8","status":"success"}';
@@ -125,7 +126,7 @@ export class NotesService {
     // setTimeout(()=>{
       this.notes_obj.ntype = "update";
       return this.http.post<NotesMsg>(
-      '/auth/note',
+      this.http_root+'auth/note',
       { "username":this.signin_obj.username,
         "content":this.cur_content,
         "head":this.cur_head,
@@ -166,7 +167,7 @@ export class NotesService {
     return this.ngzone.run(()=>{
       this.notes_obj.ntype = "new";
       return this.http.post<NotesMsg>(
-      '/auth/note',
+      this.http_root+'auth/note',
       { "username":this.signin_obj.username,
         "content":"",
         "sess":this.signin_obj.sess,
@@ -189,7 +190,7 @@ export class NotesService {
     }
     this.notes_obj.ntype = "heads";
     return this.http.post<NotesMsg>(
-    '/auth/note',
+    this.http_root+'auth/note',
     { "username":this.signin_obj.username,
       "content":"",
       "sess":this.signin_obj.sess,
@@ -214,7 +215,7 @@ export class NotesService {
     }
     this.notes_obj.ntype = "retrieve";
     return this.http.post<NotesMsg>(
-    '/auth/note',
+    this.http_root+'auth/note',
     { "username":this.signin_obj.username,
       "content":"",
       "sess":this.signin_obj.sess,

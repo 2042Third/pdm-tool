@@ -74,7 +74,8 @@ export class StorageService implements OnInit{
           next: (kpis)=>
           {
             let local_app_store = JSON.parse(JSON.stringify(kpis[0]));
-            console.log();
+            console.log(local_app_store);
+            return local_app_store;
           },
           error: data=>{
             console.log('idexed db error');
