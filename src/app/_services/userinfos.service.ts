@@ -76,7 +76,10 @@ export class UserinfoService implements OnInit {
       data=>{ // set local_not_set
         if(data!=null){
           this.openDialogEnter(); // set app pass
-          this.local_not_set = JSON.parse(JSON.stringify(data));
+          this.ngzone.run(()=>{
+            this.local_not_set = JSON.parse(JSON.parse(JSON.stringify(data)));
+            console.log(`local_not_set1: ${this.local_not_set}`);
+          });
         }
       }
     );
@@ -85,7 +88,12 @@ export class UserinfoService implements OnInit {
       if(data!=null){
         console.log("app set => "+ JSON.stringify(data));
         this.app_local = data.val.toString();
-        this.cookies_setting(this.app_local, this.local_not_set.email.toString());
+        this.ngzone.run(()=>{
+          console.log(`local_not_set2: ${this.local_not_set.email}`);
+          this.cookies_setting(this.app_local, this.local_not_set.email);
+          console.log(`local_not_set2 done`);
+
+        });
         // pass set, push user info or set signin status
         if(this.local_not_set!=null){
           this.first_setup(this.local_not_set);
@@ -128,9 +136,12 @@ export class UserinfoService implements OnInit {
    * @param email email
    *
   */
-  cookies_setting(pass:string, email:string){
+  cookies_setting(pass:string, email:String){
     if( pass!= null && pass != ""){
-      this.storage.set_app_store(this.encodes.cookies_encode(email), this.enc2(this.encodes.cookies_encode(email)+"pdm",pass));
+      this.storage.set_app_store(
+        this.encodes.cookies_encode(email.toString()),
+        this.enc2(this.encodes.cookies_encode(email.toString())+"pdm",pass)
+      );
     } else {
       console.log("No updates to cookies can be made.");
     }

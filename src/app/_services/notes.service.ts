@@ -11,6 +11,7 @@ import { DialogNotificationsComponent } from '../platform/dialogNotifications/di
 import { Router } from '@angular/router';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import { environment } from 'src/environments/environment';
+import {HttpService} from "./http.service";
 @Injectable({
   providedIn: 'root'
 })
@@ -42,7 +43,7 @@ export class NotesService {
   private debug_str = '{"note_id":"listed","sess":"debugkey","h":"listed","ntype":"heads_return","content":[{"time":"1653943277.754780","update_time":"1653943277.754780","head":null,"note_id":"5"},{"time":"1653943372.809623","update_time":"1653943372.809623","head":null,"note_id":"6"},{"time":"1654045153.648064","update_time":"1654045153.648064","head":null,"note_id":"8"},{"time":"1654214621.877539","update_time":"1654214621.877539","head":null,"note_id":"9"},{"time":"1654285157.006237","update_time":"1654285157.006237","head":null,"note_id":"10"},{"time":"1654285647.635445","update_time":"1654285647.635445","head":null,"note_id":"11"},{"time":"1654464216.661881","update_time":"1654464216.661881","head":null,"note_id":"12"},{"time":"1654466313.384610","update_time":"1654466313.384610","head":null,"note_id":"13"},{"time":"1654466599.819724","update_time":"1654466599.819724","head":null,"note_id":"14"},{"time":"1654467119.556799","update_time":"1654467119.556799","head":null,"note_id":"15"},{"time":"1654468754.584984","update_time":"1654468754.584984","head":null,"note_id":"16"},{"time":"1654470460.350691","update_time":"1654470460.350691","head":null,"note_id":"17"},{"time":"1654470608.446337","update_time":"1654470608.446337","head":null,"note_id":"18"},{"time":"1654471007.657816","update_time":"1654471007.657816","head":null,"note_id":"19"},{"time":"1654478912.637886","update_time":"1654478912.637886","head":null,"note_id":"20"},{"time":"1653943506.431303","update_time":"1654539132.144493","head":null,"note_id":"7"}],"email":"18604713262@163.com","hash":"8d59bff024dc14fb2cd63f753da9b3488940440fe090a0e84285520ad22719c8","status":"success"}';
   private debug_obj:NotesMsg = JSON.parse(this.debug_str);
   constructor(
-    private http: HttpClient,
+    private http: HttpService,
     private userinfo: UserinfoService,
     public dialog: MatDialog,
     private router: Router,

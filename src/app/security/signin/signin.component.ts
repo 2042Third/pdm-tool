@@ -153,7 +153,8 @@ export class SigninComponent implements OnInit {
   }
 
   usr_setup(data){
-    // data.utime = formatDate(Number(data.time), "medium",'en-US' ).toString();
+    console.log(`Try format date: ${Number(data.time)}`);
+    data.utime = formatDate(Number(data.time), "medium",'en-US' ).toString();
   }
 
 

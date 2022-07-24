@@ -20,7 +20,7 @@ import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 // import { HTTP } from '@ionic-native/http/ngx';
 const dbConfig: DBConfig = {
   name: 'pdmDB',
-  version: 1,
+  version: 3,
   objectStoresMeta: [{
     store: 'pdmTable',
     storeConfig: {keyPath: 'id', autoIncrement: true},
@@ -64,7 +64,7 @@ const dbConfig: DBConfig = {
         {name: 'email', keypath: 'email', options: { unique: true}},
         {name: 'secure', keypath: 'secure', options: {unique:false}},
       ]
-    },
+    }
   ]
 };
 

@@ -9,6 +9,7 @@ import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 import {Encry} from "../_types/User";
 import {NgxIndexedDBService} from "ngx-indexed-db";
+import {DialogsService} from "./dialogs.service";
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class StorageService implements OnInit{
     private lobj : LiveobjService,
     private platform: Platform,
     private dbService: NgxIndexedDBService,
+    private dialogs: DialogsService,
   ) {
     this.stream_sub = this.lobj.enc_stream_return.subscribe(
       data => {
@@ -67,7 +69,6 @@ export class StorageService implements OnInit{
     }
     else if ((this.platform.is('ios') || this.platform.is('android'))){
       console.log("ios/android call");
-      // to be implemented
       this.dbService.getAllByIndex('phoneStore', "email",IDBKeyRange.only(a))
         .subscribe({
           next: (kpis)=>
@@ -92,21 +93,34 @@ export class StorageService implements OnInit{
     }
     else if ((this.platform.is('ios') || this.platform.is('android'))){
       console.log("ios/android set phone store");
-      // to be implemented
       this.set_phone_store(email,pass);
     }
   }
 
   set_phone_store(email:string, pass:string){
-    this.clear_phone_store(email).subscribe((_)=>{
-      this.dbService.add('phoneStore', {
-        email: email,
-        secure: pass
-      })
-        .subscribe((key) => {
-          console.log('phoneStore key: ', key);
-        });
-    }
+    this.clear_phone_store(email).subscribe(
+      {
+        next:(_)=>{
+          this.dbService.add('phoneStore', {
+            email: email,
+            secure: pass
+          }).subscribe({
+              next:(key) => {
+                console.log('phoneStore key: ', key);
+              },
+              error: data => {
+                console.log("Local Storage error "+ data.message);
+                this.dialogs.openDialog('Local Storage Error:  \n'+data.message);
+              }
+            }
+          );
+        },
+        error: data => {
+          console.log("Clear Local Storage error "+ data.message);
+          this.dialogs.openDialog('Clear Local Storage Error:  \n'+data.message);
+        }
+      }
+
   );
   }
 
