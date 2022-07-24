@@ -4,7 +4,8 @@
     "pdm-notes": {
       "name": "pdm-notes",
       "integrations": {
-        "cordova": {}
+        "cordova": {},
+        "capacitor": {}
       },
       "type": "angular",
       "root": "./",
