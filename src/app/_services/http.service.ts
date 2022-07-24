@@ -31,7 +31,7 @@ export class HttpService {
     }
     else if ((this.platform.is('ios') || this.platform.is('android'))){
       console.log("http ios/android call");
-      return from(this.http2.post(url, JSON.stringify(arg1),arg2)).pipe(map(data => {
+      return from(this.http2.post(url, JSON.parse(JSON.stringify(arg1)),arg2)).pipe(map(data => {
         return data.data;
       }));
     }
