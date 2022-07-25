@@ -2,7 +2,7 @@ import {Injectable, NgZone, OnInit} from '@angular/core';
 import {CookieService} from "ngx-cookie-service";
 import {UserinfoService} from "./userinfos.service";
 import {EncryptionComponent} from "../security/encryption/encryption.component";
-import {BehaviorSubject, from, Subject} from "rxjs";
+import {BehaviorSubject, from, Observable, Subject, Subscription} from "rxjs";
 import {LiveobjService} from "./liveobj.service";
 import {Platform} from "@ionic/angular";
 import {map} from "rxjs/operators";
@@ -60,25 +60,32 @@ export class StorageService implements OnInit{
    * Gets the local storage (application password).
    * @param a email (cookies encoded)
    * */
-  get_app_store(a:string){
+  get_app_store(a:string):Observable<any>{
     if(this.platform.is('desktop') || this.platform.is('mobileweb')){
       console.log("desktop/browser call");
-      return this.get_cookies(a);
+      let local_app_store =  this.get_cookies(a);
+      return new Observable<any>(
+        (observable)=>{
+          observable.next(local_app_store);
+          return ()=>{
+            // I can basically clear things in this.
+            // Or, Unsubscribe.
+          }
+        }
+      ).pipe();
+        // .subscribe(data=>{return data});
     }
     else if ((this.platform.is('ios') || this.platform.is('android'))){
       console.log("ios/android call");
       // to be implemented
-      this.dbService.getAllByIndex('phoneStore', "email",IDBKeyRange.only(a))
-        .subscribe({
-          next: (kpis)=>
+      return this.dbService.getAllByIndex('phoneStore', "email",IDBKeyRange.only(a))
+        .pipe(map((data)=>
           {
-            let local_app_store = JSON.parse(JSON.stringify(kpis[0]));
+            let local_app_store = JSON.parse(JSON.stringify(data[0])).secure;
             console.log();
-          },
-          error: data=>{
-            console.log('idexed db error');
+            return local_app_store;
           }
-        });
+        ));
     }
   }
   /**

@@ -197,14 +197,95 @@ export class UserinfoService implements OnInit {
       this.signin_status_value.next(this.signin_status_obj);
     }
   }
+  /**
+   * Only called when pdm starts from cold.
+   * Checks if there is any existing users.
+   * If there is, ask for decryption key from user,
+   * or decrypt it with existing data.
+   * Ends with user signed-in without retyping.
+   * */
+  get_all_db(){
+    // Check for existing user.
+    let local_user, app_ps;
+    console.log("Starting local user");
 
-
+    this.dbService.getAll('pdmTable').subscribe(
+      {
+        next: data=>{
+          console.log("Gets local user");
+          local_user = JSON.parse(JSON.stringify(data));
+          if(local_user==null || local_user.length == 0){
+            console.log("No local user");
+            return;
+          }
+          else { // target the pass with the user's email
+            // stored_app = this.get_cookies(this.cookies_encode(local_all[0].email)); // app pass
+            // app_ps = this.storage.get_app_store(this.encodes.cookies_encode(local_user[0].email)); // app pass
+            this.storage.get_app_store(this.encodes.cookies_encode(local_user[0].email)).subscribe({
+              next:data=>{
+                console.log("get_all_db subscribtion returned => "+data);
+                app_ps = data;
+                this.check_existing_user_security(local_user,app_ps);
+              },
+                error:data=>{
+                  console.log("get_all_db subscribtion returned error => "+data.message);
+                }
+            }).unsubscribe();
+          }
+        },
+        error : data =>{
+          console.log("checking for local user failed. "+ data.message);
+        }
+      }
+    ).unsubscribe();
+  }
+  /**
+   * Called after a user is found.
+   * ask user to reenter app password to decryption local user info
+   * or decryptes local user info
+   * @param local_user user email
+   * @param app_ps application password
+   * */
+  check_existing_user_security(local_user:any,app_ps:any){
+    for(let i=0; i< 1;i ++){ // HARDCODED TO ONLY TAKE THE FIRST RESULT
+      this.local_not_set = JSON.parse(JSON.stringify(local_user[i]));
+      this.dbService.getAllByIndex('pdmSecurity', "email",IDBKeyRange.only(local_user[i].email))
+        .subscribe({
+          next: (kpis)=>
+          {
+            let local_all1 = JSON.parse(JSON.stringify(kpis[0]));
+            this.enc_info.email = local_user[i].email;
+            this.enc_info.val = local_all1.secure;
+            this.waiting_for_app = true;
+            if (app_ps == null || app_ps == "") {// app pass ask, when there is local
+              this.openDialogReenter(local_all1.email, local_all1.secure, local_all1.checker);
+            } else {  // Complicate stuff ended up being solved best with simple answers
+              let tmp = new Encry();
+              tmp.type = "local_signin";
+              tmp.data = (JSON.stringify(kpis[0]));
+              tmp.val = this.dec2(app_ps, JSON.parse(tmp.data).secure.toString());
+              console.log(JSON.stringify(tmp));
+              this.authdata_stream.next(tmp);
+              let authdata_stream_app_obj = new Encry();
+              authdata_stream_app_obj.val = app_ps;
+              authdata_stream_app_obj.type = "local_read";
+              this.authdata_stream_app.next(authdata_stream_app_obj);
+              this.ponce_process(this.local_not_set.email.toString(), this.pswd); // moved from signin comp
+            }
+          },
+          error: data=>{
+            console.log('idexed db error');
+            this.openDialog("Indexed DB error. Unable to store user data.");
+          }
+        }).unsubscribe();
+    }
+  }
   /**
    * Runs when pdm starts from cold.
    * Checks secure storage ()
-   *
+   *  @deprecated
    * */
-  get_all_db(){
+  get_all_db_dep(){
     let local_all;
     let stored_app = null;
     this.dbService.getAll('pdmTable')
@@ -248,7 +329,7 @@ export class UserinfoService implements OnInit {
           console.log('idexed db error');
           this.openDialog("Indexed DB error. Unable to store user data.");
         }
-      });
+      }).unsubscribe();
       }
 
     });
@@ -334,23 +415,25 @@ export class UserinfoService implements OnInit {
   */
   ponce_process (a:string, b:string){
     console.log('making ponce new');
-    let app_local = this.storage.get_app_store(this.encodes.cookies_encode(a));
-    if(app_local == null){
-      // console.log("No application password set, cannot store password.");
-      return;
-    }
-    // console.log("Using application password, "+app_local+" to "+b);
-    this.clear_same_email_secure(a).subscribe((_)=>{
-      this.dbService.add('pdmSecurity', {
-        email: a,
-        ponce_status: false,
-        secure:this.enc2(app_local,b),
-        checker:this.enc2(app_local,a),
-      })
-      .subscribe((key) => {
-        console.log('indexeddb key: ', key);
+    this.storage.get_app_store(this.encodes.cookies_encode(a)).subscribe(app_local=>{
+      if(app_local == null){
+        // console.log("No application password set, cannot store password.");
+        return;
+      }
+      // console.log("Using application password, "+app_local+" to "+b);
+      this.clear_same_email_secure(a).subscribe((_)=>{
+        this.dbService.add('pdmSecurity', {
+          email: a,
+          ponce_status: false,
+          secure:this.enc2(app_local,b),
+          checker:this.enc2(app_local,a),
+        })
+          .subscribe((key) => {
+            console.log('indexeddb key: ', key);
+          });
       });
-    });
+    }).unsubscribe();
+
   }
 
   /**
