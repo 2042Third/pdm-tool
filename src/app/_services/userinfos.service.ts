@@ -214,7 +214,7 @@ export class UserinfoService implements OnInit {
    * */
   get_all_db(){
     // Check for existing user.
-    let local_user, app_ps;
+    let local_user, app_ps = null;
     console.log("Starting local user");
 
     this.dbService.getAll('pdmTable').subscribe(
@@ -231,21 +231,21 @@ export class UserinfoService implements OnInit {
             // app_ps = this.storage.get_app_store(this.encodes.cookies_encode(local_user[0].email)); // app pass
             this.storage.get_app_store(this.encodes.cookies_encode(local_user[0].email)).subscribe({
               next:data=>{
-                console.log("get_all_db subscribtion returned => "+data);
+                console.log("get_all_db "+JSON.stringify(local_user[0]) +"subscribtion returned => "+data);
                 app_ps = data;
                 this.check_existing_user_security(local_user,app_ps);
               },
                 error:data=>{
                   console.log("get_all_db subscribtion returned error => "+data.message);
                 }
-            }).unsubscribe();
+            });
           }
         },
         error : data =>{
           console.log("checking for local user failed. "+ data.message);
         }
       }
-    ).unsubscribe();
+    );
   }
   /**
    * Called after a user is found.
@@ -257,10 +257,15 @@ export class UserinfoService implements OnInit {
   check_existing_user_security(local_user:any,app_ps:any){
     for(let i=0; i< 1;i ++){ // HARDCODED TO ONLY TAKE THE FIRST RESULT
       this.local_not_set = JSON.parse(JSON.stringify(local_user[i]));
-      this.dbService.getAllByIndex('pdmSecurity', "email",IDBKeyRange.only(local_user[i].email))
+      console.log("check existing user called = > "+ JSON.stringify(this.local_not_set));
+      let gabi = this.dbService.getAllByIndex(
+        'pdmSecurity'
+        , "email"
+        ,IDBKeyRange.only(local_user[i].email))
         .subscribe({
           next: (kpis)=>
           {
+            console.log("check existing user returned = > "+ JSON.stringify(kpis[0]));
             let local_all1 = JSON.parse(JSON.stringify(kpis[0]));
             this.enc_info.email = local_user[i].email;
             this.enc_info.val = local_all1.secure;
@@ -285,63 +290,10 @@ export class UserinfoService implements OnInit {
             console.log('idexed db error');
             this.openDialog("Indexed DB error. Unable to store user data.");
           }
-        }).unsubscribe();
+        });
     }
   }
-  /**
-   * Runs when pdm starts from cold.
-   * Checks secure storage ()
-   *  @deprecated
-   * */
-  get_all_db_dep(){
-    let local_all;
-    let stored_app = null;
-    this.dbService.getAll('pdmTable')
-    .subscribe((kpis) => {
-      local_all = JSON.parse(JSON.stringify(kpis));
-      if(local_all==null || local_all.length == 0){
-        console.log("No local user");
-        return;
-      }
-      else { // target the pass with the user's email
-        // stored_app = this.get_cookies(this.cookies_encode(local_all[0].email)); // app pass
-        stored_app = this.storage.get_app_store(this.encodes.cookies_encode(local_all[0].email)); // app pass
-      }
-      for(let i=0; i< 1;i ++){ // HARDCODED TO ONLY TAKE THE FIRST RESULT
-        this.local_not_set = JSON.parse(JSON.stringify(local_all[i]));
-        this.dbService.getAllByIndex('pdmSecurity', "email",IDBKeyRange.only(local_all[i].email))
-        .subscribe({
-          next: (kpis)=>
-        {
-          let local_all1 = JSON.parse(JSON.stringify(kpis[0]));
-          this.enc_info.email = local_all[i].email;
-          this.enc_info.val = local_all1.secure;
-          this.waiting_for_app = true;
-          if (stored_app == null || stored_app == "") {// app pass ask, when there is local
-            this.openDialogReenter(local_all1.email, local_all1.secure, local_all1.checker);
-          } else {  // Complicate stuff ended up being solved best with simple answers
-            let tmp = new Encry();
-            tmp.type = "local_signin";
-            tmp.data = (JSON.stringify(kpis[0]));
-            tmp.val = this.dec2(stored_app, JSON.parse(tmp.data).secure.toString());
-            console.log(JSON.stringify(tmp));
-            this.authdata_stream.next(tmp);
-            let authdata_stream_app_obj = new Encry();
-            authdata_stream_app_obj.val = stored_app;
-            authdata_stream_app_obj.type = "local_read";
-            this.authdata_stream_app.next(authdata_stream_app_obj);
-            this.ponce_process(this.local_not_set.email.toString(), this.pswd); // moved from signin comp
-          }
-        },
-        error: data=>{
-          console.log('idexed db error');
-          this.openDialog("Indexed DB error. Unable to store user data.");
-        }
-      }).unsubscribe();
-      }
 
-    });
-  }
 
   openDialog(a:string = ''){
     if (a != ''){ // custom alert message
@@ -440,7 +392,7 @@ export class UserinfoService implements OnInit {
             console.log('indexeddb key: ', key);
           });
       });
-    }).unsubscribe();
+    });
 
   }
 

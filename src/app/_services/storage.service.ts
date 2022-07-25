@@ -5,7 +5,7 @@ import {EncryptionComponent} from "../security/encryption/encryption.component";
 import {BehaviorSubject, from, Observable, Subject} from "rxjs";
 import {LiveobjService} from "./liveobj.service";
 import {Platform} from "@ionic/angular";
-import {map} from "rxjs/operators";
+import {map, take} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 import {Encry} from "../_types/User";
 import {NgxIndexedDBService} from "ngx-indexed-db";
@@ -74,7 +74,7 @@ export class StorageService implements OnInit{
             // Or, Unsubscribe.
           }
         }
-      ).pipe();
+      ).pipe(take(1));
         // .subscribe(data=>{return data});
     }
     else if ((this.platform.is('ios') || this.platform.is('android'))){
