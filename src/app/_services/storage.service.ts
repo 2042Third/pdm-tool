@@ -2,13 +2,14 @@ import {Injectable, NgZone, OnInit} from '@angular/core';
 import {CookieService} from "ngx-cookie-service";
 import {UserinfoService} from "./userinfos.service";
 import {EncryptionComponent} from "../security/encryption/encryption.component";
-import {BehaviorSubject, from, Observable, Subject, Subscription} from "rxjs";
+import {BehaviorSubject, from, Observable, Subject} from "rxjs";
 import {LiveobjService} from "./liveobj.service";
 import {Platform} from "@ionic/angular";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 import {Encry} from "../_types/User";
 import {NgxIndexedDBService} from "ngx-indexed-db";
+import {DialogsService} from "./dialogs.service";
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class StorageService implements OnInit{
     private lobj : LiveobjService,
     private platform: Platform,
     private dbService: NgxIndexedDBService,
+    private dialogs: DialogsService,
   ) {
     this.stream_sub = this.lobj.enc_stream_return.subscribe(
       data => {
@@ -99,22 +101,32 @@ export class StorageService implements OnInit{
     }
     else if ((this.platform.is('ios') || this.platform.is('android'))){
       console.log("ios/android set phone store");
-      // to be implemented
       this.set_phone_store(email,pass);
     }
   }
 
   set_phone_store(email:string, pass:string){
-    this.clear_phone_store(email).subscribe((_)=>{
-      this.dbService.add('phoneStore', {
-        email: email,
-        secure: pass
-      })
-        .subscribe((key) => {
-          console.log('phoneStore key: ', key);
-        });
-    }
-  );
+    let phone_store =  {
+      email: email,
+      secure: pass
+    };
+    this.clear_phone_store(email).subscribe({
+        next:(_)=>{
+          this.dbService.add('phoneStore',phone_store).subscribe({
+              next:(key) => {
+                console.log('phoneStore key: ', key);
+              }, //next
+              error: data => {
+                console.log("Local Storage error "+ data.message);
+                this.dialogs.openDialog('Local Storage Error:  \n'+data.message);
+              } // error
+            }); // subscribe
+        }, // clear.next
+        error: data => {
+          console.log("Clear Local Storage error "+ data.message);
+          this.dialogs.openDialog('Clear Local Storage Error:  \n'+data.message);
+        } // clear.error
+      });// subscribe
   }
 
   /**
