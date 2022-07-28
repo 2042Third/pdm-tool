@@ -2,15 +2,15 @@
 
 </mat-sidenav-container> -->
 
-<!-- DESKTOP -->
-<mat-drawer-container class="main-container" #main>
+<!-- Notes Drawer -->
+<mat-drawer-container class="main-container" #main autosize>
   <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles note-drawer-styles"  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
     <div class="">
 
       <button  mat-icon-button [matTooltipShowDelay]="timeout" [matTooltipHideDelay]="hideTimeout"
                matTooltip="Create New Note"
               (click)="newNote()" class="icons note-button" i18n>
-        <mat-icon >add</mat-icon>
+        <mat-icon class="note-button-icon">add</mat-icon>
       </button>
       <mat-divider></mat-divider>
       <div class="expansion-contain">
@@ -32,7 +32,7 @@
       </div>
     </div>
   </mat-drawer>
-
+<!-- Main Drawer -->
   <mat-drawer #drawer class="matdrawer-styles"  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
     <div class="drawer-styles">
       <div class="signin_container">

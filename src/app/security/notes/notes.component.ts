@@ -71,6 +71,7 @@ export class NotesComponent   implements OnInit {
               this.dec_heads();
               this.notes_obj.content = JSON.stringify(this.named_notes_heads);
               this.notes_serv.set_nav_head(this.notes_obj);
+
               console.log("Notes, done pushing the heads to nav");
             }
           }, 10);
