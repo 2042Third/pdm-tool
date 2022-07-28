@@ -69,8 +69,8 @@ mat-divider{
 .note-drawer-styles{
   display: flex;
   flex-direction: column;
-  align-items: normal;
-  //justify-content: right;
+  align-items: stretch;
+  //align-items: normal;
   height: 100%;
   padding: 8pt;
   padding-top: 18pt;
@@ -137,7 +137,9 @@ nav .title {
   background-color: var(--background-tertiary);
 }
 .expansion-contain{
-overflow-y: scroll;
+  overflow-block: scroll ;
+  overflow-y: scroll;
+  height: 85%;
 }
 
 .note-listing{

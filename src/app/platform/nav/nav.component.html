@@ -5,7 +5,7 @@
 <!-- Notes Drawer -->
 <mat-drawer-container class="main-container" #main autosize>
   <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles note-drawer-styles"  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
-    <div class="">
+<!--    <div class="">-->
 
       <button  mat-icon-button [matTooltipShowDelay]="timeout" [matTooltipHideDelay]="hideTimeout"
                matTooltip="Create New Note"
@@ -30,7 +30,7 @@
             </mat-list-item>
           </mat-list>
       </div>
-    </div>
+<!--    </div>-->
   </mat-drawer>
 <!-- Main Drawer -->
   <mat-drawer #drawer class="matdrawer-styles"  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
