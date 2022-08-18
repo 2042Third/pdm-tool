@@ -77,7 +77,7 @@ export class UserinfoService implements OnInit {
         if(data!=null){
           this.openDialogEnter(); // set app pass
           this.ngzone.run(()=>{
-            this.local_not_set = JSON.parse(JSON.parse(JSON.stringify(data)));
+            this.local_not_set = JSON.parse(JSON.stringify(data));
           });
         }
       }
