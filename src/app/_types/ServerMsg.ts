@@ -27,6 +27,7 @@ export class ServerMsg {
   sender: String="";
   sess:String = '';
   status:String = "fail";
+  statusInfo:String = "None";
   receiver: String="";
   authdata?:String="";
   time:Number;
