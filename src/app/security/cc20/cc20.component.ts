@@ -148,6 +148,7 @@ export class Cc20Component   {
       receiver: "testing recv",
       email: "none",
       status: "none",
+      statusInfo: "None",
       h: "none",
       val: "TESTING ONLY, USERNAME NOT ENCRYPTED!",
       username: "",
