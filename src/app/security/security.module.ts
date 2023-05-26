@@ -15,7 +15,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 import { DisableControlDirective } from './disableControl.directive';
 import { ChatService } from '../_services/chat.service';
 import { NotesEditDirective } from '../_directives/notes-edit.directive';
-import {MatListModule} from '@angular/material/list';
+import {MatLegacyListModule as MatListModule} from '@angular/material/legacy-list';
 import { CustomScrollDirective } from '../_directives/custom-scroll.directive';
 import { EncryptionComponent } from './encryption/encryption.component';
 @NgModule({

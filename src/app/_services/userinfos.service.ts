@@ -5,7 +5,7 @@ import { lastValueFrom, Observable, Subject, Subscription } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DialogNotificationsComponent } from '../platform/dialogNotifications/dialogNotifications.component';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { CookieService } from 'ngx-cookie-service';
 import { take } from 'rxjs/operators';

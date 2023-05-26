@@ -6,10 +6,10 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { NotesMsg } from '../_types/User';
 import { UserinfoService } from './userinfos.service';
 import { ServerMsg } from '../_types/ServerMsg';
-import {  MatDialogRef } from '@angular/material/dialog';
+import {  MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { DialogNotificationsComponent } from '../platform/dialogNotifications/dialogNotifications.component';
 import { Router } from '@angular/router';
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig} from "@angular/material/legacy-dialog";
 import { environment } from 'src/environments/environment';
 import {HttpService} from "./http.service";
 @Injectable({

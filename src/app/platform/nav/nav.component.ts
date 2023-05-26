@@ -18,7 +18,7 @@ import {NoteHead, NotesMsg} from '../../_types/User';
 import {Platform} from '@ionic/angular';
 import {NgxIndexedDBService} from 'ngx-indexed-db';
 import Echo from 'src/app/_types/Native';
-import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
+import {MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig, MatLegacyDialogRef as MatDialogRef} from "@angular/material/legacy-dialog";
 import {DialogNotificationsComponent} from "../dialogNotifications/dialogNotifications.component";
 import {SettingsDialogComponent} from "../settings-dialog/settings-dialog.component";
 

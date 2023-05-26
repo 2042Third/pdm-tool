@@ -1,5 +1,5 @@
 import { Component, SecurityContext } from "@angular/core";
-import {MatListModule} from '@angular/material/list';
+import {MatLegacyListModule as MatListModule} from '@angular/material/legacy-list';
 import { WebsockService } from "src/app/_services/websock.service";
 import { DomSanitizer } from '@angular/platform-browser';
 import { UntypedFormControl } from "@angular/forms";

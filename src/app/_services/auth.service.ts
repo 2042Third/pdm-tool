@@ -11,9 +11,9 @@ import { map } from 'rxjs/operators';
 import { Platform } from '@ionic/angular';
 
 import { Http, HttpResponse } from '@capacitor-community/http';
-import {  MatDialogRef } from '@angular/material/dialog';
+import {  MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { DialogNotificationsComponent } from '../platform/dialogNotifications/dialogNotifications.component';
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig} from "@angular/material/legacy-dialog";
 import {HttpService} from "./http.service";
 
 @Injectable({ providedIn: 'root' })
