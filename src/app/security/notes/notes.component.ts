@@ -147,10 +147,12 @@ export class NotesComponent   implements OnInit {
   change(a:String){
     console.log("content change");
     this.has_change = true;
-    if(a!=null){
+    if(a!=null){ // Sets the current encrypted content, and hash to be sent to the server.
+      this.notes_serv.setContentHash(this.userinfo.hash(a.toString()));
       this.notes_serv.setCurContent(this.userinfo.enc(a.toString()));
     }
     else{ // empty note
+      this.notes_serv.setContentHash(this.userinfo.hash(""));
       this.notes_serv.setCurContent("");
     }
   }

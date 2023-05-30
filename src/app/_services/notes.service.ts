@@ -35,6 +35,7 @@ export class NotesService {
   private signup_sub:Subscription;
   public cur_content:String="";
   public cur_head:String="";
+  public content_hash:String="";
   private sidenav: MatSidenav;
   public submitTimeout=1000;
   public loadingTimeout=100;
@@ -134,6 +135,7 @@ export class NotesService {
         "ntype":this.notes_obj.ntype,
         "email":this.signin_obj.email,
         "note_id":this.cur_open_note,
+        "h":this.content_hash
       }).pipe(map(upData => {
         console.log("Update ==> \""+JSON.stringify(upData)+"\"");
         this.notesSubject.next(upData);
@@ -257,5 +259,9 @@ export class NotesService {
 
   ngOnDestroy() {
     this.signup_sub.unsubscribe();
+  }
+
+  setContentHash(s: string) {
+    this.content_hash = s;
   }
 }

@@ -17,7 +17,7 @@ export class EncryptionComponent extends EmscriptenWasmComponent<c20> implements
     private userinfo: UserinfoService,
   ) {
     super("Cc20Module", "notes.js");
-    console.log("WARNING, IF THIS MESSAGE IS SHOWING MORE THAN ONCE, PLEASE CLOSE THGE PROGRAM!!!");
+    console.log("WARNING, IF THIS MESSAGE IS SHOWING MORE THAN ONCE, PLEASE CLOSE THE PROGRAM!!!");
     // Authenticated messages
     this.authdata = this.userinfo.authdata_stream.subscribe(
       data=>{

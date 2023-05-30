@@ -18,6 +18,7 @@ import { NotesEditDirective } from '../_directives/notes-edit.directive';
 import {MatLegacyListModule as MatListModule} from '@angular/material/legacy-list';
 import { CustomScrollDirective } from '../_directives/custom-scroll.directive';
 import { EncryptionComponent } from './encryption/encryption.component';
+import {MatInputModule} from "@angular/material/input";
 @NgModule({
   exports:[Cc20Component,
      NotesComponent,
@@ -25,15 +26,16 @@ import { EncryptionComponent } from './encryption/encryption.component';
      UserprofileComponent,
      EncryptionComponent,
     ],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatDividerModule,
-    MatListModule,
-  ],
+    imports: [
+        CommonModule,
+        BrowserModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatDividerModule,
+        MatListModule,
+        MatInputModule,
+    ],
   declarations: [
     Cc20Component,
     HumanizeTimePipe,
