@@ -11,7 +11,7 @@ import { ChatService } from './_services/chat.service';
 import { NotesService } from './_services/notes.service';
 import { AuthService } from './_services/auth.service';
 import { NotesEditDirective } from './_directives/notes-edit.directive';
-import { MAT_LEGACY_DIALOG_DEFAULT_OPTIONS as MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/legacy-dialog';
+// import { MAT_LEGACY_DIALOG_DEFAULT_OPTIONS as MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/legacy-dialog';
 import { UserinfoService } from './_services/userinfos.service';
 import { CustomScrollDirective } from './_directives/custom-scroll.directive';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';

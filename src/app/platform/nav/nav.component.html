@@ -45,19 +45,19 @@
       <button routerLink="./notes" routerLinkActive="active"
             [queryParams]="{ locale: cur_locale }"
             queryParamsHandling="merge" mat-icon-button color="secondary"
-            (click)="toNotes()" class="icons" i18n>Notes</button>
+            (click)="toNotes()" class="icons nav_button_font" i18n>Notes</button>
       <button routerLink="./chat" routerLinkActive="active"
             [queryParams]="{ locale: cur_locale }"
             queryParamsHandling="merge" mat-icon-button
             color="secondary"
-            (click)="toChat()" class="icons" i18n>Chat</button>
+            (click)="toChat()" class="icons nav_button_font" i18n>Chat</button>
       <button routerLink="./signin" routerLinkActive="active"
             [queryParams]="{ locale: cur_locale }"
             queryParamsHandling="merge" mat-icon-button
             color="secondary"
-            (click)="toSignin()" class="icons" i18n>User</button>
+            (click)="toSignin()" class="icons nav_button_font" i18n>User</button>
       <mat-divider></mat-divider>
-      <font class="title-font" bold="true">PDM Notes</font>
+      <span class="title-font" bold="true">PDM Notes</span>
       <!--settings-->
       <button mat-icon-button (click)="openSettingsDialog()"
               class="settingsButton icons" [matTooltipShowDelay]="timeout" [matTooltipHideDelay]="hideTimeout" matTooltip="Settings">
@@ -77,7 +77,7 @@
 
         <h5 class="title secondary-font"></h5>
         <!-- note status -->
-        <font *ngIf="currentRoute=='/notes'" class="note-status" >{{saving_str}}</font>
+        <span *ngIf="currentRoute=='/notes'" class="note-status" >{{saving_str}}</span>
         <!-- debug menu -->
         <button mat-button [matMenuTriggerFor]="debug" i18n>Debug Menu</button>
 

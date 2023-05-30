@@ -52,8 +52,7 @@ mat-divider{
   align-items: center;
   //justify-content: right;
   height: 90%;
-  padding: 8pt;
-  padding-top: 18pt;
+  padding: 18pt 8pt 8pt;
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }
@@ -72,8 +71,7 @@ mat-divider{
   align-items: stretch;
   //align-items: normal;
   height: 100%;
-  padding: 8pt;
-  padding-top: 18pt;
+  padding: 18pt 8pt 8pt;
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
 }
@@ -87,6 +85,14 @@ mat-divider{
   color: rgb(136, 136, 136);
   font-size: smaller;
 }
+
+.nav_button_font{
+  font-size: small;
+  // white
+  color: #ffffff;
+  width: fit-content;
+}
+
 p .sidetitle {
   color:#919191;
   color: #0d6d3b;

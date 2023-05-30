@@ -5,11 +5,7 @@ import { lastValueFrom, Observable, Subject, Subscription } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DialogNotificationsComponent } from '../platform/dialogNotifications/dialogNotifications.component';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-import { CookieService } from 'ngx-cookie-service';
-import { take } from 'rxjs/operators';
-// import { EncryptComponent } from '../security/encrypt/encrypt.component';
 import { EncryptionComponent } from '../security/encryption/encryption.component';
 import { NotesService } from './notes.service';
 import { AuthService } from './auth.service';
@@ -17,6 +13,7 @@ import { Platform } from '@ionic/angular';
 import {StorageService} from "./storage.service";
 import {LiveobjService} from "./liveobj.service";
 import {EncodesService} from "./encodes.service";
+import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 @Injectable({
   providedIn: 'root'
 })
@@ -36,6 +33,7 @@ export class UserinfoService implements OnInit {
 
   encryption_module: EncryptionComponent;
   dialogRef: MatDialogRef<DialogNotificationsComponent, any>;
+
   authdata_stream_app_ref: Subscription;
   authdata_stream_ref: Subscription;
   waiting_for_app: boolean =false;

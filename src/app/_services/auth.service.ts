@@ -9,12 +9,10 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Platform } from '@ionic/angular';
-
-import { Http, HttpResponse } from '@capacitor-community/http';
-import {  MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { DialogNotificationsComponent } from '../platform/dialogNotifications/dialogNotifications.component';
-import {MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig} from "@angular/material/legacy-dialog";
 import {HttpService} from "./http.service";
+import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
