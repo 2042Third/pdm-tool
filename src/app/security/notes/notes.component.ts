@@ -155,6 +155,7 @@ export class NotesComponent   implements OnInit {
       this.notes_serv.setContentHash(this.userinfo.hash(""));
       this.notes_serv.setCurContent("");
     }
+    this.updateNote(); // added auto update
   }
   updateNote(){
     console.log("Updating note ");
