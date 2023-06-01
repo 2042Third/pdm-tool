@@ -16,8 +16,8 @@
       <div class="expansion-contain">
           <mat-list *ngIf="has_heads" dense>
             <mat-list-item *ngFor="let head of named_notes_heads;trackBy:getNoteId">
-              <button type="button" (click)="getNote(head.note_id)" class="text-color note-listing">
-                <span [attr.data-id]="head.id" >
+              <button type="button" (click)="getNote(head.note_id)" class="text-color ">
+                <span [attr.data-id]="head.id" class="note-listing">
                   <p matLine>
                     {{head.note_id}} {{head.head}}
                   </p>
