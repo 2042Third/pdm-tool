@@ -34,14 +34,20 @@
 <!--        Currently I am {{GeneralPanelOpenState ? 'open' : 'closed'}}-->
 <!--      </mat-panel-description>-->
     </mat-expansion-panel-header>
-    <p>I'm visible because I am open</p>
+    <h2>General Settings</h2>
   </mat-expansion-panel>
 
   <!-- Security -->
   <mat-expansion-panel class="custom-color" (opened)="SecurityPanelOpenState = true"
                                         (closed)="SecurityPanelOpenState = false">
   <mat-expansion-panel-header class="custom-color">
-    <mat-panel-title class="custom-color">
+<!--    <mat-panel-title class="custom-color">-->
+<!--      Security-->
+<!--    </mat-panel-title>-->
+    <mat-panel-title *ngIf="!SecurityPanelOpenState" [style.color]="'white'">
+      Security
+    </mat-panel-title>
+    <mat-panel-title *ngIf="SecurityPanelOpenState" [style.color]="'darkgray'">
       Security
     </mat-panel-title>
 <!--    <mat-panel-description class="custom-color">-->

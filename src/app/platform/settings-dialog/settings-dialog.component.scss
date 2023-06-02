@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-::ng-deep.mat-dialog-container{
+.mat-dialog-container{
   display: flex!important;
   flex-direction: column;
   align-items: stretch!important;
