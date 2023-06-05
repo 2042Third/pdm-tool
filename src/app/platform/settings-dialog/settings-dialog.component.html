@@ -1,4 +1,4 @@
-<h1 class="dia">Settings</h1>
+<!--<h1 class="dia">Settings</h1>-->
 <mat-accordion class="custom-color-parent">
   <!-- #docregion basic-panel -->
   <!-- #docregion hide-toggle -->
@@ -6,8 +6,7 @@
     <!-- #enddocregion hide-toggle -->
 <!--    Info-->
     <mat-expansion-panel-header class="custom-color" >
-      <mat-panel-title
-        class="custom-color">
+      <mat-panel-title class="custom-color">
         Info
       </mat-panel-title>
       <mat-panel-description class="custom-color">
@@ -41,18 +40,12 @@
   <mat-expansion-panel class="custom-color" (opened)="SecurityPanelOpenState = true"
                                         (closed)="SecurityPanelOpenState = false">
   <mat-expansion-panel-header class="custom-color">
-<!--    <mat-panel-title class="custom-color">-->
-<!--      Security-->
-<!--    </mat-panel-title>-->
     <mat-panel-title *ngIf="!SecurityPanelOpenState" [style.color]="'white'">
       Security
     </mat-panel-title>
     <mat-panel-title *ngIf="SecurityPanelOpenState" [style.color]="'darkgray'">
       Security
     </mat-panel-title>
-<!--    <mat-panel-description class="custom-color">-->
-<!--      Currently I am {{SecurityPanelOpenState ? 'open' : 'closed'}}-->
-<!--    </mat-panel-description>-->
   </mat-expansion-panel-header>
   <h2> Local Storage </h2>
 <!--    app password storage toggle-->
