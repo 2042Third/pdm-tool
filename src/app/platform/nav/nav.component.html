@@ -4,7 +4,8 @@
 
 <!-- Notes Drawer -->
 <mat-drawer-container class="main-container" #main autosize>
-  <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles note-drawer-styles"  [mode]="nav_open_mode" hasBackDrop="false" opened="true">
+  <mat-drawer *ngIf="currentRoute=='/notes'" #rightDrawer position="end" class="matdrawer-styles note-drawer-styles"
+              [mode]="nav_open_mode"  opened="true">
 <!--    <div class="">-->
 
       <button  mat-icon-button [matTooltipShowDelay]="timeout" [matTooltipHideDelay]="hideTimeout"
@@ -14,17 +15,16 @@
       </button>
       <mat-divider></mat-divider>
       <div class="expansion-contain">
-          <mat-list *ngIf="has_heads" dense>
+          <mat-list *ngIf="has_heads" >
             <mat-list-item *ngFor="let head of named_notes_heads;trackBy:getNoteId">
-              <button type="button" (click)="getNote(head.note_id)" class="text-color ">
-                <span [attr.data-id]="head.id" class="note-listing">
+              <button type="button" (click)="getNote(head.note_id)" class="text-color note-listing" >
+                <span [attr.data-id]="head.id" class="note-listing" >
                   <p matLine>
                     {{head.note_id}} {{head.head}}
                   </p>
                   <p  class="pdm-update-time" matLine>
                     {{head.utime | date}}
                   </p>
-                  <mat-divider></mat-divider>
                 </span>
               </button>
             </mat-list-item>

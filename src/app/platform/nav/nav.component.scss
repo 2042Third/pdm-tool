@@ -147,13 +147,24 @@ nav .title {
   overflow-y: scroll;
   height: 85%;
 }
+.pdm-update-time {
+  font-size: 7px;
+  font-family: 'Courier New', Courier, monospace;
+  color: rgb(126, 125, 125);
+}
+.note-listing{
+  flex-direction: row;
+  border: 0;
+  outline: 0;
+  // Top and bottom gray borders
+  border-top: 3px solid rgba(182, 189, 183, 0.285);
+  border-bottom: 3px solid rgba(182, 189, 183, 0.285);
+  padding-top: 2px;
+  padding-bottom: 2px;
 
-//.note-listing{
-//  flex-direction: row;
-//  border: 0;
-//  outline: 0;
-//  height: fit-content;
-//}
+  align-items: center;
+  height: fit-content;
+}
 
 .expansion-style {
   flex-direction: column;
