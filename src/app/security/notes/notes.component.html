@@ -1,13 +1,14 @@
 
 <div class="note-box">
   <mat-divider></mat-divider>
-  <input #headContent (change)="editHead()" placeholder="{{head_placeholder}}" [(ngModel)]="head_content" (keyup.enter)="editHead()" >
+  <input #headContent (keyup)="notesSaveHead()"
+         placeholder="{{head_placeholder}}" [(ngModel)]="head_content"
+  >
   <textarea
     #mainContent
     matInput
     type="text"
     (keyup)="notesSave()"
-    (change)="change(content)"
     [(ngModel)]="content"
     class="inputClass2"
   >

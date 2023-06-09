@@ -147,13 +147,16 @@ export class NotesComponent   implements OnInit {
   change(a:String){
     console.log("content change");
     this.has_change = true;
+
     if(a!=null){ // Sets the current encrypted content, and hash to be sent to the server.
       this.notes_serv.setContentHash(this.userinfo.hash(a.toString()));
       this.notes_serv.setCurContent(this.userinfo.enc(a.toString()));
+      this.notes_serv.setHead(this.userinfo.enc(this.head_content));
     }
     else{ // empty note
       this.notes_serv.setContentHash(this.userinfo.hash(""));
       this.notes_serv.setCurContent("");
+      this.notes_serv.setHead(this.userinfo.enc(this.head_content));
     }
     this.updateNote(); // added auto update
   }
@@ -181,4 +184,9 @@ export class NotesComponent   implements OnInit {
     this.notes_subject.unsubscribe();
   }
 
+  notesSaveHead() {
+    // this.head_content_ref.nativeElement.blur();
+    // this.content_ref.nativeElement.focus();
+    this.notesSave();
+  }
 }
