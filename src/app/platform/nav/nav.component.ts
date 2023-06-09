@@ -17,7 +17,6 @@ import {ServerMsg} from 'src/app/_types/ServerMsg';
 import {NoteHead, NotesMsg} from '../../_types/User';
 import {Platform} from '@ionic/angular';
 import {NgxIndexedDBService} from 'ngx-indexed-db';
-import Echo from 'src/app/_types/Native';
 import {DialogNotificationsComponent} from "../dialogNotifications/dialogNotifications.component";
 import {SettingsDialogComponent} from "../settings-dialog/settings-dialog.component";
 import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
@@ -187,17 +186,7 @@ export class NavComponent implements AfterViewInit {
   }
 
   ngOnInit() {
-    // TEST BLOCK
-    // TESTS, NOT TO BE INCLUDED IN PRODUCTION!!!!!!!!!
 
-    // Native call to swift in ios
-    if(this.platform.is('ios')){
-      from(Echo.echo({ value: 'Hello World!' }))
-      .subscribe(data=>{
-        console.log('Response from native:', data.value);
-      })
-    };
-    // END TEST BLOCK
 
     this.setLightbulb();
     // Feature sub
