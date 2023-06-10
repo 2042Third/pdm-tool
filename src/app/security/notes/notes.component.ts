@@ -44,7 +44,7 @@ export class NotesComponent   implements OnInit {
     this.notes_subject = this.notes_serv.notesSubject.subscribe({
         next: data => {// BEGIN subscribe
           let cur_timeout = this.notes_serv.loadingTimeout;
-          this.notes_obj = JSON.parse(JSON.stringify(data));
+          this.notes_obj = structuredClone(data);
           setTimeout(() => {
             console.log("NOTES COMPONENT recieved content: " + JSON.stringify(this.notes_obj));
             if (this.notes_obj.ntype == "retrieve_return") {
@@ -67,7 +67,7 @@ export class NotesComponent   implements OnInit {
               }
             } else if (this.notes_obj.ntype == "heads_return") {
               console.log("Notes,  nav");
-              this.named_notes_heads = JSON.parse(JSON.stringify(this.notes_obj.content));
+              this.named_notes_heads = structuredClone(this.notes_obj.content);
               this.dec_heads();
               this.notes_obj.content = JSON.stringify(this.named_notes_heads);
               this.notes_serv.set_nav_head(this.notes_obj);

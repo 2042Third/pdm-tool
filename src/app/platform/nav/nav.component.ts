@@ -100,7 +100,7 @@ export class NavComponent implements AfterViewInit {
     this.signup_sub = this.userinfo.signin_status_value.subscribe(
       {
         next: data=>{
-            this.signin_obj = JSON.parse(JSON.stringify(data)); // make a copy
+            this.signin_obj = structuredClone(data); // make a copy
             this.signin_stat_str = data.username;
             if(this.signin_obj.status != "fail"){
               this.signin_stat = true;
@@ -121,7 +121,7 @@ export class NavComponent implements AfterViewInit {
     // User notes listing
     this.notes_subject = notes_serv.notesSubjectHead.subscribe(
       data=>{
-        this.notes_obj = JSON.parse(JSON.stringify(data));
+        this.notes_obj = structuredClone(data);
         if(this.notes_obj.ntype == "heads_return"){
           this.notes_heads = this.notes_obj;
           this.ngzone.run(()=>{

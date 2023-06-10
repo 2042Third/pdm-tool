@@ -83,7 +83,7 @@ export class StorageService implements OnInit{
       return this.dbService.getAllByIndex('phoneStore', "email",IDBKeyRange.only(a))
         .pipe(map((data)=>
           {
-            let local_app_store = JSON.parse(JSON.stringify(data[0])).secure;
+            let local_app_store = structuredClone(data[0]).secure;
             console.log();
             return local_app_store;
           }
@@ -137,7 +137,7 @@ export class StorageService implements OnInit{
     let local_all;
     return this.dbService.getAll('phoneStore')
       .pipe((kpis) => {
-        local_all = JSON.parse(JSON.stringify(kpis));
+        local_all = structuredClone(kpis);
         console.log(local_all);
         if(local_all==null || local_all.length==0){
           return;

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import {from, Observable} from "rxjs";
 import {map} from "rxjs/operators";
-import {DialogNotificationsComponent} from "../platform/dialogNotifications/dialogNotifications.component";
-import {ServerMsg} from "../_types/ServerMsg";
 import {HTTP} from "@awesome-cordova-plugins/http/ngx";
 import {HttpClient} from "@angular/common/http";
 import {Platform} from "@ionic/angular";
@@ -31,7 +29,7 @@ export class HttpService {
     }
     else if ((this.platform.is('ios') || this.platform.is('android'))){
       console.log("http ios/android call");
-      return from(this.http2.post(url, JSON.parse(JSON.stringify(arg1)),arg2)).pipe(map(data => {
+      return from(this.http2.post(url, structuredClone(arg1),arg2)).pipe(map(data => {
         return data.data;
       }));
     }

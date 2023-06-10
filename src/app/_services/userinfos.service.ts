@@ -75,7 +75,7 @@ export class UserinfoService implements OnInit {
         if(data!=null){
           this.openDialogEnter(); // set app pass
           this.ngzone.run(()=>{
-            this.local_not_set = JSON.parse(JSON.stringify(data));
+            this.local_not_set = structuredClone(data);
           });
         }
       }
@@ -157,7 +157,7 @@ export class UserinfoService implements OnInit {
    *
   */
   public set_signin_status(a:ServerMsg){
-    this.signin_status_obj = JSON.parse(JSON.stringify(a));
+    this.signin_status_obj = structuredClone(a);
     this.signin_status_obj.username = this.dec(this.signin_status_obj.receiver.toString());
     this.signin_status_value.next(this.signin_status_obj);
   }
@@ -219,7 +219,7 @@ export class UserinfoService implements OnInit {
       {
         next: data=>{
           console.log("Gets local user");
-          local_user = JSON.parse(JSON.stringify(data));
+          local_user = structuredClone(data);
           if(local_user==null || local_user.length == 0){
             console.log("No local user");
             return;
@@ -254,7 +254,7 @@ export class UserinfoService implements OnInit {
    * */
   check_existing_user_security(local_user:any,app_ps:any){
     for(let i=0; i< 1;i ++){ // HARDCODED TO ONLY TAKE THE FIRST RESULT
-      this.local_not_set = JSON.parse(JSON.stringify(local_user[i]));
+      this.local_not_set = structuredClone(local_user[i]);
       console.log("check existing user called = > "+ JSON.stringify(this.local_not_set));
       let gabi = this.dbService.getAllByIndex(
         'pdmSecurity'
@@ -264,7 +264,7 @@ export class UserinfoService implements OnInit {
           next: (kpis)=>
           {
             console.log("check existing user returned = > "+ JSON.stringify(kpis[0]));
-            let local_all1 = JSON.parse(JSON.stringify(kpis[0]));
+            let local_all1 = structuredClone(kpis[0]);
             this.enc_info.email = local_user[i].email;
             this.enc_info.val = local_all1.secure;
             this.waiting_for_app = true;
@@ -403,7 +403,7 @@ export class UserinfoService implements OnInit {
     let local_all;
     this.dbService.getAll('pdmSecurity')
     .subscribe((kpis) => {
-      local_all = JSON.parse(JSON.stringify(kpis));
+      local_all = structuredClone(kpis);
       if(local_all==null){
         return;
       }
@@ -422,7 +422,7 @@ export class UserinfoService implements OnInit {
     let local_all;
     this.dbService.getAll('pdmTable')
     .subscribe((kpis) => {
-      local_all = JSON.parse(JSON.stringify(kpis));
+      local_all = structuredClone(kpis);
       console.log(local_all);
       if(local_all==null || local_all.length==0){
         return;
@@ -441,7 +441,7 @@ export class UserinfoService implements OnInit {
     let local_all;
     return this.dbService.getAll('pdmSecurity')
     .pipe((kpis) => {
-      local_all = JSON.parse(JSON.stringify(kpis));
+      local_all = structuredClone(kpis);
       console.log(local_all);
       if(local_all==null || local_all.length==0){
         return;

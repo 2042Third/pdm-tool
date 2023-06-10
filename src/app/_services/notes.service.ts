@@ -54,18 +54,18 @@ export class NotesService {
       this.signup_sub = this.userinfo.signin_status_value.subscribe(
       {
         next: data=>{
-            this.signin_obj = JSON.parse(JSON.stringify(data)); // make a copy
-            this.signin_stat_str = data.receiver;
-            if(this.signin_obj.status == "success"){
-              this.signin_stat = true;
-              setTimeout(() => {
-                this.get_notes_heads().subscribe()
-              }, this.loadingTimeout);
-            }
-            else {
-              this.signin_stat = false;
-            }
-          },
+          this.signin_obj = structuredClone(data); // make a copy
+          this.signin_stat_str = data.receiver;
+          if(this.signin_obj.status == "success"){
+            this.signin_stat = true;
+            setTimeout(() => {
+              this.get_notes_heads().subscribe()
+            }, this.loadingTimeout);
+          }
+          else {
+            this.signin_stat = false;
+          }
+        },
         error: data=>{
           console.log("?");
         }

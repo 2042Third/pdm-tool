@@ -65,7 +65,7 @@ export class SigninComponent implements OnInit {
     console.log('sign in construction' );
     this.signup_sub= this.userinfo.signin_status_value.subscribe(
     data=>{
-      this.local_usr = JSON.parse(JSON.stringify(data));
+      this.local_usr = structuredClone(data);
       console.log("Gotten usr: "+this.local_usr.status);
       if(this.local_usr.status == 'fail'){
         console.log("not user");
