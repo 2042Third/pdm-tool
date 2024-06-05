@@ -42,7 +42,7 @@ export class UserinfoService implements OnInit {
   public local_not_set: ServerMsg;
   usersubject_ref: Subscription;
   crypt_version;
-  pdm_version:string = '0.1';
+  pdm_version:string = '0.2';
   public cookies_timeout = 20; // timeout length
   constructor(
     private ngzone: NgZone,
